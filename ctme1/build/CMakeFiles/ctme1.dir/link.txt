@@ -1,0 +1,1 @@
+/usr/bin/cc -Wall -g  -rdynamic CMakeFiles/ctme1.dir/cMain.c.o CMakeFiles/ctme1.dir/cBox.c.o  -o ctme1 
