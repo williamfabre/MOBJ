@@ -4,20 +4,9 @@
 #include "cBox.h"
 
 
-void swap(long* a, long* b)
-{
-	long tmp = *a; *a = *b; *b = tmp;
-}
-
-long min(long a, long b)
-{
-	return (a > b) ? b : a;
-}
-
-long max(long a, long b)
-{
-	return (a > b) ? a : b;
-}
+void swap(long* a, long* b) {long tmp = *a; *a = *b; *b = tmp;}
+long min(long a, long b) {return (a > b) ? b : a;}
+long max(long a, long b) {return (a > b) ? a : b;}
 
 
 static size_t  boxAllocateds_ =  0;
@@ -27,7 +16,6 @@ size_t  boxAllocateds()
 {
 	return boxAllocateds_;
 }
-
 
 Box* boxCreateEmpty()
 {
@@ -44,7 +32,6 @@ Box* boxCreateEmpty()
 
 	return box;
 }
-
 
 Box* boxCreate(const char* name, long x1, long y1, long x2, long y2)
 {
