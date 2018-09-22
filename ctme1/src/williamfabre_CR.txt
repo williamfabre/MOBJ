@@ -1,0 +1,16 @@
+
+ _____                       _                            _          ___________  __  
+/  __ \                     | |                          | |        |_   _| ___ \/  | 
+| /  \/ ___  _ __ ___  _ __ | |_ ___   _ __ ___ _ __   __| |_   _     | | | |_/ /`| | 
+| |    / _ \| '_ ` _ \| '_ \| __/ _ \ | '__/ _ \ '_ \ / _` | | | |    | | |  __/  | | 
+| \__/\ (_) | | | | | | |_) | ||  __/ | | |  __/ | | | (_| | |_| |    | | | |    _| |_
+ \____/\___/|_| |_| |_| .__/ \__\___| |_|  \___|_| |_|\__,_|\__,_|    \_/ \_|    \___/
+                      | |                                                             
+                      |_|                                                          
+William Fabre
+3410804
+contact@williamfabre.fr
+
+# Exercice 1
+Tout le code a ete debug. Tout fonctionnne. La commande diff ne renvoie rien
+entre le mytrace.txt et le trace.txt

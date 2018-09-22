@@ -1,0 +1,39 @@
+boxCreateEmpty()
+boxCreate() "b1" [15 10 30 20]
+Allocated boxes: 2
+
+Test 1
+<"b1" [15 10 30 20]>
+  + testFunction() called.
+boxCreate() "area" [0 0 15 50]
+  | Intersection between:
+  |   <"area" [0 0 15 50]>
+  |   <"b1" [15 10 30 20]>
+  | Gives:
+  |   No intersection.
+boxDelete() "area"
+
+Test 2
+<"b1" [10 5 35 25]>
+  + testFunction() called.
+boxCreate() "area" [0 0 15 50]
+  | Intersection between:
+  |   <"area" [0 0 15 50]>
+  |   <"b1" [10 5 35 25]>
+  | Gives:
+boxCreateEmpty()
+  |   <"area.b1" [10 5 15 25]>
+boxDelete() "area.b1"
+boxDelete() "area"
+
+Test 3
++ Box "b1" empty:  0
+| Box "b1" width:  25
+| Box "b1" height: 20
++ Box "b1" empty:  1 (inflated -11)
+| Box "b1" width:  0
+| Box "b1" height: 0
+
+boxDelete() "b1"
+boxDelete() "Unknown"
+Allocated boxes: 0

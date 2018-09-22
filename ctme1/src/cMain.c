@@ -48,13 +48,19 @@ int  main ( int argc, char* argv[] )
 	testFunction( b1 );
 
 	fprintf( stderr, "\nTest 3\n" );
-	fprintf( stderr, "+ Box \"%s\" empty:  %li\n", b1->name_, boxIsEmpty (b1) );
-	fprintf( stderr, "| Box \"%s\" width:  %li\n", b1->name_, boxGetWidth (b1) );
-	fprintf( stderr, "| Box \"%s\" height: %li\n", b1->name_, boxGetHeight(b1) );
+	fprintf( stderr, "+ Box \"%s\" empty:  %li\n",
+		 b1->name_, boxIsEmpty (b1) );
+	fprintf( stderr, "| Box \"%s\" width:  %li\n",
+		 b1->name_, boxGetWidth (b1) );
+	fprintf( stderr, "| Box \"%s\" height: %li\n",
+		 b1->name_, boxGetHeight(b1) );
 	boxInflate( b1, -11, -11, -11, -11 );
-	fprintf( stderr, "+ Box \"%s\" empty:  %li (inflated -11)\n", b1->name_, boxIsEmpty(b1) );
-	fprintf( stderr, "| Box \"%s\" width:  %li\n", b1->name_, boxGetWidth (b1) );
-	fprintf( stderr, "| Box \"%s\" height: %li\n", b1->name_, boxGetHeight(b1) );
+	fprintf( stderr, "+ Box \"%s\" empty:  %li (inflated -11)\n",
+		 b1->name_, boxIsEmpty(b1) );
+	fprintf( stderr, "| Box \"%s\" width:  %li\n",
+		 b1->name_, boxGetWidth (b1) );
+	fprintf( stderr, "| Box \"%s\" height: %li\n",
+		 b1->name_, boxGetHeight(b1) );
 
 	fprintf( stderr, "\n" );
 

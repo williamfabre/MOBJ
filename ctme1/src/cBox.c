@@ -94,7 +94,6 @@ long  boxGetWidth ( const Box* box )
 
 long  boxGetHeight ( const Box* box )
 { return (boxIsEmpty(box)) ? 0 : (box->y2_ - box->y1_); }
-/*{ return (box->y2_ - box->y1_); }*/
 
 /* 0 not intersect, 1 intersect */
 long  boxIntersect ( const Box* box1, const Box* box2 )

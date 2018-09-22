@@ -14,16 +14,22 @@ ostream& operator<< (ostream& o, const Box& b)
 	return o;
 }
 
-Box testFunction(Box ab)
+/* Attention cette fonction va appeler ab une Box par reference et pas par
+ * copie. Si on avait laisse Box et pas Box& on aurait une copie et donc un
+ * appelle a un constructeur en supplementaire dans l'affichage et donc un objet
+ * supplementaire a creer // detruire FAIRE TRES ATTENTION A CE GENRE DE BETISE
+ */
+Box testFunction(Box& ab)
 {
 	cerr << " + testFunction() called." << endl;
 	Box area ("area", 0, 0, 15, 50);
+	cerr << "  |  Interseciton between:" << endl;
+	cerr << "  |    " << area << endl;
+	cerr << "  |    " << ab << endl;
+	cerr << "  | Gives:" << endl;
+
 	if (area.intersect(ab)){
 		Box boxinter = area and ab;
-		cerr << "  |  Interseciton between:" << endl;
-		cerr << "  |    " << area << endl;
-		cerr << "  |    " << ab << endl;
-		cerr << "  | Gives:" << endl;
 		cerr << "  |   " << boxinter << endl;
 	}
 	else
@@ -32,21 +38,25 @@ Box testFunction(Box ab)
 	return ab;
 }
 
+/* Le programme cree une copie de l'objet quand il entre dans une nouvelle
+ * fonction
+ */
+
 int main (int argc, char* argv[])
 {
 	{
 		Box b0;
 		Box b1 ("b1", 15, 10, 30, 20);
-		cerr << "Allocated Boxes:" << Box::getAllocateds() << endl;
+		//cerr << "Allocated Boxes:" << Box::getAllocateds() << endl;
 
-		cerr << "\nTest 1:  "; b1.print(cerr); cerr << endl;
+		cerr << "\nTest 1:  \n"; b1.print(cerr); cerr << endl;
 		testFunction(b1);
 
 		b1.inflate(5,5,5,5);
-		cerr << "\nTest 2:  "; b1.print(cerr); cerr << endl;
+		cerr << "\nTest 2:  \n"; b1.print(cerr); cerr << endl;
 		testFunction(b1);
 
-		cerr << "\nTest3: " << endl;
+		cerr << "\nTest3: \n" << endl;
 		cerr << "+ Box\"" << b1.getName() << "\" empty:  "
 			<< boolalpha << b1.isEmpty() << endl;
 		cerr << "+ Box\"" << b1.getName() << "\" width:  "
@@ -61,7 +71,7 @@ int main (int argc, char* argv[])
 		cerr << "+ Box\"" << b1.getName() << "\" height:  "
 			<< boolalpha << b1.getHeight() << endl;
 
-		cerr << "Allocated boxes: " << Box::getAllocateds() << endl;
+		//cerr << "Allocated boxes: " << Box::getAllocateds() << endl;
 	}
 
 	return 0;
