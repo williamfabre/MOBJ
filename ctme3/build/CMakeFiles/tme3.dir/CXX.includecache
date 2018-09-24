@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/tchi/work/MOBJ/ctme3/src/GPL_2_text.h
+
+/home/tchi/work/MOBJ/ctme3/src/Main.cpp
+iostream
+-
+cstdlib
+-
+vector
+-
+map
+-
+list
+-
+algorithm
+-
+Timer.h
+/home/tchi/work/MOBJ/ctme3/src/Timer.h
+GPL_2_text.h
+/home/tchi/work/MOBJ/ctme3/src/GPL_2_text.h
+
+/home/tchi/work/MOBJ/ctme3/src/Timer.h
+ctime
+-
+iostream
+-
+

@@ -1,0 +1,15 @@
+		++c		++c
+#define MAX(a,b) ((a) > (b) ? (a) : (b)
+PARENTHESE DE SECURITE POUR LES PARAMETRE POUR EVITER LES ++X qui font foirer
+le code
+
+int main(void)
+{
+	int c = MAX(4,5); // c = 5 =======> UTILISER INLINE empeche l'expension
+	de la macro qui va dedoubler le ++c interpreter par le preprocesseur
+	avant d'etre compile.
+
+	int d = MAX(++c, 3); // 7 ========> UTILISER INLINE
+	int e = MAX("0x01", 3); // erreur char* + int n'existe pas
+	return 0;
+}
