@@ -2,7 +2,7 @@
 #include "Box.h"
 
 using namespace std;
-using namespace tme1Qf;
+using namespace tme2;
 
 /* Now that we have a print we need to provide the operator
  * that print our Boxes into a stream with the redirection <<

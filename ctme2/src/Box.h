@@ -80,10 +80,10 @@ namespace tme1Qf
 class Box {
 private:
 	std::string name_;
-	long x_;
-	long y_;
-	long width_;
-	long height_;
+	double x_;
+	double y_;
+	double width_;
+	double height_;
 	static int count;
 
 public:
@@ -91,7 +91,7 @@ public:
 	/*constructeur par défaut. Doit construire une boîte vide. */
 	Box();
 	/* constructeur ordinaire. */
-	Box(std::string, long x, long y, long width, long height);
+	Box(std::string, double x1, double y1, double x2, double y2);
 	/*constructeur par copie. Pour plus de clarté,
 	  lorsqu'une boîte sera copiée on s'autorisera
 	  à en modifier le nom en y ajoutant le suffixe "_c".*/
@@ -102,21 +102,21 @@ public:
 
 	/* Access */
 	std::string getName() const { return name_; }
-	inline long getX() const { return x_; }
-	inline long getY() const { return y_; }
-	inline long getWidth() const { return width_; }
-	inline long getHeight() const { return height_; }
+	inline double getX() const { return x_; }
+	inline double getY() const { return y_; }
+	inline double getWidth() const { return width_; }
+	inline double getHeight() const { return height_; }
 	static int getAllocateds() { return count; }
-	inline bool isEmpty() const{ return (width_ == 0) && (height_ == 0); }
+	inline bool isEmpty() const{ return (width_ <= 0) || (height_ <= 0); }
 
 	void print(std::ostream&)const;
 	bool intersect(const Box&) const;
 
 	/* Mutate */
 	Box& makeEmpty();
-	Box& inflate(long dxy);
-	Box& inflate(long dx, long dy);
-	Box& inflate(long dx1, long dy1, long dx2, long dy2);
+	Box& inflate(double dxy);
+	Box& inflate(double dx, double dy);
+	Box& inflate(double dx1, double dy1, double dx2, double dy2);
 	Box getIntersection(const Box&) const;
 	//Box getIntersection(Box&);
 

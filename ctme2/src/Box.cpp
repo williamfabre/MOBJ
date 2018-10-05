@@ -66,10 +66,16 @@ bool Box::intersect(const Box& other) const
 
 Box& Box::makeEmpty()
 {
-	x1_ = 1;
-	y1_ = 1;
-	x2_ = -1;
-	y2_ = -1;
+	/* those were in the spec */
+	//x1_ = 1;
+	//y1_ = 1;
+	//x2_ = -1;
+	//y2_ = -1;
+	x1_ = 0;
+	y1_ = 0;
+	x2_ = 0;
+	y2_ = 0;
+
 	return *this;
 }
 
@@ -79,6 +85,8 @@ Box& Box::inflate(long dxy)
 	y1_ -= dxy;
 	x2_ += dxy;
 	y2_ += dxy;
+
+	if (isEmpty()) makeEmpty();
 	return *this;
 }
 
@@ -88,6 +96,8 @@ Box& Box::inflate (long dx, long dy)
 	y1_ -= dy;
 	x2_ += dx;
 	y2_ += dy;
+
+	if (isEmpty()) makeEmpty();
 	return *this;
 }
 
@@ -97,6 +107,8 @@ Box& Box::inflate(long dx1, long dy1, long dx2, long dy2)
 	y1_ -= dy1;
 	x2_ += dx2;
 	y2_+= dy2;
+
+	if (isEmpty()) makeEmpty();
 	return *this;
 }
 
@@ -111,8 +123,8 @@ Box Box::getIntersection(const Box& other) const
 		return Box(name,
 			   std::max(x1_, other.x1_),
 			   std::max(y1_, other.y1_),
-			   std::max(x2_, other.x2_),
-			   std::max(y2_, other.y2_));
+			   std::min(x2_, other.x2_),
+			   std::min(y2_, other.y2_));
 	}
 	return Box();
 }
@@ -150,14 +162,18 @@ std::ostream& operator<<(std::ostream& o, const Box& box)
 /****************************************************************************/
 
 tme1Qf::Box::Box() :
-	name_("Unknow"), x_(1), y_(1), width_(-1), height_(-1)
+	name_("Unknow"), x_(0), y_(0), width_(-2), height_(-2)
 {
 	count++;
 	cerr << "Debug: tme1Qf::Box::Box() " << *this << endl;
 }
 
-tme1Qf::Box::Box(string name, long x, long y, long width, long height) :
-	name_(name), x_(x), y_(y), width_(width), height_(height)
+tme1Qf::Box::Box(string name, double x1, double y1, double x2, double y2) :
+	name_(name),
+	x_((x1 + x2) / 2),
+	y_ ((y1 + y2) / 2),
+	width_(x2 - x1),
+	height_(y2 - y1)
 {
 	count++;
 	cerr << "Debug: tme1Qf::Box::Box(std::string, ...) "<< *this << endl;
@@ -178,62 +194,81 @@ tme1Qf::Box::~Box()
 	cerr << "Debug: tme1Qf::Box::~Box() " << *this << endl;
 }
 
-
 bool tme1Qf::Box::intersect(const Box& other) const
 {
+	int x1, y1, x2, y2;
+	int ox1, oy1, ox2, oy2;
+
 	if (isEmpty() || other.isEmpty()) return 0;
 
-	if (x_ < other.x_ + other.width_
-	    && x_ + width_ > other.x_
-	    && y_ < other.y_ + other.height_
-	    && height_ + y_ > other.y_)
-		return 1;
+	x1 = x_ - width_/2;
+	y1 = y_ - height_/2;
+	x2 = x_ + width_/2;
+	y2 = y_ + height_/2;
+
+	ox1 = other.x_ - other.width_/2;
+	oy1 = other.y_ - other.height_/2;
+	ox2 = other.x_ + other.width_/2;
+	oy2 = other.y_ + other.height_/2;
+
+	if (	(x2 <= ox1)
+		|| (x1 >= ox2)
+		|| (y2 <= oy1)
+		|| (y1 >= oy2)) return 0;
+
+	//if (x_ < other.x_ + other.width_
+	//|| x_ + width_ > other.x_
+	//|| y_ < other.y_ + other.height_
+	//|| height_ + y_ > other.y_)
+	//return 1;
 	return 1;
 }
 
 tme1Qf::Box&  tme1Qf::Box::makeEmpty()
 {
+	x_= 0;
+	y_ = 0;
 	width_ = 0;
 	height_ = 0;
 	return *this;
 }
 
-tme1Qf::Box&  tme1Qf::Box::inflate(long dxy)
+tme1Qf::Box&  tme1Qf::Box::inflate(double dxy)
 {
-	x_ += (dxy/2);
-	y_ += (dxy/2);
-	width_ += (dxy);
-	height_ += (dxy);
+	width_ += (dxy*2);
+	height_ += (dxy*2);
+	if (isEmpty()) makeEmpty();
 	return *this;
 }
 
-tme1Qf::Box&  tme1Qf::Box::inflate (long dx, long dy)
+tme1Qf::Box&  tme1Qf::Box::inflate (double dx, double dy)
 {
-	x_ += (dx/2);
-	y_ += (dy/2);
-	width_ += dx;
-	height_ += dy;
+	width_ += dx*2;
+	height_ += dy*2;
+	if (isEmpty()) makeEmpty();
 	return *this;
 }
 
-tme1Qf::Box&  tme1Qf::Box::inflate(long dx1, long dy1, long dx2, long dy2)
+tme1Qf::Box& tme1Qf::Box::inflate(double dx1, double dy1, double dx2, double dy2)
 {
-	x_ += ((dx1+dx2)/ 2);
-	y_ += ((dy1+dy2)/ 2);
 	width_ +=  dx1 + dx2;
 	height_ += dy1 + dy2;
+	if (isEmpty()) makeEmpty();
 	return *this;
 }
 
 tme1Qf::Box tme1Qf::Box::getIntersection(const Box& other) const
 {
+	double x1, y1, x2, y2;
+
 	if (intersect(other)) {
 		std::string name = name_ + "_" + other.name_;
-		return Box(name,
-			   std::max(x_, other.x_),
-			   std::max(y_, other.y_),
-			   std::max(width_, other.width_),
-			   std::max(height_, other.height_));
+		x1 = max(x_ - (width_ / 2),other.x_ - (other.width_ / 2));
+		y1 = max(y_ - (height_ / 2),other.y_ - (other.height_ / 2));
+		x2 = min(x_ + (width_ / 2),other.x_ + (other.width_ / 2));
+		y2 = min(y_ + (height_ / 2),other.y_ + (other.height_ / 2));
+
+		return Box(name, x1, y1, x2, y2);
 	}
 	return Box();
 
@@ -243,10 +278,10 @@ void tme1Qf::Box::print(std::ostream& o) const
 {
 	std::string str;
 	str = str + "<\"" + name_ + "\""
-		+ "[" + std::to_string(x_)
-		+ " " + std::to_string(y_)
-		+ " " + std::to_string(width_)
-		+ " " + std::to_string(height_) + "]>";
+		+ "[" + std::to_string((int)(x_ - (width_ / 2)))
+		+ " " + std::to_string((int)(y_ - (height_ / 2)))
+		+ " " + std::to_string((int)(x_ + (width_ / 2)))
+		+ " " + std::to_string((int)(y_ + (height_ / 2))) + "]>";
 	o << str;
 }
 
@@ -260,5 +295,3 @@ tme1Qf::Box tme1Qf::Box::operator&&(Box& other)
 {
 	return getIntersection(other);
 }
-
-
