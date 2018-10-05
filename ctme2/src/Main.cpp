@@ -2,17 +2,17 @@
 #include "Box.h"
 
 using namespace std;
-using namespace tme2;
+using namespace tme1Qf;
 
 /* Now that we have a print we need to provide the operator
  * that print our Boxes into a stream with the redirection <<
  * OVERLOAD OPERATOR
  */
-ostream& operator<< (ostream& o, const Box& b)
-{
-	b.print(o);
-	return o;
-}
+//ostream& operator<< (ostream& o, const Box& b)
+//{
+	//b.print(o);
+	//return o;
+//}
 
 /* Attention cette fonction va appeler ab une Box par reference et pas par
  * copie. Si on avait laisse Box et pas Box& on aurait une copie et donc un
