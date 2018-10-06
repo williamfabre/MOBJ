@@ -1,4 +1,4 @@
- _____                       _                            _          ___________  _____
+_____                       _                            _          ___________  _____
 /  __ \                     | |                          | |        |_   _| ___ \/ __  \
 | /  \/ ___  _ __ ___  _ __ | |_ ___   _ __ ___ _ __   __| |_   _     | | | |_/ /`' / /'
 | |    / _ \| '_ ` _ \| '_ \| __/ _ \ | '__/ _ \ '_ \ / _` | | | |    | | |  __/   / /
@@ -12,12 +12,57 @@ William Fabre
 contact@williamfabre.fr
 
 # Exercice 1
-J'ai modifie un peu le programme de test pour qu'il ressemble exactement au TP1
-et j'ai implementer entierement la classe.
+ ## Trace d'execution :
+
+	/* creation d'une box vide */
+	Debug: Box::Box() <"Unknow"[1 1 -1 -1]> 
+	/* creation d'une box avec un nom : "b1" */
+	Debug: Box::Box(std::string, ...) <"b1"[15 10 30 20]>
+
+	Test 1:  
+	<"b1"[15 10 30 20]>
+	 + testFunction() called.
+	Debug: Box::Box(std::string, ...) <"area"[0 0 15 50]>
+	  |  Interseciton between:
+	  |    <"area"[0 0 15 50]>
+	  |    <"b1"[15 10 30 20]>
+	  | Gives:
+	  No Intersection
+	Debug: Box::Box(const Box&) <"b1_c"[15 10 30 20]>
+	Debug: Box::~Box() <"area"[0 0 15 50]>
+	Debug: Box::~Box() <"b1_c"[15 10 30 20]>
+
+	Test 2:  
+	<"b1"[10 5 35 25]>
+	 + testFunction() called.
+	Debug: Box::Box(std::string, ...) <"area"[0 0 15 50]>
+	  |  Interseciton between:
+	  |    <"area"[0 0 15 50]>
+	  |    <"b1"[10 5 35 25]>
+	  | Gives:
+	Debug: Box::Box(std::string, ...) <"area_b1"[10 5 15 25]>
+	  |   <"area_b1"[10 5 15 25]>
+	Debug: Box::~Box() <"area_b1"[10 5 15 25]>
+	Debug: Box::Box(const Box&) <"b1_c"[10 5 35 25]>
+	Debug: Box::~Box() <"area"[0 0 15 50]>
+	Debug: Box::~Box() <"b1_c"[10 5 35 25]>
+
+	Test3: 
+
+	+ Box"b1" empty:  false
+	+ Box"b1" width:  25
+	+ Box"b1" height:  20
+	+ Box"b1" empty:  false(inflated -11)
+	+ Box"b1" width:  0
+	+ Box"b1" height:  0
+	Debug: Box::~Box() <"b1"[0 0 0 0]>
+	Debug: Box::~Box() <"Unknow"[1 1 -1 -1]>
+
 
 # Exercice 2
 On ne peut pas initialiser grace au constructeur private. Si le constructeur
 est private alors il n'est pas accessible en dehors de sa classe.
+
 
 # Exercice 3
 le mot cle inline du compilateur GCC va faire ne sorte que la ligne de commande
@@ -26,18 +71,29 @@ fonction par le code de la fonction afin de ne pas avoir les prologue et
 epilogue de ces fonctions sur la pile et directement acceder a leur code. On va
 gagner un peu d'overhead inutile.
 
-//TODO finir pourquoi inline aide au linkage.
 
 # Exercice 4
  ## Question 1
- La surcharge se fait avec operator<< dans le fichier Main.cpp
+ Pour se faire il faut declarer en dehors de la classe la surcharge de fonction
+ dans le .h et l'implementer dans Box.cpp.
+ std::ostream& operator<<(std::ostream& o, const Box& box)
+ On va reutiliser la fonction qui prend un stream et affiche dedans et on
+ renverra juste le stream.
+
+
  ## Question 2
- La surcharge se fait avec operator&& dans la Class, dans le fichier box.h
- ## Question 3
  La surcharge etant faite le compilo va prendre and pour &&. Cela sera utile
  dans la phase de test pour creer une "boite d'intersection" voir ligne 32 de
  Main.cpp
 
-# Exercice 5
 
-//TODO
+# Exercice 5
+ Second Box definition:
+ On va utiliser l'operateur de resolution de portee pour declarer toutes les
+ fontions avec tme1Qf:: . On va implementer toutes les fonctions comme pour
+ tme:: .
+ On reprend exactement les memes fonctions et on va :
+ 	adapte le code pour utiliser les coordonnees x, y, width, height tout
+	en laissant la meme definition des constructeur. Comme ca l'utilisateur
+	ne voit rien et lorsqu'on utilise les benchmarks on ne doit que changer
+	le namespace utilise.
