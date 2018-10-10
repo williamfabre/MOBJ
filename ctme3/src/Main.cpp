@@ -9,21 +9,20 @@
 
 using namespace std;
 
+template<typename T>
+void show(T gpl)
+{
+	cout << "size() : " << gpl.size() << endl;
+	cout << "max_size() : " << gpl.max_size() << endl;
+	//cout << "capacity() : " << gpl.capacity() << endl;
+
+	for (string s : gpl) { cout << s << " "; }
+	cout << endl;
+}
+
+
 namespace vector_bench
 {
-
-void show(vector<string> gplVector)
-{
-	cout << "size() : " << gplVector.size() << endl;
-	cout << "max_size() : " << gplVector.max_size() << endl;
-	cout << "capacity() : " << gplVector.capacity() << endl;
-
-	for(string s : gplVector) {
-		cout << s << " ";
-	}
-	cout << endl;
-
-}
 
 void backInsert()
 {
@@ -34,7 +33,10 @@ void backInsert()
 	}
 
 	sort(gplVector.begin(), gplVector.end());
-	//show(gplVector);
+
+
+	cout << "capacity() : " << gplVector.capacity() << endl;
+	//show<vector<string>>(gplVector);
 
 }
 
@@ -48,7 +50,7 @@ void frontInsert()
 	}
 
 	sort(gplVector.begin(), gplVector.end());
-	//show(gplVector);
+	//show<vector<string>>(gplVector);
 }
 
 void sortEachInsert()
@@ -59,8 +61,7 @@ void sortEachInsert()
 		gplVector.push_back(string(GPL_2_text[i]));
 		sort(gplVector.begin(), gplVector.end());
 	}
-	//show(gplVector);
-
+	//show<vector<string>>(gplVector);
 }
 
 }
@@ -77,6 +78,8 @@ void backInsert()
 	}
 
 	gplList.sort();
+
+	//show<list<string>>(gplList);
 }
 void frontInsert()
 {
@@ -87,6 +90,7 @@ void frontInsert()
 	}
 
 	gplList.sort();
+	//show<list<string>>(gplList);
 }
 void sortEachInsert()
 {
@@ -96,29 +100,51 @@ void sortEachInsert()
 		gplList.push_back(string(GPL_2_text[i]));
 		gplList.sort();
 	}
+	//show<list<string>>(gplList);
 }
 }
 
 namespace map_bench
 {
 
+
+struct CompareString
+{
+	int operator() (string str, string another_str){
+		reverse(str.begin(), str.end());
+		reverse(another_str.begin(), another_str.end());
+		return str.compare(another_str);
+	}
+};
+
 void test()
 {
 	string str;
-	map<string, int> gplMap;
-	map<string, int>::iterator it;
+	string res;
+	int sum = 0;
+	map<string, int, CompareString> gplMap;
 
 	for (int i = 0; GPL_2_text[i] != NULL; i++){
 		str = string(GPL_2_text[i]);
-		it = gplMap.find(str);
+		//it = gplMap.contains(str);
+		auto it = gplMap.find(str);
 
 		if (it != gplMap.end()){
+
 			it->second++;
 		} else {
-			gplMap.insert(pair<string,int>(str,1));
+			gplMap.insert(pair<string,int>(str, 1));
 		}
 	}
+
+	for (auto it = gplMap.begin(); it != gplMap.end(); ++it) {
+		sum += it->second;
+		res += " " + it->first;
+	}
+	cout << "Total number of words :" << sum << endl;
+	cout << res << endl;
 }
+
 
 }
 
@@ -126,7 +152,7 @@ int main (void)
 {
 	Timer t;
 
-	/* VECTOR */
+	//VECTOR
 	cout << "Vector TB" << endl;
 	t = t.start();
 	vector_bench::backInsert();
@@ -141,9 +167,9 @@ int main (void)
 	t = t.start();
 	vector_bench::sortEachInsert();
 	t = t.stop();
-	cout << "frontInsert tt: " << t << endl;
+	cout << "backInsert && Sort each tt: " << t << endl;
 
-	/* LIST */
+	//LIST
 	cout << "List TB" << endl;
 	t = t.start();
 	list_bench::backInsert();
@@ -158,9 +184,9 @@ int main (void)
 	t = t.start();
 	list_bench::sortEachInsert();
 	t = t.stop();
-	cout << "frontInsert tt: " << t << endl;
+	cout << "frontInsert && sort each tt: " << t << endl;
 
-	/* MAP */
+	//MAP
 	cout << "Map TB" << endl;
 	t = t.start();
 	map_bench::test();
