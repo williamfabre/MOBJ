@@ -141,13 +141,15 @@ Box Box::operator&&(Box& other)
  */
 void Box::print(std::ostream& o) const
 {
-	std::string str;
-	str = str + "<\"" + name_ + "\""
-		+ "[" + std::to_string(x1_)
-		+ " " + std::to_string(y1_)
-		+ " " + std::to_string(x2_)
-		+ " " + std::to_string(y2_) + "]>";
-	o << str;
+	// std::string str;
+	// str = str + "<\"" + name_ + "\""
+	//         + "[" + std::to_string(x1_)
+	//         + " " + std::to_string(y1_)
+	//         + " " + std::to_string(x2_)
+	//         + " " + std::to_string(y2_) + "]>";
+	// o << str;
+	o << "<\"" <<  name_ << "\"" <<  "[" << x1_ << " " << y1_ << " " << x2_ <<" " << y2_ << "]>";
+
 }
 
 std::ostream& operator<<(std::ostream& o, const Box& box)
@@ -276,13 +278,14 @@ tme1Qf::Box tme1Qf::Box::getIntersection(const Box& other) const
 
 void tme1Qf::Box::print(std::ostream& o) const
 {
-	std::string str;
-	str = str + "<\"" + name_ + "\""
-		+ "[" + std::to_string((int)(x_ - (width_ / 2)))
-		+ " " + std::to_string((int)(y_ - (height_ / 2)))
-		+ " " + std::to_string((int)(x_ + (width_ / 2)))
-		+ " " + std::to_string((int)(y_ + (height_ / 2))) + "]>";
-	o << str;
+	
+	int x1, y1, x2, y2;
+	x1 = (int)(x_ - (width_ / 2));
+	y1 = (int)(y_ - (height_ / 2));
+	x2 = (int)(x_ + (width_ / 2));
+	y2 = (int)(y_ + (height_ / 2));
+
+	o << "<\"" <<  name_ << "\"" <<  "[" << x1 << " " << y1 << " " << x2 <<" " << y2 << "]>";
 }
 
 std::ostream& operator<<(std::ostream& o, const tme1Qf::Box& box)
