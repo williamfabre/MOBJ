@@ -107,17 +107,48 @@ void sortEachInsert()
 namespace map_bench
 {
 
-
 struct CompareString
 {
-	int operator() (string str, string another_str){
-		reverse(str.begin(), str.end());
-		reverse(another_str.begin(), another_str.end());
-		return str.compare(another_str);
+
+	bool operator() (string v1, string v2)
+	{
+		reverse(v1.begin(), v1.end());
+		reverse(v2.begin(), v2.end());
+		return std::lexicographical_compare(v1.begin(), v1.end(),
+					 v2.begin(), v2.end());
 	}
 };
 
 void test()
+{
+	string str;
+	string res;
+	int sum = 0;
+	map<string, int> gplMap;
+
+	for (int i = 0; GPL_2_text[i] != NULL; i++){
+		str = string(GPL_2_text[i]);
+		//it = gplMap.contains(str);
+		auto it = gplMap.find(str);
+
+		if (it != gplMap.end()){
+
+			it->second++;
+		} else {
+			gplMap.insert(pair<string,int>(str, 1));
+		}
+	}
+
+	for (auto it = gplMap.begin(); it != gplMap.end(); ++it) {
+		sum += it->second;
+		res += " " + it->first;
+	}
+	cout << "Total number of words :" << sum << endl;
+	cout << res << endl;
+}
+
+/* This function will use the CompareString */
+void testCustom()
 {
 	string str;
 	string res;
@@ -192,6 +223,11 @@ int main (void)
 	map_bench::test();
 	t = t.stop();
 	cout << "map test : " << t << endl;
+	t = t.start();
+	map_bench::testCustom();
+	t = t.stop();
+	cout << "map test with custom, CompareString: " << t << endl;
+
 
 	return 0;
 }
