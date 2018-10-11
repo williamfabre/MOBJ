@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/tchi/work/MOBJ/ctme3/src/GPL_2_text.h
+/users/enseig/fabre/Desktop/MOBJ/ctme3/src/GPL_2_text.h
 
-/home/tchi/work/MOBJ/ctme3/src/Main.cpp
+/users/enseig/fabre/Desktop/MOBJ/ctme3/src/Main.cpp
 iostream
 -
 cstdlib
@@ -22,11 +22,11 @@ list
 algorithm
 -
 Timer.h
-/home/tchi/work/MOBJ/ctme3/src/Timer.h
+/users/enseig/fabre/Desktop/MOBJ/ctme3/src/Timer.h
 GPL_2_text.h
-/home/tchi/work/MOBJ/ctme3/src/GPL_2_text.h
+/users/enseig/fabre/Desktop/MOBJ/ctme3/src/GPL_2_text.h
 
-/home/tchi/work/MOBJ/ctme3/src/Timer.h
+/users/enseig/fabre/Desktop/MOBJ/ctme3/src/Timer.h
 ctime
 -
 iostream

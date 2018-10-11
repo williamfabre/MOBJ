@@ -15,8 +15,13 @@ void show(T gpl)
 	cout << "size() : " << gpl.size() << endl;
 	cout << "max_size() : " << gpl.max_size() << endl;
 	//cout << "capacity() : " << gpl.capacity() << endl;
+	
+	typename T::const_iterator p;
 
-	for (string s : gpl) { cout << s << " "; }
+	for (p = gpl.begin(); p != gpl.end(); ++p){
+	// for (string s : gpl){
+		cout << *p << " ";
+	}
 	cout << endl;
 }
 
@@ -129,7 +134,7 @@ void test()
 	for (int i = 0; GPL_2_text[i] != NULL; i++){
 		str = string(GPL_2_text[i]);
 		//it = gplMap.contains(str);
-		auto it = gplMap.find(str);
+		map<string, int>::iterator it = gplMap.find(str);
 
 		if (it != gplMap.end()){
 
@@ -139,7 +144,7 @@ void test()
 		}
 	}
 
-	for (auto it = gplMap.begin(); it != gplMap.end(); ++it) {
+	for (map<string, int>::iterator it = gplMap.begin(); it != gplMap.end(); ++it) {
 		sum += it->second;
 		res += " " + it->first;
 	}
@@ -158,7 +163,7 @@ void testCustom()
 	for (int i = 0; GPL_2_text[i] != NULL; i++){
 		str = string(GPL_2_text[i]);
 		//it = gplMap.contains(str);
-		auto it = gplMap.find(str);
+		map<string, int>::iterator it = gplMap.find(str);
 
 		if (it != gplMap.end()){
 
@@ -168,7 +173,7 @@ void testCustom()
 		}
 	}
 
-	for (auto it = gplMap.begin(); it != gplMap.end(); ++it) {
+	for (map<string, int>::iterator it = gplMap.begin(); it != gplMap.end(); ++it) {
 		sum += it->second;
 		res += " " + it->first;
 	}

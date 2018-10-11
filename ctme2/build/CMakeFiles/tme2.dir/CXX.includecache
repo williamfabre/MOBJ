@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/users/enseig/fabre/MOBJ/ctme2/src/Box.cpp
+/users/enseig/fabre/MOBJ/ctme2/src/Box.h
+
+/users/enseig/fabre/MOBJ/ctme2/src/Main.cpp
 iostream
 -
 Box.h
-/users/enseig/fabre/MOBJ/ctme2/src/Box.h
-
 /users/enseig/fabre/MOBJ/ctme2/src/Box.h
 

@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/tchi/work/MOBJ/ctme1/src/cBox.c
+/users/enseig/fabre/MOBJ/ctme1/src/cBox.c
 malloc.h
 -
 stdio.h
@@ -14,9 +14,17 @@ stdio.h
 string.h
 -
 cBox.h
-/home/tchi/work/MOBJ/ctme1/src/cBox.h
+/users/enseig/fabre/MOBJ/ctme1/src/cBox.h
 
-/home/tchi/work/MOBJ/ctme1/src/cBox.h
+/users/enseig/fabre/MOBJ/ctme1/src/cBox.h
 stdio.h
 -
+
+/users/enseig/fabre/MOBJ/ctme1/src/cMain.c
+stdio.h
+-
+stdlib.h
+-
+cBox.h
+/users/enseig/fabre/MOBJ/ctme1/src/cBox.h
 

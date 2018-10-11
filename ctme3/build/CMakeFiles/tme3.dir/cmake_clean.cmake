@@ -1,10 +1,10 @@
-file(REMOVE_RECURSE
+FILE(REMOVE_RECURSE
   "CMakeFiles/tme3.dir/Main.cpp.o"
   "tme3.pdb"
   "tme3"
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang CXX)
-  include(CMakeFiles/tme3.dir/cmake_clean_${lang}.cmake OPTIONAL)
-endforeach()
+FOREACH(lang CXX)
+  INCLUDE(CMakeFiles/tme3.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)
