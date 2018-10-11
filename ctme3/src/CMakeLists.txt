@@ -7,7 +7,8 @@
  cmake_minimum_required(VERSION 2.8.0)
  project(TME3)
 
- set (CMAKE_CXX_FLAGS            "-Wall -g" CACHE STRING
+ # set (CMAKE_CXX_STANDARD 11)
+ set (CMAKE_CXX_FLAGS            "-std=c++0x -Wall -g" CACHE STRING
                                  "C++ Compiler Release options." FORCE)
  set (CMAKE_INSTALL_PREFIX       "../install" )
 

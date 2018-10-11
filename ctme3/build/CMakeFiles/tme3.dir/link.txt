@@ -1,1 +1,0 @@
-/usr/bin/c++  -Wall -g  -rdynamic CMakeFiles/tme3.dir/Main.cpp.o  -o tme3 

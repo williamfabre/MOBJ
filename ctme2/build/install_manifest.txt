@@ -1,2 +1,0 @@
-/users/enseig/fabre/MOBJ/ctme2/build/../install/bin/tme2
-/users/enseig/fabre/MOBJ/ctme2/build/../install/include/Box.h
