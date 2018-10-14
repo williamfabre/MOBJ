@@ -15,7 +15,6 @@ void show(T gpl)
 	cout << "size() : " << gpl.size() << endl;
 	cout << "max_size() : " << gpl.max_size() << endl;
 	//cout << "capacity() : " << gpl.capacity() << endl;
-	
 	typename T::const_iterator p;
 
 	for (p = gpl.begin(); p != gpl.end(); ++p){
@@ -112,9 +111,20 @@ void sortEachInsert()
 namespace map_bench
 {
 
+class CompareString2
+{
+public:
+	bool operator() (string v1, string v2)
+	{
+		//return !(std::lexicographical_compare(v1.begin(), v1.end(),
+					 //v2.begin(), v2.end()));
+		return (v1 > v2);
+	}
+};
+
+
 struct CompareString
 {
-
 	bool operator() (string v1, string v2)
 	{
 		reverse(v1.begin(), v1.end());
@@ -181,8 +191,37 @@ void testCustom()
 	cout << res << endl;
 }
 
+void testCustom2()
+{
+	string str;
+	string res;
+	int sum = 0;
+	map<string, int, CompareString2> gplMap;
+
+	for (int i = 0; GPL_2_text[i] != NULL; i++){
+		str = string(GPL_2_text[i]);
+		//it = gplMap.contains(str);
+		map<string, int>::iterator it = gplMap.find(str);
+
+		if (it != gplMap.end()){
+
+			it->second++;
+		} else {
+			gplMap.insert(pair<string,int>(str, 1));
+		}
+	}
+
+	for (map<string, int>::iterator it = gplMap.begin(); it != gplMap.end(); ++it) {
+		sum += it->second;
+		res += " " + it->first;
+	}
+	cout << "Total number of words :" << sum << endl;
+	cout << res << endl;
+}
+
 
 }
+
 
 int main (void)
 {
@@ -232,6 +271,12 @@ int main (void)
 	map_bench::testCustom();
 	t = t.stop();
 	cout << "map test with custom, CompareString: " << t << endl;
+	cout << endl;
+	t = t.start();
+	map_bench::testCustom2();
+	t = t.stop();
+	cout << "map test with custom, CompareString2: " << t << endl;
+
 
 
 	return 0;
