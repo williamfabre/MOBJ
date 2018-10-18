@@ -17,6 +17,10 @@ public:
 	enum Type {Internal=1, External=2};
 	enum Direction {In=1, Out=2, Inout=3, Tristate=4, Transcv=5, Unknown=6};
 
+
+
+	// Trois methodes statiques ajoutees a la classe Term pour convertir
+	// depuis/vers une chaine de caractere (string).
 	static std::string toString(Type);
 	static std::string toString(Direction);
 	static Direction toDirection(std::string);
@@ -30,24 +34,42 @@ private:
 	Node node_;
 
 public:
+	// Concrètement, le nouveau connecteur (Term) devra être ajouté à la liste,
+	// soit de la Cell, soit de l'Instance pour laquelle il vient d'être créé.
+	//
+	// Dans le cas d'un terminal d'Instance, il s'agit de dupliquer intégralement
+	// le Term du modèle dans l'instance. Il est proche (mais pas identique) 
+	// à un constructeur par copi
+
+	// CTOR Terminal appartenant a une Cell.
 	Term (Cell* ce, const std::string& name, Direction d);
+	// CTOR Terminal appartenant a une Instance.
 	Term (Instance* in, const Term* modelTerm);
-	~Term ();
+
+	// DTOR
+	// Inversement, le destructeur devra le retirer de son propriétaire.
+		~Term ();
 
 	// getters
 	inline bool isInternal() const;
 	inline bool isExternal() const;
 	inline const std::string& getName() const;
+	// getNode(): elle renvoie un pointeur sur l'attribut node_. Cela
+	// permettra d'accéder au modificateur Node::setId() (au TME6).
 	inline Node* getNode();
 	inline Net* getNet() const;
 	inline Cell* getCell() const;
 	Cell* getOwnerCell() const; // TODO
 	inline Instance* getInstance() const;
 	inline Direction getDirection() const;
-	inline Point getPosition() const; // TODO
+	inline Peint getPosition() const; // TODO
 	inline Type getType() const;
 
 	// setters
+	
+	// La connexion d'un Term à un Net déterminé, c'est à dire la création 
+	// des arcs du graphe, est répartie entre les méthodes Term::setNet(Net*)
+	// et Net::add(Node*).
 	void setNet(Net*);
 	void setNet(const std::string&);
 	inline void setDirection(Direction d);

@@ -41,7 +41,9 @@ Term::Direction Term::toDirection(std::string str)
 
 Cell* Term::getOwnerCell() const
 {
-	return NULL;
+	(type_ == External) ? static_cast<Cell*>(owner_)
+		: static_cast<Instance*>(owner_);
+
 }
 
 void Term::setNet(Net* net)
