@@ -55,15 +55,16 @@ public:
 	void setPosition(int x, int y);
 };
 
-	inline bool Term::isInternal() const {return type_ == Internal;}
-	inline bool Term::isExternal() const {return type_ == External;}
-	inline const std::string& Term::getName() const {return name_;}
-	inline Node* Term::getNode() {return &node_;}
-	inline Net* Term::getNet() const {return net_;}
-	inline Term::Direction Term::getDirection() const {return direction_;}
-	inline Term::Type Term::getType() const {return type_;}
+// Implementation of inline functions
+inline bool Term::isInternal() const {return type_ == Internal;}
+inline bool Term::isExternal() const {return type_ == External;}
+inline const std::string& Term::getName() const {return name_;}
+inline Node* Term::getNode() {return &node_;}
+inline Net* Term::getNet() const {return net_;}
+inline Term::Direction Term::getDirection() const {return direction_;}
+inline Term::Type Term::getType() const {return type_;}
 
-	inline void Term::setDirection(Direction d) {direction_ = d;}
+inline void Term::setDirection(Direction d) {direction_ = d;}
 
 
 }  // Netlist namespace.

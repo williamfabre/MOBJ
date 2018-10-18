@@ -5,6 +5,8 @@
 namespace Netlist {
 
 Net::Net(Cell* cell, const std::string& str, Term::Type t)
+//owner_(c), name_(s), id_(owner_->newNetId()), type_(t), nodes_()
+
 {
 
 }

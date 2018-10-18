@@ -7,15 +7,16 @@ namespace Netlist {
 using namespace std;
 
 Term::Term(Cell* ce, const std::string& name, Term::Direction d) :
-node_(this, 0)
+owner_((void*)ce), name_(name), direction_(d), net_(NULL), node_(this, 0)
 {
-
+	// TODO
 }
 
 Term::Term(Instance* in, const Term* modelTerm) :
-node_(this, 0)
+owner_((void*)in), name_(modelTerm->getName()),
+	direction_(modelTerm->getDirection()), net_(NULL), node_(this, 0)
 {
-
+	// TODO
 }
 
 Term::~Term()

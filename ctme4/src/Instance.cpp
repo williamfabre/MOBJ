@@ -4,7 +4,8 @@
 
 namespace Netlist {
 
-Instance::Instance(Cell* owner, Cell* model, const std::string& str)
+Instance::Instance(Cell* owner, Cell* model, const std::string& str) :
+	owner_(owner), masterCell_(model), name_(str), terms_(), position_()
 {
 
 }
