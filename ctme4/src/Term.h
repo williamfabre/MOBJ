@@ -37,18 +37,21 @@ public:
 	// Concrètement, le nouveau connecteur (Term) devra être ajouté à la liste,
 	// soit de la Cell, soit de l'Instance pour laquelle il vient d'être créé.
 	//
-	// Dans le cas d'un terminal d'Instance, il s'agit de dupliquer intégralement
-	// le Term du modèle dans l'instance. Il est proche (mais pas identique) 
-	// à un constructeur par copi
-
-	// CTOR Terminal appartenant a une Cell.
+	// Dans le cas d'un terminal d'Instance, il s'agit de
+	// dupliquer intégralement.
+	//
+	// le Term du modèle dans l'instance. Il est proche (mais pas identique)
+	// à un constructeur par copi.
+	// CTOR
 	Term (Cell* ce, const std::string& name, Direction d);
-	// CTOR Terminal appartenant a une Instance.
 	Term (Instance* in, const Term* modelTerm);
 
 	// DTOR
 	// Inversement, le destructeur devra le retirer de son propriétaire.
-		~Term ();
+	// Lorsqu'un Term est détruit, si il est accroché à un Net,
+	// il doit s'en déconnecter dans son destructeur.
+
+	~Term ();
 
 	// getters
 	inline bool isInternal() const;
@@ -59,17 +62,31 @@ public:
 	inline Node* getNode();
 	inline Net* getNet() const;
 	inline Cell* getCell() const;
-	Cell* getOwnerCell() const; // TODO
+		// ::getOwnerCell() renvoie la Cell dans laquelle l'objet se trouve,
+	// ce qui, dans le cas d'un Term d'instance est la Cell possédant celle-ci.
+	Cell* getOwnerCell() const;
+	// Dit encore autrement, les méthodes ::getCell() et ::getInstance()
+	// renvoient l'objet auquel le Term appartient. Donc, dans le cas d'un
+	// Term appartenant à une instance ::getCell() renverra NULL. En revanche,
 	inline Instance* getInstance() const;
 	inline Direction getDirection() const;
-	inline Peint getPosition() const; // TODO
+	inline Point getPosition() const; // TODO
 	inline Type getType() const;
 
 	// setters
-	
-	// La connexion d'un Term à un Net déterminé, c'est à dire la création 
+
+	// La connexion d'un Term à un Net déterminé, c'est à dire la création
 	// des arcs du graphe, est répartie entre les méthodes Term::setNet(Net*)
 	// et Net::add(Node*).
+	//
+	// Méthode setNet(): C'est dans cette méthode que le chaînage entre Net,
+	// Term et Node sera réalisé (en appelant les méthodes appropriées du Net).
+	//
+	// Si un pointeur NULL est passé en argument, cela signifie que le Term
+	// doit être déconnecté (s'il était relié à un Net).
+	//
+	// Le Net peut être spécifié directement par un pointeur ou bien par
+	// son nom, c'est la deuxième surcharge de setNet().
 	void setNet(Net*);
 	void setNet(const std::string&);
 	inline void setDirection(Direction d);
@@ -88,12 +105,14 @@ inline Node* Term::getNode() {return &node_;}
 
 inline Net* Term::getNet() const {return net_;}
 
-inline Cell* Term::getCell() const{
+inline Cell* Term::getCell() const
+{
 	return (type_ == External) ? static_cast<Cell*>(owner_)
 		: NULL;
 }
 
-inline Instance* Term::getInstance() const{
+inline Instance* Term::getInstance() const
+{
 	return (type_ == Internal) ? static_cast<Instance*>(owner_)
 		: NULL;
 }

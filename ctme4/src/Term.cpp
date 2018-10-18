@@ -23,7 +23,6 @@ Term::~Term()
 {
 
 }
-/////////////////////////////
 std::string Term::toString(Term::Type typ)
 {
 	return "Internal";
@@ -41,8 +40,10 @@ Term::Direction Term::toDirection(std::string str)
 
 Cell* Term::getOwnerCell() const
 {
-	(type_ == External) ? static_cast<Cell*>(owner_)
-		: static_cast<Instance*>(owner_);
+	if (type_ == External)
+		return static_cast<Cell*>(owner_);
+
+	return static_cast<Instance*>(owner_)->getCell();
 
 }
 

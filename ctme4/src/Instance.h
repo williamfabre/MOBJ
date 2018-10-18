@@ -22,7 +22,16 @@ private:
 	Point position_;
 public:
 
+
+	// Constructeurs & Destructeur. Ils devront gérer l'ajout et
+	// le retrait de l'Instance au niveau de la Cell. Le constructeur
+	// devra dupliquer la liste des terminaux de la Cell model
+	// qu'il instancie. A l'inverse, le destructeur détruit ses terminaux.
 	Instance(Cell* owner, Cell* model, const std::string&);
+
+
+	// Une Instance possède ses terminaux, elle doit donc les
+	// détruire dans son destructeur.
 	~Instance();
 
 	// getters
@@ -34,6 +43,9 @@ public:
 	Point getPosition() const;
 
 	//setters
+
+	// Modificateurs. connect() va associer le Net
+	// au terminal de nom name (s'il existe).
 	bool connect( const std::string& name, Net* net);
 	void add(Term*);
 	void remove(Term*);
