@@ -25,7 +25,7 @@ Cell* Net::getCell() const
 
 const std::string& Net::getName() const
 {
-	return NULL;
+	return name_;
 }
 
 unsigned int Net::getId() const
@@ -35,7 +35,7 @@ unsigned int Net::getId() const
 
 Term::Type Net::getType() const
 {
-	return Term::Type::External;
+	return type_;
 }
 
 const std::vector<Node*>& Net::getNodes() const

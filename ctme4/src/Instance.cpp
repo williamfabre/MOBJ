@@ -17,7 +17,7 @@ Instance::~Instance()
 // getters
 const std::string& Instance::getName() const
 {
-	return NULL;
+	return name_;
 }
 Cell* Instance::getMasterCell() const
 {

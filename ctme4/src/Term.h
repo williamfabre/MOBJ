@@ -40,8 +40,8 @@ public:
 	inline const std::string& getName() const;
 	inline Node* getNode();
 	inline Net* getNet() const;
-	inline Cell* getCell() const; // TODO
-	Cell* getOwnerCell() const;
+	inline Cell* getCell() const;
+	Cell* getOwnerCell() const; // TODO
 	inline Instance* getInstance() const;
 	inline Direction getDirection() const;
 	inline Point getPosition() const; // TODO
@@ -57,11 +57,27 @@ public:
 
 // Implementation of inline functions
 inline bool Term::isInternal() const {return type_ == Internal;}
+
 inline bool Term::isExternal() const {return type_ == External;}
+
 inline const std::string& Term::getName() const {return name_;}
+
 inline Node* Term::getNode() {return &node_;}
+
 inline Net* Term::getNet() const {return net_;}
+
+inline Cell* Term::getCell() const{
+	return (type_ == External) ? static_cast<Cell*>(owner_)
+		: NULL;
+}
+
+inline Instance* Term::getInstance() const{
+	return (type_ == Internal) ? static_cast<Instance*>(owner_)
+		: NULL;
+}
+
 inline Term::Direction Term::getDirection() const {return direction_;}
+
 inline Term::Type Term::getType() const {return type_;}
 
 inline void Term::setDirection(Direction d) {direction_ = d;}

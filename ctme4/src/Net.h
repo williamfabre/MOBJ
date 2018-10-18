@@ -33,7 +33,7 @@ public:
 	size_t getFreeNodeId() const;
 
 	//setters
-	void add(Node* node);
+	void add(Node* node); // ajouter un node connecter a un autre truc
 	bool remove(Node* node);
 
 };

@@ -23,20 +23,20 @@ Term::~Term()
 {
 
 }
-
+/////////////////////////////
 std::string Term::toString(Term::Type typ)
 {
-	return NULL;
+	return "Internal";
 }
 
 std::string Term::toString(Term::Direction dir)
 {
-	return NULL;
+	return "Unknown";
 }
 
 Term::Direction Term::toDirection(std::string str)
 {
-	return Term::Direction::Unknown;
+	return Unknown;
 }
 
 Cell* Term::getOwnerCell() const
@@ -46,7 +46,7 @@ Cell* Term::getOwnerCell() const
 
 void Term::setNet(Net* net)
 {
-
+	net_ = net;
 }
 
 void Term::setNet(const std::string& str)
