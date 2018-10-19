@@ -1,5 +1,3 @@
-// -*- explicit-buffer-name: "Main.cpp<M1-MOBJ/4-5>" -*-
-
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -59,6 +57,43 @@ int main ( int argc, char* argv[] )
 	ha_and2->connect( "i1", ha_b    );
 	ha_and2->connect(  "q", ha_cout );
 	halfadder->toXml( cout );
+
+	cout << "\nConstruction du modele <fulladder>." << endl;
+	Cell* fulladder = new Cell ( "fulladder" );
+	new Term( fulladder, "cin" , Term::In  );
+	new Term( fulladder, "a"   , Term::In  );
+	new Term( fulladder, "b"   , Term::In  );
+	new Term( fulladder, "sout", Term::Out );
+	new Term( fulladder, "cout", Term::Out );
+	Net*      fa_cin     = new Net      ( fulladder, "cin" ,    Term::External );
+	Net*      fa_a       = new Net      ( fulladder, "a"   ,    Term::External );
+	Net*      fa_b       = new Net      ( fulladder, "b"   ,    Term::External );
+	Net*      fa_sout    = new Net      ( fulladder, "sout",    Term::External );
+	Net*      fa_cout    = new Net      ( fulladder, "cout",    Term::External );
+	Net*      fa_sout_1  = new Net      ( fulladder, "sout_1",  Term::Internal);
+	Net*      fa_carry_1 = new Net      ( fulladder, "carry_1", Term::Internal);
+	Net*      fa_carry_2 = new Net      ( fulladder, "carry_2", Term::Internal);
+	//cout << "TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST" << endl;
+	Instance* fa_halfadder_1 = new Instance ( fulladder, Cell::find("halfadder"), "halfadder_1" );
+	Instance* fa_halfadder_2 = new Instance ( fulladder, Cell::find("halfadder"), "halfadder_2" );
+	Instance* fa_or2_1 =       new Instance ( fulladder, Cell::find("or2"), "or2_1" );
+	fulladder->connect( "cin" , fa_cin  );
+	fulladder->connect( "a"   , fa_a    );
+	fulladder->connect( "b"   , fa_b    );
+	fulladder->connect( "sout", fa_sout );
+	fulladder->connect( "cout", fa_cout );
+	fa_halfadder_1->connect( "a"   , fa_a       );
+	fa_halfadder_1->connect( "b"   , fa_b       );
+	fa_halfadder_1->connect( "sout", fa_sout_1  );
+	fa_halfadder_1->connect( "cout", fa_carry_1 );
+	fa_halfadder_2->connect( "a"   , fa_cin     );
+	fa_halfadder_2->connect( "b"   , fa_sout_1  );
+	fa_halfadder_2->connect( "sout", fa_sout    );
+	fa_halfadder_2->connect( "cout", fa_carry_2 );
+	fa_or2_1->connect( "i0"   , fa_carry_2 );
+	fa_or2_1->connect( "i1"   , fa_carry_1 );
+	fa_or2_1->connect( "q"    , fa_cout );
+	fulladder->toXml( cout );
 
 	return 0;
 }
