@@ -109,11 +109,13 @@ void Instance::add(Term* t)
 
 void Instance::remove(Term* t)
 {
-	vector<Term*>::const_iterator it = terms_.begin();
-	vector<Term*>::const_iterator end = terms_.end();
+	vector<Term*>::iterator it = terms_.begin();
+	vector<Term*>::iterator end = terms_.end();
 
 	for ( ; it != end; it++) {
 		if ((*it) == t)
+			// en C++98 elle prend un iterator et pas
+			// un const
 			terms_.erase(it);
 	}
 }
