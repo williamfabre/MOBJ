@@ -167,12 +167,37 @@ unsigned int Cell::newNetId ()
 
 
 // Cell::toXml() à écrire ici...
-
 void Cell::toXml(ostream& stream)
 {
+	vector<Term*>::const_iterator itt;
+	vector<Instance*>::const_iterator iti;
+
+	// XML file
+	stream << "<?xml version=\"1.0\"?>" << endl;
+
+	// CELL START
 	stream << indent++ << "<cell name=\"" << name_ << "\">\n";
-	stream << indent   << "<Contents_of_the_Cell/>\n";
+
+	//TERM START
+	stream << indent++ << "<terms>" << std::endl;
+	for (itt = terms_.begin(); itt != terms_.end(); itt++) {
+		(*itt)->toXml(stream);
+	}
+	stream << --indent << "</terms>" << std::endl;
+	//TERM END
+
+	//INSTANCE START
+	stream << indent++ << "<instances>" << std::endl;
+	for (iti = instances_.begin(); iti != instances_.end(); iti++)
+	{
+		(*iti)->toXml(stream);
+	}
+	stream << --indent << "</instances>" << std::endl;
+
+
 	stream << --indent << "</cell>\n";
+	// CELL END
+
 }
 
 

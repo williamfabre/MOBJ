@@ -17,8 +17,6 @@ public:
 	enum Type {Internal=1, External=2};
 	enum Direction {In=1, Out=2, Inout=3, Tristate=4, Transcv=5, Unknown=6};
 
-
-
 	// Trois methodes statiques ajoutees a la classe Term pour convertir
 	// depuis/vers une chaine de caractere (string).
 	static std::string toString(Type);
@@ -90,6 +88,10 @@ public:
 	inline void setDirection(Direction d);
 	void setPosition(const Point&);
 	void setPosition(int x, int y);
+
+
+	// ostream methode
+	void toXml(std::ostream& o);
 };
 
 // Implementation of inline functions

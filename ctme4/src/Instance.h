@@ -51,6 +51,9 @@ public:
 	void remove(Term*);
 	void setPosition(const Point&);
 	void setPosition(int x, int y);
+
+
+	void toXml(std::ostream& o);
 };
 
 }
