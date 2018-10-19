@@ -20,6 +20,9 @@ public:
 	// id du node
 	static const size_t noid;
 public:
+	//  A la création d'un Term, l'id_ de l'objet niché node_ est initialisé à
+	//  Net::noid signifiant qu'il n'est relié à aucun Net.
+
 	Node(Term*, size_t id=noid);
 	~Node();
 	inline Point getPosition() const;
@@ -29,6 +32,9 @@ public:
 	Net* getNet() const;
 	inline Term* getTerm() const;
 	inline void setId( size_t );
+
+	// toXml
+	void toXml(std::ostream& o);
 private:
 	Node(const Node&);
 	Node& operator=   ( const Node& );
