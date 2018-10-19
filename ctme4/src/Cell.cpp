@@ -1,13 +1,11 @@
 #include  <cstdlib>
+
 #include  "Cell.h"
 #include  "Term.h"
 #include  "Net.h"
 #include  "Instance.h"
 
 namespace Netlist {
-
-using namespace std;
-
 
 vector<Cell*>  Cell::cells_;
 
@@ -50,7 +48,7 @@ Cell::~Cell()
 }
 
 
-Instance* Cell::getInstance (const std::string& name) const
+Instance* Cell::getInstance (const string& name) const
 {
 	for (vector<Instance*>::const_iterator iinst=instances_.begin();
 	     iinst != instances_.end() ; ++iinst) {
@@ -60,7 +58,7 @@ Instance* Cell::getInstance (const std::string& name) const
 }
 
 
-Term* Cell::getTerm (const std::string& name) const
+Term* Cell::getTerm (const string& name) const
 {
 	for ( vector<Term*>::const_iterator iterm=terms_.begin();
 	      iterm != terms_.end() ; ++iterm ) {
@@ -70,7 +68,7 @@ Term* Cell::getTerm (const std::string& name) const
 }
 
 
-Net* Cell::getNet (const std::string& name) const
+Net* Cell::getNet (const string& name) const
 {
 	for (vector<Net*>::const_iterator inet=nets_.begin();
 	     inet != nets_.end() ; ++inet) {
@@ -198,7 +196,7 @@ void Cell::toXml(ostream& stream)
 	stream << indent++ << "<nets>" << endl;
 	for(itn = nets_.begin(); itn != nets_.end(); itn++)
 		(*itn)->toXml(stream);
-	stream << --indent << "</nets>" << std::endl;
+	stream << --indent << "</nets>" << endl;
 	// NED DEAD
 
 	stream << --indent << "</cell>\n";

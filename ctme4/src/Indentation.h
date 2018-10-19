@@ -3,8 +3,10 @@
 
 #include <string>
 #include <iostream>
+using namespace std;
 
 namespace Netlist {
+
 
 class Indentation {
 public:
@@ -15,9 +17,9 @@ public:
 	Indentation  operator--(int);
 private:
 	size_t _tabulationSize;
-	std::string _indentation;
+	string _indentation;
 
-	friend std::ostream& operator<< ( std::ostream&, const Indentation& );
+	friend ostream& operator<< ( ostream&, const Indentation& );
 };
 
 extern Indentation indent;

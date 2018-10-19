@@ -3,8 +3,9 @@
 
 #include <string>
 #include <vector>
+using namespace std;
+
 #include "Point.h"
-//#include "Cell.h"
 
 namespace Netlist
 {
@@ -17,8 +18,8 @@ class Instance{
 private:
 	Cell* owner_;
 	Cell* masterCell_;
-	std::string name_;
-	std::vector<Term*> terms_;
+	string name_;
+	vector<Term*> terms_;
 	Point position_;
 public:
 
@@ -27,7 +28,7 @@ public:
 	// le retrait de l'Instance au niveau de la Cell. Le constructeur
 	// devra dupliquer la liste des terminaux de la Cell model
 	// qu'il instancie. A l'inverse, le destructeur détruit ses terminaux.
-	Instance(Cell* owner, Cell* model, const std::string&);
+	Instance(Cell* owner, Cell* model, const string&);
 
 
 	// Une Instance possède ses terminaux, elle doit donc les
@@ -35,25 +36,25 @@ public:
 	~Instance();
 
 	// getters
-	const std::string& getName() const;
+	const string& getName() const;
 	Cell* getMasterCell() const;
 	Cell* getCell() const;
-	const std::vector<Term*>& getTerms() const;
-	Term* getTerm(const std::string&) const;
+	const vector<Term*>& getTerms() const;
+	Term* getTerm(const string&) const;
 	Point getPosition() const;
 
 	//setters
 
 	// Modificateurs. connect() va associer le Net
 	// au terminal de nom name (s'il existe).
-	bool connect( const std::string& name, Net* net);
+	bool connect( const string& name, Net* net);
 	void add(Term*);
 	void remove(Term*);
 	void setPosition(const Point&);
 	void setPosition(int x, int y);
 
 
-	void toXml(std::ostream& o);
+	void toXml(ostream& o);
 };
 
 }

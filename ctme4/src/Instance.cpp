@@ -1,10 +1,10 @@
 #include <vector>
+
 #include "Instance.h"
 #include "Cell.h"
 #include "Term.h"
 
 namespace Netlist {
-using namespace std;
 
 Instance::Instance(Cell* owner, Cell* model, const string& str) :
 	owner_(owner),
@@ -23,6 +23,7 @@ Instance::Instance(Cell* owner, Cell* model, const string& str) :
 	owner_->add(this);
 }
 
+
 Instance::~Instance()
 {
 	vector<Term*>::const_iterator it = terms_.begin();
@@ -35,12 +36,12 @@ Instance::~Instance()
 	owner_->remove(this);
 }
 
+
 // getters
 const string& Instance::getName() const
 {
 	return name_;
 }
-
 
 
 Cell* Instance::getMasterCell() const
@@ -49,22 +50,28 @@ Cell* Instance::getMasterCell() const
 }
 
 
-
 Cell* Instance::getCell() const
 {
 	return owner_;
 }
 
 
-const std::vector<Term*>& Instance::getTerms() const
+const vector<Term*>& Instance::getTerms() const
 {
 	return terms_;
 }
 
 
-Term* Instance::getTerm(const std::string&) const
+Term* Instance::getTerm(const string& name) const
 {
-	return *(terms_.begin());
+	vector<Term*>::const_iterator it = terms_.begin();
+	vector<Term*>::const_iterator end = terms_.end();
+
+	for (; it != end; it++){
+		if ((*it)->getName() ==  name)
+			return *it;
+	}
+	return NULL;
 }
 
 
@@ -75,16 +82,16 @@ Point Instance::getPosition() const
 
 
 //setters
-bool Instance::connect( const std::string& name, Net* net)
+bool Instance::connect( const string& name, Net* net)
 {
 	// TODO check if it works
 	Term* t = NULL;
 	vector<Term*>::const_iterator it = terms_.begin();
 	vector<Term*>::const_iterator end = terms_.end();
 
-	for ( ; it != end; it++) {
-	  if ((*it)->getName() == name)
-		  t = *it;
+	for (; it != end; it++) {
+		if ((*it)->getName() == name)
+			t = *it;
 	}
 
 	if (t == NULL) return false;
@@ -106,8 +113,8 @@ void Instance::remove(Term* t)
 	vector<Term*>::const_iterator end = terms_.end();
 
 	for ( ; it != end; it++) {
-	  if ((*it) == t)
-		terms_.erase(it);
+		if ((*it) == t)
+			terms_.erase(it);
 	}
 }
 

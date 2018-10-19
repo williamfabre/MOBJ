@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "Indentation.h"
 #include "Term.h"
 #include "Cell.h"
@@ -7,9 +8,8 @@
 
 namespace Netlist {
 
-using namespace std;
 
-Term::Term(Cell* ce, const std::string& name, Term::Direction d) :
+Term::Term(Cell* ce, const string& name, Term::Direction d) :
 	owner_((void*)ce),
 	name_(name),
 	direction_(d),
@@ -43,19 +43,20 @@ Term::~Term()
 
 	// Lorsqu'un Term est détruit, si il est accroché à un Net,
 	// il doit s'en déconnecter dans son destructeur.
-	// TODO
+	if ((net_))
+		net_ = NULL;
 }
 
-std::string Term::toString(Term::Type type)
+string Term::toString(Term::Type type)
 {
 	if (type == Term::Internal)
 		return "Internal";
 	return "External";
 }
 
-std::string Term::toString(Term::Direction direction)
+string Term::toString(Term::Direction direction)
 {
-	std::string dir;
+	string dir;
 
 	switch (direction) {
 		case Term::In :
@@ -79,7 +80,7 @@ std::string Term::toString(Term::Direction direction)
 	return dir;
 }
 
-Term::Direction Term::toDirection(std::string stri)
+Term::Direction Term::toDirection(string stri)
 {
 	Term::Direction dir;
 	bool changed = false;
@@ -117,7 +118,7 @@ void Term::setNet(Net* net)
 }
 
 
-void Term::setNet(const std::string& str)
+void Term::setNet(const string& str)
 {
 	Term::setNet(static_cast<Cell*>(owner_)->getNet(str));
 }
@@ -134,14 +135,13 @@ void Term::setPosition(int x, int y)
 	node_.setPosition(x, y);
 }
 
-void Term::toXml(std::ostream& o)
+void Term::toXml(ostream& o)
 {
-	//std::string dir;
+	//string dir;
 	o << indent << "<term name=\"" << name_ << "\"";
 	o << " direction=\"" << Term::toString(direction_) << "\"/>";
-	o << std::endl;
+	o << endl;
 }
-
 
 
 }

@@ -2,6 +2,8 @@
 #define  NETLIST_TERM_H_
 
 #include <string>
+using namespace std;
+
 #include "Node.h"
 
 namespace Netlist {
@@ -19,13 +21,13 @@ public:
 
 	// Trois methodes statiques ajoutees a la classe Term pour convertir
 	// depuis/vers une chaine de caractere (string).
-	static std::string toString(Type);
-	static std::string toString(Direction);
-	static Direction toDirection(std::string);
+	static string toString(Type);
+	static string toString(Direction);
+	static Direction toDirection(string);
 
 private:
 	void* owner_;
-	std::string name_;
+	string name_;
 	Direction direction_;
 	Type type_;
 	Net* net_;
@@ -39,7 +41,7 @@ public:
 	// dupliquer intégralement. le Term du modèle dans l'instance.
 	// Il est proche (mais pas identique) à un constructeur par copi.
 	// CTOR
-	Term (Cell* ce, const std::string& name, Direction d);
+	Term (Cell* ce, const string& name, Direction d);
 	Term (Instance* in, const Term* modelTerm);
 
 	// DTOR
@@ -52,7 +54,7 @@ public:
 	// getters
 	inline bool isInternal() const;
 	inline bool isExternal() const;
-	inline const std::string& getName() const;
+	inline const string& getName() const;
 	// getNode(): elle renvoie un pointeur sur l'attribut node_. Cela
 	// permettra d'accéder au modificateur Node::setId() (au TME6).
 	inline Node* getNode();
@@ -84,14 +86,14 @@ public:
 	// Le Net peut être spécifié directement par un pointeur ou bien par
 	// son nom, c'est la deuxième surcharge de setNet().
 	void setNet(Net*);
-	void setNet(const std::string&);
+	void setNet(const string&);
 	inline void setDirection(Direction d);
 	void setPosition(const Point&);
 	void setPosition(int x, int y);
 
 
 	// ostream methode
-	void toXml(std::ostream& o);
+	void toXml(ostream& o);
 };
 
 // Implementation of inline functions
@@ -100,7 +102,7 @@ inline bool Term::isInternal() const {return type_ == Internal;}
 
 inline bool Term::isExternal() const {return type_ == External;}
 
-inline const std::string& Term::getName() const {return name_;}
+inline const string& Term::getName() const {return name_;}
 
 inline Node* Term::getNode() {return &node_;}
 

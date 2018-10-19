@@ -1,9 +1,7 @@
 #include "Indentation.h"
 
-
 namespace Netlist {
 
-using namespace std;
 
 Indentation  indent;
 
