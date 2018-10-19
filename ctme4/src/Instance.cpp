@@ -78,7 +78,7 @@ Point Instance::getPosition() const
 bool Instance::connect( const std::string& name, Net* net)
 {
 	// TODO check if it works
-	Term* t;
+	Term* t = NULL;
 	vector<Term*>::const_iterator it = terms_.begin();
 	vector<Term*>::const_iterator end = terms_.end();
 
@@ -87,7 +87,7 @@ bool Instance::connect( const std::string& name, Net* net)
 		  t = *it;
 	}
 
-	if (it == end) return false;
+	if (t == NULL) return false;
 
 	t->setNet(net);
 	return true;
@@ -128,8 +128,8 @@ void Instance::toXml(ostream& o)
 {
 	o << indent << "<instance name=\"" << name_ << "\"";
 	o << " mastercell=\"" << masterCell_->getName() << "\"";
-	o << " x=\"" << position_.getX();
-	o << " y=\"" << position_.getY();
+	o << " x=\"" << position_.getX() << "\"";
+	o << " y=\"" << position_.getY() << "\"";
 	o << "/>" << endl;
 }
 

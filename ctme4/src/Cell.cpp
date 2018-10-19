@@ -171,6 +171,8 @@ void Cell::toXml(ostream& stream)
 {
 	vector<Term*>::const_iterator itt;
 	vector<Instance*>::const_iterator iti;
+	vector<Net*>::const_iterator itn;
+
 
 	// XML file
 	stream << "<?xml version=\"1.0\"?>" << endl;
@@ -178,22 +180,26 @@ void Cell::toXml(ostream& stream)
 	// CELL START
 	stream << indent++ << "<cell name=\"" << name_ << "\">\n";
 
-	//TERM START
-	stream << indent++ << "<terms>" << std::endl;
-	for (itt = terms_.begin(); itt != terms_.end(); itt++) {
+	// TERM START
+	stream << indent++ << "<terms>" << endl;
+	for (itt = terms_.begin(); itt != terms_.end(); itt++)
 		(*itt)->toXml(stream);
-	}
-	stream << --indent << "</terms>" << std::endl;
-	//TERM END
+	stream << --indent << "</terms>" << endl;
+	// TERM END
 
-	//INSTANCE START
-	stream << indent++ << "<instances>" << std::endl;
+	// INSTANCE START
+	stream << indent++ << "<instances>" << endl;
 	for (iti = instances_.begin(); iti != instances_.end(); iti++)
-	{
 		(*iti)->toXml(stream);
-	}
-	stream << --indent << "</instances>" << std::endl;
+	stream << --indent << "</instances>" << endl;
+	// INSTANCE END
 
+	// NED STARK
+	stream << indent++ << "<nets>" << endl;
+	for(itn = nets_.begin(); itn != nets_.end(); itn++)
+		(*itn)->toXml(stream);
+	stream << --indent << "</nets>" << std::endl;
+	// NED DEAD
 
 	stream << --indent << "</cell>\n";
 	// CELL END

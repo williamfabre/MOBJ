@@ -16,7 +16,8 @@ private:
 
 	Cell* owner_;
 	std::string name_;
-	// Ces numéros sont gérés au niveau de la Cell.
+	// Ces numéros sont gérés au niveau de la Cell. grace a
+	// newNetId();
 	unsigned int id_;
 	Term::Type type_;
 	std::vector<Node*> nodes_;
@@ -64,6 +65,10 @@ public:
 	void add(Node* node);
 
 	bool remove(Node* node);
+
+
+	// to xml
+	void toXml(std::ostream& o);
 };
 
 }

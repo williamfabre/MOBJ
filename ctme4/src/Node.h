@@ -32,6 +32,9 @@ public:
 	Net* getNet() const;
 	inline Term* getTerm() const;
 	inline void setId( size_t );
+
+	// toXml
+	void toXml(std::ostream& o);
 private:
 	Node(const Node&);
 	Node& operator=   ( const Node& );
