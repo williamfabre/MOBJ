@@ -38,10 +38,8 @@ public:
 	// soit de la Cell, soit de l'Instance pour laquelle il vient d'être créé.
 	//
 	// Dans le cas d'un terminal d'Instance, il s'agit de
-	// dupliquer intégralement.
-	//
-	// le Term du modèle dans l'instance. Il est proche (mais pas identique)
-	// à un constructeur par copi.
+	// dupliquer intégralement. le Term du modèle dans l'instance.
+	// Il est proche (mais pas identique) à un constructeur par copi.
 	// CTOR
 	Term (Cell* ce, const std::string& name, Direction d);
 	Term (Instance* in, const Term* modelTerm);
@@ -62,7 +60,7 @@ public:
 	inline Node* getNode();
 	inline Net* getNet() const;
 	inline Cell* getCell() const;
-		// ::getOwnerCell() renvoie la Cell dans laquelle l'objet se trouve,
+	// ::getOwnerCell() renvoie la Cell dans laquelle l'objet se trouve,
 	// ce qui, dans le cas d'un Term d'instance est la Cell possédant celle-ci.
 	Cell* getOwnerCell() const;
 	// Dit encore autrement, les méthodes ::getCell() et ::getInstance()
@@ -95,6 +93,7 @@ public:
 };
 
 // Implementation of inline functions
+// Getters
 inline bool Term::isInternal() const {return type_ == Internal;}
 
 inline bool Term::isExternal() const {return type_ == External;}
@@ -121,6 +120,11 @@ inline Term::Direction Term::getDirection() const {return direction_;}
 
 inline Term::Type Term::getType() const {return type_;}
 
+inline Point Term::getPosition() const {return node_.getPosition();}
+
+
+
+// Setters
 inline void Term::setDirection(Direction d) {direction_ = d;}
 
 

@@ -42,13 +42,14 @@ Cell* Term::getOwnerCell() const
 {
 	if (type_ == External)
 		return static_cast<Cell*>(owner_);
-
 	return static_cast<Instance*>(owner_)->getCell();
 
 }
 
 void Term::setNet(Net* net)
 {
+	if (!net)
+		net_ = NULL; // Deconnexion
 	net_ = net;
 }
 
@@ -58,12 +59,13 @@ void Term::setNet(const std::string& str)
 }
 void Term::setPosition(const Point& pt)
 {
+	node_.setPosition(pt);
 
 }
 
 void Term::setPosition(int x, int y)
 {
-
+	node_.setPosition(x, y);
 }
 
 }
