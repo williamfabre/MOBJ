@@ -73,7 +73,6 @@ int main ( int argc, char* argv[] )
 	Net*      fa_sout_1  = new Net      ( fulladder, "sout_1",  Term::Internal);
 	Net*      fa_carry_1 = new Net      ( fulladder, "carry_1", Term::Internal);
 	Net*      fa_carry_2 = new Net      ( fulladder, "carry_2", Term::Internal);
-	//cout << "TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST" << endl;
 	Instance* fa_halfadder_1 = new Instance ( fulladder, Cell::find("halfadder"), "halfadder_1" );
 	Instance* fa_halfadder_2 = new Instance ( fulladder, Cell::find("halfadder"), "halfadder_2" );
 	Instance* fa_or2_1 =       new Instance ( fulladder, Cell::find("or2"), "or2_1" );
