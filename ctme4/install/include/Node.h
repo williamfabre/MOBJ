@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+using namespace std;
+
 #include "Indentation.h"
 #include "Point.h"
 

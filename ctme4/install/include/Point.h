@@ -2,6 +2,8 @@
 #define NETLIST_POINT_H
 
 #include <iostream>
+using namespace std;
+
 #include "Indentation.h"
 
 namespace Netlist {
@@ -37,7 +39,7 @@ inline Point& Point::translate(const Point& p){
 	return translate( p.getX(), p.getY() );
 }
 
-inline  std::ostream& operator<< ( std::ostream& stream, const Point& p )
+inline  ostream& operator<< ( ostream& stream, const Point& p )
 {
 	stream << "<Point " << p.getX() << " " << p.getY() << ">";
 	return stream;
