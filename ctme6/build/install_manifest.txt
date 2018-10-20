@@ -1,9 +1,0 @@
-/home/tchi/work/MOBJ/ctme6/build/../install/bin/tme6
-/home/tchi/work/MOBJ/ctme6/build/../install/include/Indentation.h
-/home/tchi/work/MOBJ/ctme6/build/../install/include/Term.h
-/home/tchi/work/MOBJ/ctme6/build/../install/include/Net.h
-/home/tchi/work/MOBJ/ctme6/build/../install/include/Instance.h
-/home/tchi/work/MOBJ/ctme6/build/../install/include/Point.h
-/home/tchi/work/MOBJ/ctme6/build/../install/include/Node.h
-/home/tchi/work/MOBJ/ctme6/build/../install/include/Cell.h
-/home/tchi/work/MOBJ/ctme6/build/../install/include/XmlUtil.h
