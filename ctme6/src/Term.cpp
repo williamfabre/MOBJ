@@ -6,6 +6,7 @@
 #include "Cell.h"
 #include "Instance.h"
 #include "Net.h"
+#include  "XmlUtil.h"
 
 namespace Netlist {
 
@@ -147,6 +148,47 @@ void Term::toXml(ostream& o)
 
 Term* Term::fromXml(Cell* cell, xmlTextReaderPtr reader)
 {
+	string s_name;
+	string s_direction;
+	string s_x;
+	string s_y;
+
+	xmlChar* xml_name_value;
+	xmlChar* xml_direction_value;
+	xmlChar* xml_x_value;
+	xmlChar* xml_y_value;
+
+	const xmlChar* xml_name;
+	const xmlChar* xml_direction;
+	const xmlChar* xml_x;
+	const xmlChar* xml_y;
+
+	// s'il y a declaration d'un name
+	xml_name = (const xmlChar*)"name";
+	xml_direction = (const xmlChar*)"direction";
+	xml_x = (const xmlChar*)"x";
+	xml_y = (const xmlChar*)"y";
+
+	// prendre la valeur de la declaration
+	xml_name_value = xmlTextReaderGetAttribute(reader, xml_name);
+	xml_direction_value = xmlTextReaderGetAttribute(reader, xml_direction);
+	xml_x_value = xmlTextReaderGetAttribute(reader, xml_x);
+	xml_y_value = xmlTextReaderGetAttribute(reader, xml_y);
+
+	// transformer cette valeur en string
+	s_name = xmlCharToString(xml_name_value);
+	s_direction = xmlCharToString(xml_direction_value);
+	s_x = xmlCharToString(xml_x_value);
+	s_y = xmlCharToString(xml_y_value);
+
+	// Si le nom n'est pas vide alors on demande
+	// la creation de la cellule
+	if (not (s_name.empty() && s_direction.empty() && s_x.empty()
+		 && s_y.empty())) {
+		// TODO GESTION DE X ET Y?
+		Term* t = new Term(cell, s_name, toDirection(s_direction));
+		return t;
+	}
 	return NULL;
 }
 

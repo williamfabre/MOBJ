@@ -4,6 +4,7 @@
 #include "Instance.h"
 #include "Cell.h"
 #include "Term.h"
+#include "XmlUtil.h"
 
 namespace Netlist {
 
@@ -145,6 +146,57 @@ void Instance::toXml(ostream& o)
 
 Instance* Instance::fromXml(Cell* cell, xmlTextReaderPtr reader)
 {
+	string s_name;
+	string s_mastercell;
+	string s_x;
+	string s_y;
+
+	xmlChar* xml_name_value;
+	xmlChar* xml_mastercell_value;
+	xmlChar* xml_x_value;
+	xmlChar* xml_y_value;
+
+	const xmlChar* xml_name;
+	const xmlChar* xml_mastercell;
+	const xmlChar* xml_x;
+	const xmlChar* xml_y;
+
+	// s'il y a declaration d'un name
+	xml_name = (const xmlChar*)"name";
+	xml_mastercell = (const xmlChar*)"direction";
+	xml_x = (const xmlChar*)"x";
+	xml_y = (const xmlChar*)"y";
+
+	// prendre la valeur de la declaration
+	xml_name_value = xmlTextReaderGetAttribute(reader, xml_name);
+	xml_mastercell_value = xmlTextReaderGetAttribute(reader,xml_mastercell);
+	xml_x_value = xmlTextReaderGetAttribute(reader, xml_x);
+	xml_y_value = xmlTextReaderGetAttribute(reader, xml_y);
+
+	// transformer cette valeur en string
+	s_name = xmlCharToString(xml_name_value);
+	s_mastercell = xmlCharToString(xml_mastercell_value);
+	s_x = xmlCharToString(xml_x_value);
+	s_y = xmlCharToString(xml_y_value);
+
+	// Si le nom n'est pas vide alors on demande
+	// la creation de la cellule
+	if (not (s_name.empty() && s_mastercell.empty() && s_x.empty()
+		 && s_y.empty())) {
+
+		Cell* mastercell;
+		if (!(mastercell= Cell::find(s_mastercell)))
+			return NULL;
+
+		int x = atoi(s_x.c_str());
+		int y = atoi(s_y.c_str());
+
+		Instance *instance;
+		instance = new Instance(cell, mastercell, s_name);
+		instance->setPosition(x, y);
+
+		return instance;
+	}
 	return NULL;
 }
 

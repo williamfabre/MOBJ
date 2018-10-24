@@ -271,41 +271,46 @@ Cell* Cell::fromXml(xmlTextReaderPtr reader)
 				// BEGIN CELL
 				state = BeginCell;
 				string cellName;
+				// s'il y a declaration d'un name
 				const xmlChar* xmlName = (const xmlChar*)"name";
 				xmlChar* textValue;
+				// prendre la valeur de la declaration
 				textValue = xmlTextReaderGetAttribute(reader,
 								      xmlName);
+				// transformer cette valeur en string
 				cellName = xmlCharToString(textValue);
-
+				// Si le nom n'est pas vide alors on demande
+				// la creation de la cellule
 				if (not cellName.empty()) {
-					cell = new Cell ( cellName );
+					cell = new Cell (cellName);
+					// On peut passer a la def des terms
 					state = BeginTerms;
 					continue;
 				}
 			}
 			break;
 		case BeginTerms:
-			if ( (nodeName == termsTag) and (isEnd(reader))){
+			if ((nodeName == termsTag) and (isEnd(reader))){
 				state = EndTerms;
 				continue;
 			}
 			break;
 		case EndTerms:
-			if ( (nodeName == termsTag) and (isEnd(reader))){
+			if ((nodeName == termsTag) and (isEnd(reader))){
 				state = BeginInstances;
 				continue;
 			} else {
-				if (Term::fromXml(cell,reader)) continue;
+				if (Term::fromXml(cell, reader)) continue;
 			}
 			break;
 		case BeginInstances:
-			if ( (nodeName == instancesTag) and (isEnd(reader))){
+			if ((nodeName == instancesTag) and (isEnd(reader))){
 				state = EndInstances;
 				continue;
 			}
 			break;
 		case EndInstances:
-			if ( (nodeName == instancesTag) and (isEnd(reader))) {
+			if ((nodeName == instancesTag) and (isEnd(reader))) {
 				state = BeginNets;
 				continue;
 			} else {
@@ -313,13 +318,13 @@ Cell* Cell::fromXml(xmlTextReaderPtr reader)
 			}
 			break;
 		case BeginNets:
-			if ( (nodeName == netsTag) and (isEnd(reader))){
+			if ((nodeName == netsTag) and (isEnd(reader))){
 				state = EndNets;
 				continue;
 			}
 			break;
 		case EndNets:
-			if ( (nodeName == netsTag) and (isEnd(reader))){
+			if ((nodeName == netsTag) and (isEnd(reader))){
 				state = EndCell;
 				continue;
 			} else {
@@ -327,7 +332,7 @@ Cell* Cell::fromXml(xmlTextReaderPtr reader)
 			}
 			break;
 		case EndCell:
-			if ( (nodeName == cellTag) and (isEnd(reader))){
+			if ((nodeName == cellTag) and (isEnd(reader))){
 				continue;
 			}
 			break;

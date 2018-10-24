@@ -33,14 +33,14 @@ bool xmlGetIntAttribute(xmlTextReaderPtr reader,
 	// Returns a string containing the value of the specified
 	// attribute, or NULL in case of error. The string must be deallocated
 	// by the caller.
-	textValue = xmlTextReaderGetAttribute(reader,(const xmlChar*)attribute.c_str());
+	textValue=xmlTextReaderGetAttribute(reader,(const xmlChar*)attribute.c_str());
 	// PROBLEM. ERROR FALLBACK
 	if (textValue == NULL) {
 		const xmlChar* nodeName;
 
 		// The local name of the node.
 			// reader:	the xmlTextReaderPtr used
-		// Returnsthe local name or NULL if not available, the string
+		// Returns the local name or NULL if not available, the string
 		// will be deallocated with the reader.
 		nodeName = xmlTextReaderConstLocalName(reader);
 		cerr << "[ERROR] \"" << attribute;
