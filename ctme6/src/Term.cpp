@@ -22,23 +22,19 @@ Term::Term(Cell* ce, const string& name, Term::Direction d) :
 		ce->add(this);
 	}
 
-Term::Term(Instance* in, const Term* modelTerm) :
-	owner_((void *)in),
+Term::Term(Instance* instance, const Term* modelTerm) :
+	owner_((void *)instance),
 	name_(modelTerm->getName()),
 	direction_(modelTerm->getDirection()),
 	type_(Term::Internal),
 	net_(NULL),
 	node_(this)
 	{
-		in->add(this);
+		instance->add(this);
 	}
 
 Term::~Term()
 {
-	// destrucion d node associee du node :
-	// SURTOUT PAS
-	//delete &node_;
-
 	if (type_ == Term::External)
 		static_cast<Cell*>(owner_)->remove(this);
 	else
@@ -100,6 +96,15 @@ Term::Direction Term::toDirection(string stri)
 	return dir;
 }
 
+Term::Type Term::toType(string stri)
+{
+	Term::Type typ;
+	if (stri == "External") {typ = Term::External;}
+	if (stri == "Internal") {typ = Term::Internal;}
+	return typ;
+}
+
+
 
 Cell* Term::getOwnerCell() const
 {
@@ -115,11 +120,9 @@ void Term::setNet(Net* net)
 	if (!net) {
 		net->remove(&node_);
 	} else {
+		// TODO
 		if (net->getCell() != getOwnerCell()){
-			cerr << "Error term et net n'appartiennent pas a la meme Cell";
-			cerr << endl;
-			cerr << (getOwnerCell())->getName();
-			cerr << (net->getCell())->getName();
+			cerr<<"Error term et net n'appartiennent pas a la meme Cell";
 			cerr << endl;
 			return;
 		}

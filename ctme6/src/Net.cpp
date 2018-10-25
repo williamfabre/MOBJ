@@ -3,6 +3,7 @@
 #include "Net.h"
 #include "Cell.h"
 #include "Node.h"
+#include  "XmlUtil.h"
 
 namespace Netlist {
 
@@ -25,7 +26,7 @@ Net::~Net()
 
 Cell* Net::getCell() const
 {
-	return (type_ == Term::External) ? owner_ : NULL;
+	return owner_;
 }
 
 const string& Net::getName() const
@@ -65,24 +66,24 @@ size_t Net::getFreeNodeId() const
 //setters
 //void Net::add(Node* node)
 //{
-	//// find space
+//// find space
 
-	//// first case no id has been set
-	//if (node->getId() == Node::noid){
-		//size_t index = Net::getFreeNodeId();
-		//nodes_.insert(nodes_.begin() + index, node);
-		//node->setId(index);
-		//if (id < nodes_.size()){
+//// first case no id has been set
+//if (node->getId() == Node::noid){
+//size_t index = Net::getFreeNodeId();
+//nodes_.insert(nodes_.begin() + index, node);
+//node->setId(index);
+//if (id < nodes_.size()){
 
-		//}
-	//} else {
-		//if (node_[id] != null){
-			//cerr << "attention case pleine";
-			//nodes_[id]->setId(Node::noid);
-		//}
-		//// TODO attention insert meme s'il y a deja quelqu'un
-		//nodes_.insert(nodes_.begin() + node->getId(), node);
-	//}
+//}
+//} else {
+//if (node_[id] != null){
+//cerr << "attention case pleine";
+//nodes_[id]->setId(Node::noid);
+//}
+//// TODO attention insert meme s'il y a deja quelqu'un
+//nodes_.insert(nodes_.begin() + node->getId(), node);
+//}
 
 //}
 
@@ -117,17 +118,14 @@ void Net::add(Node* node)
 
 bool Net::remove(Node* node)
 {
-	vector<Node*>::iterator it = nodes_.begin();
-	vector<Node*>::iterator end = nodes_.end();
-
-	for ( ;it != end ; it++){
-		if ((*it) == node){
-			(*it) = NULL;
-			break;
+	if (node){
+		size_t id = node->getId();
+		if ((id < nodes_.size()) and (nodes_[id]->getId()==id)){
+			nodes_[id] = NULL;
+			return true;
 		}
 	}
-
-	return (*it) == NULL;
+	return false;
 }
 
 
@@ -147,6 +145,34 @@ void Net::toXml(ostream& o)
 
 Net* Net::fromXml(Cell* cell, _xmlTextReader* reader)
 {
+	string s_name;
+	string s_type;
+
+	xmlChar* xml_name_value;
+	xmlChar* xml_type_value;
+
+	const xmlChar* xml_name;
+	const xmlChar* xml_type;
+
+	// s'il y a declaration d'un name
+	xml_name = (const xmlChar*)"name";
+	xml_type = (const xmlChar*)"type";
+
+	// prendre la valeur de la declaration
+	xml_name_value = xmlTextReaderGetAttribute(reader, xml_name);
+	xml_type_value= xmlTextReaderGetAttribute(reader, xml_type);
+
+	// transformer cette valeur en string
+	s_name = xmlCharToString(xml_name_value);
+	s_type = xmlCharToString(xml_type_value);
+
+	// Si le nom n'est pas vide alors on demande
+	// la creation de la cellule
+	if (not (s_name.empty() && s_type.empty())) {
+		Net* net;
+		net = new Net(cell, s_name, Term::toType(s_type));
+		return net;
+	}
 	return NULL;
 }
 

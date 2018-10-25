@@ -38,7 +38,7 @@ public:
 
 	// toXml
 	void toXml(std::ostream& o);
-	static bool fromXml(Net* cell, xmlTextReaderPtr reader);
+	static bool fromXml(Net* net, xmlTextReaderPtr reader);
 private:
 	Node(const Node&);
 	Node& operator=   ( const Node& );

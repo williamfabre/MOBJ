@@ -25,6 +25,7 @@ public:
 	static string toString(Type);
 	static string toString(Direction);
 	static Direction toDirection(string);
+	static Type toType(string);
 
 private:
 	void* owner_;

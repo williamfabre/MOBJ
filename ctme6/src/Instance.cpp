@@ -14,26 +14,24 @@ Instance::Instance(Cell* owner, Cell* model, const string& str) :
 	name_(str),
 	terms_(),
 	position_()
-	{
-		vector<Term*>::const_iterator it = model->getTerms().begin();
-		vector<Term*>::const_iterator end = model->getTerms().end();
-
-		//Duplication
-		for (; it != end; ++it)
-			new Term(this, *it);
-
-		owner_->add(this);
+{
+	for (vector<Term*>::const_iterator it = model->getTerms().begin();
+		it != model->getTerms().end(); it++){
+		terms_.push_back(new Term(this, *it));
 	}
+
+	owner_->add(this);
+}
 
 
 Instance::~Instance()
 {
-	vector<Term*>::const_iterator it = terms_.begin();
-	vector<Term*>::const_iterator end = terms_.end();
-
 	//Duplication
-	for (; it != end; it++)
+	// FATAL ERROR 5H DE DEBUG
+	for (vector<Term*>::const_iterator it = terms_.begin();
+		it != terms_.end(); it++){
 		delete *it;
+	}
 
 	owner_->remove(this);
 }
@@ -66,12 +64,9 @@ const vector<Term*>& Instance::getTerms() const
 
 Term* Instance::getTerm(const string& name) const
 {
-	vector<Term*>::const_iterator it = terms_.begin();
-	vector<Term*>::const_iterator end = terms_.end();
-
-	for (; it != end; it++){
-		if ((*it)->getName() ==  name)
-			return *it;
+	for ( vector<Term*>::const_iterator iterm=terms_.begin();
+	      iterm != terms_.end() ; ++iterm ) {
+		if ((*iterm)->getName() == name)  return *iterm;
 	}
 	return NULL;
 }
@@ -88,10 +83,10 @@ bool Instance::connect(const string& name, Net* net)
 {
 	// TODO check if it works
 	Term* t = NULL;
-	vector<Term*>::const_iterator it = terms_.begin();
-	vector<Term*>::const_iterator end = terms_.end();
 
-	for (; it != end; it++) {
+	for (vector<Term*>::const_iterator it = terms_.begin();
+		it != terms_.end(); it++){
+
 		if ((*it)->getName() == name)
 			t = *it;
 	}
@@ -103,26 +98,35 @@ bool Instance::connect(const string& name, Net* net)
 }
 
 
-void Instance::add(Term* t)
+void Instance::add(Term* term)
 {
-	terms_.push_back(t);
+	if (getTerm(term->getName())) {
+		cerr << "[ERROR] Attemp to add duplicated terminal <";
+		cerr << term->getName() << ">." << endl;
+		exit(1);
+	}
+	terms_.push_back(term);
+	cerr << __func__;
+	cerr << "the name is :" << term->getName();
+	cerr << endl;
 }
 
 
-void Instance::remove(Term* t)
+void Instance::remove(Term* term)
 {
-	vector<Term*>::iterator it = terms_.begin();
-	vector<Term*>::iterator end = terms_.end();
-
-	for ( ; it != end; it++) {
-		// verifier si on touche un element nul du tableau
-			if ((*it) == t){
-				// en C++98 elle prend un iterator et pas
-				// un const
-				terms_.erase(it);
-				return;
-			}
+	// en C++98 elle prend un iterator et pas un const
+	cerr << __func__ << " BEGIN" << endl;
+	for (vector<Term*>::iterator iterm=terms_.begin();
+	     *iterm != NULL && iterm != terms_.end() ; ++iterm) {
+		cerr << "boucle pour trouver le term a supp" << endl;
+		if (*iterm == term){
+			cerr << "supp : " << term->getName() << "==";
+			cerr << (*iterm)->getName() << endl;
+			terms_.erase(iterm);
+			return;
+		}
 	}
+	cerr << __func__ << " END" << endl;
 }
 
 
