@@ -47,8 +47,6 @@ Cell::~Cell()
 	     icell != cells_.end() ; ++icell) {
 		if (*icell == this) {
 			cells_.erase(icell);
-			cerr << "DELETE DE LA CELL";
-			cerr << endl;
 			break;
 		}
 	}
@@ -119,8 +117,6 @@ void Cell::add(Term* term)
 		cerr << term->getName() << ">." << endl;
 		exit(1);
 	}
-	cerr << "AJOUT DU TERM DANS LA CELL";
-	cerr << endl;
 	terms_.push_back(term);
 }
 
@@ -163,8 +159,6 @@ void  Cell::remove(Term* term)
 	for (vector<Term*>::iterator iterm=terms_.begin();
 	     *iterm != NULL && iterm != terms_.end() ; ++iterm) {
 		if (*iterm == term){
-			cerr << "ERASE TERM";
-			cerr << endl;
 			terms_.erase(iterm);
 			return;
 		}

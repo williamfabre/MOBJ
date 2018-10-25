@@ -19,7 +19,7 @@ Instance::Instance(Cell* owner, Cell* model, const string& str) :
 		vector<Term*>::const_iterator end = model->getTerms().end();
 
 		//Duplication
-		for (; it != end; it++)
+		for (; it != end; ++it)
 			new Term(this, *it);
 
 		owner_->add(this);
@@ -84,7 +84,7 @@ Point Instance::getPosition() const
 
 
 //setters
-bool Instance::connect( const string& name, Net* net)
+bool Instance::connect(const string& name, Net* net)
 {
 	// TODO check if it works
 	Term* t = NULL;
@@ -105,8 +105,6 @@ bool Instance::connect( const string& name, Net* net)
 
 void Instance::add(Term* t)
 {
-	cerr << "PUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSHBACK";
-	cerr << endl;
 	terms_.push_back(t);
 }
 
@@ -118,17 +116,12 @@ void Instance::remove(Term* t)
 
 	for ( ; it != end; it++) {
 		// verifier si on touche un element nul du tableau
-		if (*it != NULL){
 			if ((*it) == t){
-				cerr <<  "DELETE INSTANCEEEEEEEEEEEEEEEEEEEE";
-				cerr << endl;
 				// en C++98 elle prend un iterator et pas
 				// un const
-				//terms_.erase(it);
-				//*it = NULL;
+				terms_.erase(it);
 				return;
 			}
-		}
 	}
 }
 

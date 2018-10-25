@@ -19,7 +19,7 @@ Term::Term(Cell* ce, const string& name, Term::Direction d) :
 	net_(NULL),
 	node_(this)
 	{
-		static_cast<Cell*>(owner_)->add(this);
+		ce->add(this);
 	}
 
 Term::Term(Instance* in, const Term* modelTerm) :
@@ -30,7 +30,7 @@ Term::Term(Instance* in, const Term* modelTerm) :
 	net_(NULL),
 	node_(this)
 	{
-		static_cast<Instance*>(owner_)->add(this);
+		in->add(this);
 	}
 
 Term::~Term()
@@ -38,8 +38,6 @@ Term::~Term()
 	// destrucion d node associee du node :
 	// SURTOUT PAS
 	//delete &node_;
-	cerr << "TENTATIVE DE DESTRUTION DU TERM";
-	cerr << endl;
 
 	if (type_ == Term::External)
 		static_cast<Cell*>(owner_)->remove(this);
@@ -118,7 +116,10 @@ void Term::setNet(Net* net)
 		net->remove(&node_);
 	} else {
 		if (net->getCell() != getOwnerCell()){
-			cerr << "Error term et net n'appartent pas a la meme Cell";
+			cerr << "Error term et net n'appartiennent pas a la meme Cell";
+			cerr << endl;
+			cerr << (getOwnerCell())->getName();
+			cerr << (net->getCell())->getName();
 			cerr << endl;
 			return;
 		}
