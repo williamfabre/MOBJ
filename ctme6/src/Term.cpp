@@ -18,9 +18,9 @@ Term::Term(Cell* ce, const string& name, Term::Direction d) :
 	type_(Term::External),
 	net_(NULL),
 	node_(this)
-{
-	static_cast<Cell*>(owner_)->add(this);
-}
+	{
+		static_cast<Cell*>(owner_)->add(this);
+	}
 
 Term::Term(Instance* in, const Term* modelTerm) :
 	owner_((void *)in),
@@ -29,14 +29,17 @@ Term::Term(Instance* in, const Term* modelTerm) :
 	type_(Term::Internal),
 	net_(NULL),
 	node_(this)
-{
-	static_cast<Instance*>(owner_)->add(this);
-}
+	{
+		static_cast<Instance*>(owner_)->add(this);
+	}
 
 Term::~Term()
 {
 	// destrucion d node associee du node :
-	delete &node_;
+	// SURTOUT PAS
+	//delete &node_;
+	cerr << "TENTATIVE DE DESTRUTION DU TERM";
+	cerr << endl;
 
 	if (type_ == Term::External)
 		static_cast<Cell*>(owner_)->remove(this);
@@ -61,23 +64,23 @@ string Term::toString(Term::Direction direction)
 	string dir;
 
 	switch (direction) {
-		case Term::In :
-			dir = "In";
-			break;
-		case Term::Out :
-			dir = "Out";
-			break;
-		case Term::Inout :
-			dir = "Inout";
-			break;
-		case Term::Tristate :
-			dir = "Tristate";
-			break;
-		case Term::Transcv :
-			dir = "Transcv";
-			break;
-		default :
-			dir = "Unknown";
+	case Term::In :
+		dir = "In";
+		break;
+	case Term::Out :
+		dir = "Out";
+		break;
+	case Term::Inout :
+		dir = "Inout";
+		break;
+	case Term::Tristate :
+		dir = "Tristate";
+		break;
+	case Term::Transcv :
+		dir = "Transcv";
+		break;
+	default :
+		dir = "Unknown";
 	}
 	return dir;
 }
@@ -111,12 +114,17 @@ Cell* Term::getOwnerCell() const
 
 void Term::setNet(Net* net)
 {
-	if (!net)
+	if (!net) {
 		net->remove(&node_);
-	else
+	} else {
+		if (net->getCell() != getOwnerCell()){
+			cerr << "Error term et net n'appartent pas a la meme Cell";
+			cerr << endl;
+			return;
+		}
+		net_ = net;
 		net->add(&node_);
-
-	net_ = net;
+	}
 }
 
 

@@ -14,16 +14,16 @@ Instance::Instance(Cell* owner, Cell* model, const string& str) :
 	name_(str),
 	terms_(),
 	position_()
-{
-	vector<Term*>::const_iterator it = model->getTerms().begin();
-	vector<Term*>::const_iterator end = model->getTerms().end();
+	{
+		vector<Term*>::const_iterator it = model->getTerms().begin();
+		vector<Term*>::const_iterator end = model->getTerms().end();
 
-	//Duplication
-	for (; it != end; it++)
-		new Term(this, *it);
+		//Duplication
+		for (; it != end; it++)
+			new Term(this, *it);
 
-	owner_->add(this);
-}
+		owner_->add(this);
+	}
 
 
 Instance::~Instance()
@@ -105,6 +105,8 @@ bool Instance::connect( const string& name, Net* net)
 
 void Instance::add(Term* t)
 {
+	cerr << "PUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSHBACK";
+	cerr << endl;
 	terms_.push_back(t);
 }
 
@@ -115,10 +117,18 @@ void Instance::remove(Term* t)
 	vector<Term*>::iterator end = terms_.end();
 
 	for ( ; it != end; it++) {
-		if ((*it) == t)
-			// en C++98 elle prend un iterator et pas
-			// un const
-			terms_.erase(it);
+		// verifier si on touche un element nul du tableau
+		if (*it != NULL){
+			if ((*it) == t){
+				cerr <<  "DELETE INSTANCEEEEEEEEEEEEEEEEEEEE";
+				cerr << endl;
+				// en C++98 elle prend un iterator et pas
+				// un const
+				//terms_.erase(it);
+				//*it = NULL;
+				return;
+			}
+		}
 	}
 }
 

@@ -37,7 +37,7 @@ Cell::Cell(const string& name) : name_(name), terms_() ,instances_(), nets_()
 			<< "        Aborting..." << endl;
 		exit(1);
 	}
-	cells_.push_back( this );
+	cells_.push_back(this);
 }
 
 
@@ -47,13 +47,15 @@ Cell::~Cell()
 	     icell != cells_.end() ; ++icell) {
 		if (*icell == this) {
 			cells_.erase(icell);
+			cerr << "DELETE DE LA CELL";
+			cerr << endl;
 			break;
 		}
 	}
 
-	while (not nets_     .empty()) delete *nets_     .begin();
+	while (not nets_.empty()) delete *nets_.begin();
 	while (not instances_.empty()) delete *instances_.begin();
-	while (not terms_    .empty()) delete *terms_    .begin();
+	while (not terms_.empty()) delete *terms_.begin();
 }
 
 
@@ -117,6 +119,8 @@ void Cell::add(Term* term)
 		cerr << term->getName() << ">." << endl;
 		exit(1);
 	}
+	cerr << "AJOUT DU TERM DANS LA CELL";
+	cerr << endl;
 	terms_.push_back(term);
 }
 
@@ -145,17 +149,25 @@ bool Cell::connect(const string& name, Net* net)
 void  Cell::remove(Instance* instance)
 {
 	for (vector<Instance*>::iterator iinst=instances_.begin();
-	     iinst != instances_.end() ; ++iinst){
-		if (*iinst == instance) instances_.erase(iinst);
+	     *iinst != NULL && iinst != instances_.end() ; ++iinst){
+		if (*iinst == instance){
+			instances_.erase(iinst);
+			return;
+		}
 	}
 }
 
 
-void  Cell::remove ( Term* term )
+void  Cell::remove(Term* term)
 {
 	for (vector<Term*>::iterator iterm=terms_.begin();
-	     iterm != terms_.end() ; ++iterm) {
-		if (*iterm == term) terms_.erase(iterm);
+	     *iterm != NULL && iterm != terms_.end() ; ++iterm) {
+		if (*iterm == term){
+			cerr << "ERASE TERM";
+			cerr << endl;
+			terms_.erase(iterm);
+			return;
+		}
 	}
 }
 
@@ -163,8 +175,11 @@ void  Cell::remove ( Term* term )
 void  Cell::remove ( Net* net )
 {
 	for (vector<Net*>::iterator inet=nets_.begin();
-	     inet != nets_.end() ; ++inet) {
-		if (*inet == net) nets_.erase(inet);
+	     *inet != NULL && inet != nets_.end() ; ++inet) {
+		if (*inet == net){
+			nets_.erase(inet);
+			return;
+		}
 	}
 }
 

@@ -63,20 +63,55 @@ size_t Net::getFreeNodeId() const
 
 
 //setters
+//void Net::add(Node* node)
+//{
+	//// find space
+
+	//// first case no id has been set
+	//if (node->getId() == Node::noid){
+		//size_t index = Net::getFreeNodeId();
+		//nodes_.insert(nodes_.begin() + index, node);
+		//node->setId(index);
+		//if (id < nodes_.size()){
+
+		//}
+	//} else {
+		//if (node_[id] != null){
+			//cerr << "attention case pleine";
+			//nodes_[id]->setId(Node::noid);
+		//}
+		//// TODO attention insert meme s'il y a deja quelqu'un
+		//nodes_.insert(nodes_.begin() + node->getId(), node);
+	//}
+
+//}
+
+
 void Net::add(Node* node)
 {
-	// find space
-	size_t index = Net::getFreeNodeId();
-
-	// first case no id has been set
-	if (node->getId() == Node::noid){
-		nodes_.insert(nodes_.begin() + index, node);
-		node->setId(index);
-	} else {
-		// TODO attention insert meme s'il y a deja quelqu'un
-		nodes_.insert(nodes_.begin() + node->getId(), node);
+	if (node){
+		size_t id = node->getId();
+		if (id == Node::noid){ // le noeud na pas d'id
+			id = getFreeNodeId(); // found case libre
+			node->setId(id); //positionne id valide
+		}
+		if (id < nodes_.size()){ // l'id est valide
+			if (nodes_[id] != NULL){ // erreur
+				cerr << "case pleine" << endl;
+				nodes_[id]->setId(Node::noid);
+				// GESTION d'erreur
+				return;
+			}
+			nodes_[id] = node; // positionne l'id
+		} else {
+			// gestion du tableau trop petit
+			for (size_t i = nodes_.size(); i < id; ++i){
+				nodes_.push_back(NULL);
+			}
+		}
 	}
-
+	// on arrive a la case id cases vide -> case id
+	nodes_.push_back(node);
 }
 
 
