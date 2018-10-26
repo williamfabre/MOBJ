@@ -64,6 +64,11 @@ bool isEnd(xmlTextReaderPtr reader)
 		== XML_READER_TYPE_END_ELEMENT;
 }
 
+bool isElement(xmlTextReaderPtr reader)
+{
+	return xmlTextReaderNodeType(reader)
+		== XML_READER_TYPE_ELEMENT;
+}
 
 
 }   // Netlist namespace.

@@ -1,4 +1,6 @@
-#include <libxml/xmlreader.h>
+#include  <cstdlib>
+//#include <libxml/xmlreader.h>
+#include <fstream>
 
 #include "Net.h"
 #include "Cell.h"
@@ -143,8 +145,14 @@ void Net::toXml(ostream& o)
 	o << endl;
 }
 
-Net* Net::fromXml(Cell* cell, _xmlTextReader* reader)
+Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 {
+	Net* net = NULL;
+	string unexpected;
+	const xmlChar* nodeTag;
+	const xmlChar* nodeName;
+
+
 	string s_name;
 	string s_type;
 
@@ -166,14 +174,48 @@ Net* Net::fromXml(Cell* cell, _xmlTextReader* reader)
 	s_name = xmlCharToString(xml_name_value);
 	s_type = xmlCharToString(xml_type_value);
 
-	// Si le nom n'est pas vide alors on demande
-	// la creation de la cellule
 	if (not (s_name.empty() && s_type.empty())) {
-		Net* net;
 		net = new Net(cell, s_name, Term::toType(s_type));
-		return net;
+	} else {
+		return NULL;
 	}
-	return NULL;
+
+	///////////// BEGIN PARSING des NODES /////////////////
+
+	nodeName = xmlTextReaderConstLocalName(reader);
+	nodeTag = xmlTextReaderConstString(reader, (const xmlChar*)"node");
+	unexpected = "[ERR] Cell::fromXml(): Unexpected termination of parser.";
+
+	//if (nodeTag != nodeName || !isEnd(reader))
+		//return net;
+
+	while(nodeTag == nodeName || !isEnd(reader)){
+		int status = xmlTextReaderRead(reader);
+		if (status != 1) {
+			if (status != 0) {
+				cerr << unexpected;
+				cerr << endl;
+			}
+			break;
+		}
+
+		// On elimine les commentaires, espaces et tabs
+		switch (xmlTextReaderNodeType(reader)) {
+		case XML_READER_TYPE_COMMENT:
+		case XML_READER_TYPE_WHITESPACE:
+		case XML_READER_TYPE_SIGNIFICANT_WHITESPACE:
+			continue;
+		}
+
+		//const xmlChar* tmpnodeName = xmlTextReaderConstLocalName     ( reader );
+		nodeName = xmlTextReaderConstLocalName(reader);
+		if (nodeName == nodeTag){
+			if (!(Node::fromXml(net ,reader))) break;
+		}
+	}
+	///////////// END PARSING des NODES /////////////////
+
+	return net;
 }
 
 }

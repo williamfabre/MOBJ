@@ -106,19 +106,18 @@ void Instance::add(Term* term)
 		exit(1);
 	}
 	terms_.push_back(term);
-	cerr << __func__;
-	cerr << "the name is :" << term->getName();
-	cerr << endl;
 }
 
 
+// TODO
+/* EEEEEEEEEEENORME PROBLEME JE SUIS OBLIGE D'AJOUTER 2 FOIS POUR QUE
+ * CETTE SUPRESSION FONCTIONNE
+ */
 void Instance::remove(Term* term)
 {
 	// en C++98 elle prend un iterator et pas un const
-	cerr << __func__ << " BEGIN" << endl;
 	for (vector<Term*>::iterator iterm=terms_.begin();
 	     *iterm != NULL && iterm != terms_.end() ; ++iterm) {
-		cerr << "boucle pour trouver le term a supp" << endl;
 		if (*iterm == term){
 			cerr << "supp : " << term->getName() << "==";
 			cerr << (*iterm)->getName() << endl;
@@ -126,7 +125,6 @@ void Instance::remove(Term* term)
 			return;
 		}
 	}
-	cerr << __func__ << " END" << endl;
 }
 
 
@@ -170,7 +168,7 @@ Instance* Instance::fromXml(Cell* cell, xmlTextReaderPtr reader)
 
 	// s'il y a declaration d'un name
 	xml_name = (const xmlChar*)"name";
-	xml_mastercell = (const xmlChar*)"direction";
+	xml_mastercell = (const xmlChar*)"mastercell";
 	xml_x = (const xmlChar*)"x";
 	xml_y = (const xmlChar*)"y";
 

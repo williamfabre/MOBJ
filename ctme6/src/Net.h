@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <libxml/xmlreader.h>
 using namespace std;
 
 #include "Term.h"
@@ -71,7 +72,7 @@ public:
 
 	// to xml
 	void toXml(std::ostream& o);
-	static Net* fromXml(Cell* cell, _xmlTextReader* reader);
+	static Net* fromXml(Cell* cell, xmlTextReaderPtr reader);
 };
 
 }

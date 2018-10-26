@@ -122,7 +122,8 @@ void Term::setNet(Net* net)
 	} else {
 		// TODO
 		if (net->getCell() != getOwnerCell()){
-			cerr<<"Error term et net n'appartiennent pas a la meme Cell";
+			cerr << "Error term et";
+			cerr << "net n'appartiennent pas a la meme Cell";
 			cerr << endl;
 			return;
 		}
@@ -153,7 +154,9 @@ void Term::toXml(ostream& o)
 {
 	//string dir;
 	o << indent << "<term name=\"" << name_ << "\"";
-	o << " direction=\"" << Term::toString(direction_) << "\"/>";
+	o << " direction=\"" << Term::toString(direction_) << "\"";
+	o << " x=\"" << node_.getPosition().getX() << "\"";
+	o << " y=\"" << node_.getPosition().getY() << "\"" << "/>";
 	o << endl;
 }
 
@@ -199,6 +202,7 @@ Term* Term::fromXml(Cell* cell, xmlTextReaderPtr reader)
 		 && s_y.empty())) {
 		// TODO GESTION DE X ET Y?
 		Term* t = new Term(cell, s_name, toDirection(s_direction));
+		t->setPosition(atoi(s_x.c_str()), atoi(s_y.c_str()));
 		return t;
 	}
 	return NULL;

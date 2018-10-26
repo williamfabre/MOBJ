@@ -299,7 +299,7 @@ Cell* Cell::fromXml(xmlTextReaderPtr reader)
 			}
 			break;
 		case BeginTerms:
-			if ((nodeName == termsTag) and (isEnd(reader))){
+			if ((nodeName == termsTag) and (isElement(reader))){
 				state = EndTerms;
 				continue;
 			}
@@ -311,9 +311,10 @@ Cell* Cell::fromXml(xmlTextReaderPtr reader)
 			} else {
 				if (Term::fromXml(cell, reader)) continue;
 			}
+
 			break;
 		case BeginInstances:
-			if ((nodeName == instancesTag) and (isEnd(reader))){
+			if ((nodeName == instancesTag) and (isElement(reader))){
 				state = EndInstances;
 				continue;
 			}
@@ -323,11 +324,12 @@ Cell* Cell::fromXml(xmlTextReaderPtr reader)
 				state = BeginNets;
 				continue;
 			} else {
-				if (Instance::fromXml(cell,reader)) continue;
+				if (Instance::fromXml(cell,reader))
+					continue;
 			}
 			break;
 		case BeginNets:
-			if ((nodeName == netsTag) and (isEnd(reader))){
+			if ((nodeName == netsTag) and (isElement(reader))){
 				state = EndNets;
 				continue;
 			}
