@@ -52,9 +52,11 @@ bool xmlGetIntAttribute(xmlTextReaderPtr reader,
 		// Returns an int or 0 if not available
 		cerr << xmlTextReaderGetParserLineNumber(reader) << ").";
 		cerr << endl;
+		free(textValue);
 		return false;
 	}
 	value = atoi( (char*)textValue );
+	free(textValue);
 	return true;
 }
 

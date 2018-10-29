@@ -35,6 +35,11 @@ int main ( int argc, char* argv[] )
 	cout << "\nContenu du <halfadder>:" << endl;
 	halfadder->toXml(cout);
 
+	delete halfadder;
+	delete xor2;
+	delete or2;
+	delete and2;
+
 	return 0;
 }
 

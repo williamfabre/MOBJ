@@ -119,8 +119,8 @@ void Instance::remove(Term* term)
 	for (vector<Term*>::iterator iterm=terms_.begin();
 	     *iterm != NULL && iterm != terms_.end() ; ++iterm) {
 		if (*iterm == term){
-			cerr << "supp : " << term->getName() << "==";
-			cerr << (*iterm)->getName() << endl;
+			//cerr << "supp : " << term->getName() << "==";
+			//cerr << (*iterm)->getName() << endl;
 			terms_.erase(iterm);
 			return;
 		}

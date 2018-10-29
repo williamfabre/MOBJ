@@ -209,9 +209,9 @@ Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 
 		//const xmlChar* tmpnodeName = xmlTextReaderConstLocalName     ( reader );
 		nodeName = xmlTextReaderConstLocalName(reader);
-		if (nodeName == nodeTag){
+		//if (nodeName == nodeTag){
 			if (!(Node::fromXml(net ,reader))) break;
-		}
+		//}
 	}
 	///////////// END PARSING des NODES /////////////////
 
