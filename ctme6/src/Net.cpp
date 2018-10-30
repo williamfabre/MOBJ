@@ -65,31 +65,6 @@ size_t Net::getFreeNodeId() const
 }
 
 
-//setters
-//void Net::add(Node* node)
-//{
-//// find space
-
-//// first case no id has been set
-//if (node->getId() == Node::noid){
-//size_t index = Net::getFreeNodeId();
-//nodes_.insert(nodes_.begin() + index, node);
-//node->setId(index);
-//if (id < nodes_.size()){
-
-//}
-//} else {
-//if (node_[id] != null){
-//cerr << "attention case pleine";
-//nodes_[id]->setId(Node::noid);
-//}
-//// TODO attention insert meme s'il y a deja quelqu'un
-//nodes_.insert(nodes_.begin() + node->getId(), node);
-//}
-
-//}
-
-
 void Net::add(Node* node)
 {
 	if (node){
@@ -137,7 +112,7 @@ void Net::toXml(ostream& o)
 	vector<Node*>::const_iterator end = nodes_.end();
 
 	o << indent++ << "<net name=\"" << name_ << "\"";
-	o << " type=\"" << Term::toString(type_) << "\"/>";
+	o << " type=\"" << Term::toString(type_) << "\">";
 	o << endl;
 	for (; it != end; it++)
 		(*it)->toXml(o);

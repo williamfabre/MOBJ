@@ -365,7 +365,7 @@ Cell* Cell::fromXml(xmlTextReaderPtr reader)
 Cell* Cell::load(const string& cellName)
 {
 	xmlTextReaderPtr reader;
-	string cellFile = "../src/cells/" + cellName + ".xml";
+	string cellFile = "./cells/" + cellName + ".xml";
 
 	reader = xmlNewTextReaderFilename(cellFile.c_str());
 	if (reader == NULL) {
@@ -383,7 +383,7 @@ Cell* Cell::load(const string& cellName)
 
 void Cell::save() const
 {
-	string  fileName   = getName() + ".xml";
+	string  fileName   = "./cells/" + getName() + "_test.xml";
 	fstream fileStream(fileName.c_str(),
 			   ios_base::out|ios_base::trunc);
 
