@@ -24,7 +24,7 @@ set( includes
 	Node/Node.h
 	Cell/Cell.h
 	Xml/XmlUtil.h
-	Nox/Box.h
+	Box/Box.h
 	Line/Line.h
 
 	Shape/Shape.h
