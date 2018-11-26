@@ -17,10 +17,10 @@ private:
 public:
 	BoxShape(Symbol*, const  Box&);
 	BoxShape(Symbol*, int x1 , int y1, int x2, int y2);
-	~BoxShape();
-	Box getBoundingBox()  const;
-	//BoxShape* fromXml(Symbol* owner, xmlTextReaderPtr reader);
-	//void toXml(std::ostream&);
+	virtual ~BoxShape();
+	virtual Box getBoundingBox() const;
+	virtual void toXml(std::ostream&);
+	static BoxShape* fromXml(Symbol* owner, xmlTextReaderPtr reader);
 };
 }
 #endif
