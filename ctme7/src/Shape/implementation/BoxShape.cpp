@@ -1,8 +1,7 @@
-#include "Shape/definition/BoxShape.h"
 #include "Shape/Shape.h"
 #include "Box/Box.h"
 #include "Xml/XmlUtil.h"
-#include <libxml/xmlreader.h>
+#include "Shape/definition/BoxShape.h"
 
 namespace Netlist
 {
@@ -21,7 +20,7 @@ BoxShape::BoxShape(Symbol* owner, int x1 , int y1, int x2, int y2)
 
 BoxShape::~BoxShape()
 {
-
+	return;
 }
 
 Box BoxShape::getBoundingBox() const
@@ -29,7 +28,7 @@ Box BoxShape::getBoundingBox() const
 	return box_;
 }
 
-void BoxShape::toXml(ostream& stream)
+void BoxShape::toXml(ostream& stream) const
 {
 	stream << indent
 	<< "<box x1=\"" << box_.getX1() << "\" "
@@ -53,7 +52,6 @@ BoxShape* BoxShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	xmlChar* xml_y1_value;
 	xmlChar* xml_x2_value;
 	xmlChar* xml_y2_value;
-	xmlChar* xml_bst_value;
 
 	const xmlChar* xml_x1;
 	const xmlChar* xml_y1;
@@ -79,7 +77,7 @@ BoxShape* BoxShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	xml_y1_value = xmlTextReaderGetAttribute(reader, xml_y1);
 	xml_x2_value = xmlTextReaderGetAttribute(reader, xml_x2);
 	xml_y2_value = xmlTextReaderGetAttribute(reader, xml_y2);
-	xml_bst_value = xmlTextReaderGetAttribute(reader, xml_bst);
+	nodeName = xmlTextReaderConstLocalName(reader);
 
 	// transformer cette valeur en string
 	s_x1 = xmlCharToString(xml_x1_value);
@@ -95,7 +93,7 @@ BoxShape* BoxShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 			x2 = atoi(s_x2.c_str());
 			y1 = atoi(s_y1.c_str());
 			y2 = atoi(s_y2.c_str());
-			//bshape = new BoxShape(owner, x1, y1, x2, y2);
+			bshape = new BoxShape(owner, x1, y1, x2, y2);
 		}
 	}
 	return bshape;

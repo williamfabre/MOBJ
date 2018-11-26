@@ -330,11 +330,10 @@ Cell* Cell::fromXml ( xmlTextReaderPtr reader )
 			break;
 		case BeginSymbol:  // TME7
 			if ( (nodeName == symbolTag) and (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT) ) {
-				// TODO
-				//if (Symbol::fromXml(cell,reader)) {
-					//state = EndCell;
-					//continue;
-				//}
+				if (Symbol::fromXml(cell,reader)) {
+					state = EndCell;
+					continue;
+				}
 			}
 			break;
 		case EndCell:

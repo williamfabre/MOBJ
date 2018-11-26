@@ -81,7 +81,6 @@ Point Instance::getPosition() const
 //setters
 bool Instance::connect(const string& name, Net* net)
 {
-	// TODO check if it works
 	Term* t = NULL;
 
 	for (vector<Term*>::const_iterator it = terms_.begin();
@@ -109,7 +108,6 @@ void Instance::add(Term* term)
 }
 
 
-// TODO
 /* EEEEEEEEEEENORME PROBLEME JE SUIS OBLIGE D'AJOUTER 2 FOIS POUR QUE
  * CETTE SUPRESSION FONCTIONNE
  */

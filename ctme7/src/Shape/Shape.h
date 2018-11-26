@@ -1,18 +1,26 @@
 #ifndef NETLIST_SHAPE_H
 #define NETLIST_SHAPE_H
 
-#include "Symbol/Symbol.h"
-#include "Box/Box.h"
+//#include "Symbol/Symbol.h"
+//#include "Box/Box.h"
+#include "Cell/Cell.h"
 
 namespace Netlist
 {
+class Box;
+class Symbol;
+class BoxShape;
+class EllipseShape;
+class ArcShape;
+class LineShape;
 
 class  Shape
 {
+
 private:
 	Symbol* owner_;
 public:
-	Shape(Symbol*);
+	Shape(Symbol* owner);
 	virtual ~Shape();
 	inline Cell* getCell() const {return owner_->getCell();}
 	inline Symbol* getSymbol() const {return owner_;}
@@ -34,8 +42,8 @@ public:
 	   Tout classe possedant au moins une fonction virtuelle pure est dite
 	   ABSTRAITE
 	   vtable object -> definition virtuelle pure
-	*/
-	virtual void toXml(std::ostream&) const = 0;
+	   */
+	virtual void toXml(std::ostream& stream) const = 0;
 	static Shape* fromXml(Symbol* owner, xmlTextReaderPtr reader);
 };
 

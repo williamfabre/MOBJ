@@ -23,7 +23,7 @@ Cell* Cell::find(const string& name)
 	     icell != cells_.end() ; ++icell) {
 		if ((*icell)->getName() == name) return *icell;
 	}
-	// TODO GROS PROBLEME, au debut de la creation on va toujours
+	// GROS PROBLEME, au debut de la creation on va toujours
 	// creer une cell qui n'existe pas mais si on cree un cell
 	// a partir de celle qui n'existe pas on a une erreur de type
 	// SEGFAULT car on return NULL on ne la pas trouver et c'est tres

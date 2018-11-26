@@ -15,11 +15,9 @@ bool xmlGetIntAttribute(xmlTextReaderPtr,
 			const std::string& attribute,
 			int& value);
 
-// TODO description a faire c'est la fonction pour le parser
 // dans la Cell
 bool isEnd(xmlTextReaderPtr reader);
 
-// TODO description a faire c'est la fonction pour le parser
 // dans la Cell
 bool isElement(xmlTextReaderPtr reader);
 

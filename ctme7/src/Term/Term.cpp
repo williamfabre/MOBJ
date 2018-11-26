@@ -120,7 +120,6 @@ void Term::setNet(Net* net)
 	if (!net) {
 		net->remove(&node_);
 	} else {
-		// TODO
 		if (net->getCell() != getOwnerCell()){
 			cerr << "Error term et";
 			cerr << "net n'appartiennent pas a la meme Cell";
@@ -200,7 +199,6 @@ Term* Term::fromXml(Cell* cell, xmlTextReaderPtr reader)
 	// la creation de la cellule
 	if (not (s_name.empty() && s_direction.empty() && s_x.empty()
 		 && s_y.empty())) {
-		// TODO GESTION DE X ET Y?
 		Term* t = new Term(cell, s_name, toDirection(s_direction));
 		t->setPosition(atoi(s_x.c_str()), atoi(s_y.c_str()));
 		return t;

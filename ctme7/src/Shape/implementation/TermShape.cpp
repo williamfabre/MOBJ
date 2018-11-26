@@ -1,10 +1,11 @@
-#include "Shape/definition/TermShape.h"
 #include "Shape/Shape.h"
 #include "Box/Box.h"
 #include "Xml/XmlUtil.h"
 #include "Cell/Cell.h"
 #include "Term/Term.h"
 #include <libxml/xmlreader.h>
+#include "Shape/definition/TermShape.h"
+
 
 
 namespace Netlist
@@ -19,10 +20,11 @@ TermShape::TermShape(Symbol* owner , string  name , int x1, int y1)
 
 TermShape::~TermShape()
 {
+	return;
 
 }
 
-std::string TermShape::a2s(NameAlign align)
+string TermShape::a2s(TermShape::NameAlign align)
 {
 	if (align == TopLeft)
 		return "top_left";
@@ -34,7 +36,7 @@ std::string TermShape::a2s(NameAlign align)
 		return "bottom_right";
 
 }
-TermShape::NameAlign TermShape::s2a(std::string align)
+TermShape::NameAlign TermShape::s2a(string align)
 {
 	if (align == "top_left")
 		return TopLeft ;
@@ -46,6 +48,11 @@ TermShape::NameAlign TermShape::s2a(std::string align)
 		return BottomRight ;
 	else
 		return BottomRight;
+}
+
+Box TermShape::getBoundingBox() const
+{
+	return Box(x1_, y1_, x1_, y1_);
 }
 
 
@@ -66,7 +73,6 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	xmlChar* xml_y1_value;
 	xmlChar* xml_termname_value;
 	xmlChar* xml_align_value;
-	xmlChar* xml_termnode_value;
 
 	const xmlChar* xml_x1;
 	const xmlChar* xml_y1;
@@ -93,6 +99,7 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	xml_termname_value = xmlTextReaderGetAttribute(reader, xml_termname);
 	xml_align_value = xmlTextReaderGetAttribute(reader, xml_align);
 	xml_termnode = xmlTextReaderConstString(reader, xml_termnode);
+	nodeName = xmlTextReaderConstLocalName(reader);
 
 	// transformer cette valeur en string
 	s_x1 = xmlCharToString(xml_x1_value);
@@ -107,14 +114,15 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 			  && s_termname.empty())){
 			x1 = atoi(s_x1.c_str());
 			y1 = atoi(s_y1.c_str());
-			//tshape = new TermShape(owner, s_termname, x1, y1, s2a(s_align));
+			tshape = new TermShape(owner, s_termname, x1, y1);
+			tshape->setNameAlign(s2a(s_align));
 		}
 	}
 	return tshape;
 
 }
 
-void TermShape::toXml(std::ostream& stream)
+void TermShape::toXml(std::ostream& stream) const
 {
 	stream  << indent
 		<< "<term name=\"" << term_->getName() << "\" "

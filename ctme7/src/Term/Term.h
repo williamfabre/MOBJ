@@ -70,7 +70,7 @@ public:
 	// Term appartenant à une instance ::getCell() renverra NULL. En revanche,
 	inline Instance* getInstance() const;
 	inline Direction getDirection() const;
-	inline Point getPosition() const; // TODO
+	inline Point getPosition() const; 
 	inline Type getType() const;
 
 	// setters

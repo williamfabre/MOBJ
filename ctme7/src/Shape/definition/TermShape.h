@@ -1,16 +1,15 @@
 #ifndef NETLIST_BOXSHAPE_H
 #define NETLIST_BOXSHAPE_H
 
-#include "Shape/Shape.h"
 #include "Box/Box.h"
 
 namespace Netlist
 {
-class Symbol;
+class Term;
+class Box;
 
-class TermShape : public  Shape {
-
-public:
+class TermShape : public  Shape
+{
 	enum NameAlign { TopLeft=1, TopRight=2, BottomLeft, BottomRight };
 private:
 	Term* term_;
@@ -18,23 +17,22 @@ private:
 	NameAlign align_;
 
 public:
-	/* x, y centre du term */
-	TermShape( Symbol*, string  name , int x, int y );
+	//x, y centre du term
+	TermShape(Symbol*, string  name , int x, int y);
+
+	static string a2s(NameAlign align);
+	static NameAlign s2a(string align);
+
 	virtual ~TermShape();
-	virtual Box getBoundingBox() const
-	{
-		return Box(x1_, y1_,x1_, y1_);
-	}
+	virtual Box getBoundingBox() const;
 	void setNameAlign(NameAlign align);
 	inline Term* getTerm() const {return term_;}
 	inline int getX() const {return x1_;}
 	inline int getY() const {return y1_;}
 
-	virtual void toXml(std::ostream&);
 	static TermShape* fromXml(Symbol* owner, xmlTextReaderPtr reader);
+	virtual void toXml(std::ostream& stream) const;
 
-	std::string a2s(NameAlign align);
-	NameAlign s2a(std::string align);
 };
 }
 #endif
