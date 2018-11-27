@@ -1,11 +1,7 @@
-#include "Shape/Shape.h"
-#include "Box/Box.h"
-#include "Xml/XmlUtil.h"
 #include "Cell/Cell.h"
 #include "Term/Term.h"
-#include <libxml/xmlreader.h>
+#include "Shape/Shape.h"
 #include "Shape/definition/TermShape.h"
-
 
 
 namespace Netlist
@@ -20,8 +16,6 @@ TermShape::TermShape(Symbol* owner , string  name , int x1, int y1)
 
 TermShape::~TermShape()
 {
-	return;
-
 }
 
 string TermShape::a2s(TermShape::NameAlign align)
@@ -55,10 +49,18 @@ Box TermShape::getBoundingBox() const
 	return Box(x1_, y1_, x1_, y1_);
 }
 
-
 void TermShape::setNameAlign(TermShape::NameAlign align)
 {
 	align_ = align;
+}
+
+void TermShape::toXml(std::ostream& stream) const
+{
+	stream  << indent
+		<< "<term name=\"" << term_->getName() << "\" "
+		<< "x1=\"" << x1_ << "\" "
+		<< "y1=\"" << y1_ << "\" "
+		<< "align=\"" << a2s(align_) << "\" />" << std::endl;
 }
 
 TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
@@ -109,7 +111,7 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	nodeType = xmlTextReaderNodeType(reader);
 
 	if (nodeType == XML_READER_TYPE_ELEMENT
-		&& nodeName == xml_termnode){
+	    && nodeName == xml_termnode){
 		if ( not (s_x1.empty() && s_y1.empty() && s_align.empty()
 			  && s_termname.empty())){
 			x1 = atoi(s_x1.c_str());
@@ -121,14 +123,4 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	return tshape;
 
 }
-
-void TermShape::toXml(std::ostream& stream) const
-{
-	stream  << indent
-		<< "<term name=\"" << term_->getName() << "\" "
-		<< "x1=\"" << x1_ << "\" "
-		<< "y1=\"" << y1_ << "\" "
-		<< "align=\"" << a2s(align_) << "\" />" << std::endl;
-}
-
 }

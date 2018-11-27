@@ -1,6 +1,3 @@
-#include "Shape/Shape.h"
-#include "Box/Box.h"
-#include "Xml/XmlUtil.h"
 #include "Shape/definition/BoxShape.h"
 
 namespace Netlist

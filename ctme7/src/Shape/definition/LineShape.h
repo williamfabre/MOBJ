@@ -1,7 +1,9 @@
 #ifndef NETLIST_LINESHAPE_H
 #define NETLIST_LINESHAPE_H
 
+#include "Shape/Shape.h"
 #include "Box/Box.h"
+#include "Xml/XmlUtil.h"
 
 namespace Netlist
 {

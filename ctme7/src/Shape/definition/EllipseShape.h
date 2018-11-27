@@ -2,11 +2,12 @@
 #ifndef NETLIST_ELLIPSESHAPE_H
 #define NETLIST_ELLIPSESHAPE_H
 
+#include "Xml/XmlUtil.h"
 #include "Shape/Shape.h"
+#include "Box/Box.h"
 
 namespace Netlist {
 
-class Shape;
 class Symbol;
 
 class EllipseShape : public Shape {

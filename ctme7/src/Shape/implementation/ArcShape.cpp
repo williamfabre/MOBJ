@@ -1,5 +1,3 @@
-#include "Shape/Shape.h"
-#include "Xml/XmlUtil.h"
 #include "Shape/definition/ArcShape.h"
 
 namespace Netlist {
@@ -10,7 +8,7 @@ ArcShape::ArcShape(Symbol* owner, const Box& box, int start, int span)
 }
 
 ArcShape::ArcShape( Symbol* owner, int x1, int y1, int x2, int y2,
-			int start, int span)
+		    int start, int span)
 	:Shape(owner), box_(x1, y1, x2, y2), start_(start), span_(span)
 {
 }
@@ -37,43 +35,80 @@ void ArcShape::toXml ( std::ostream& stream ) const
 
 ArcShape* ArcShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 {
-	ArcShape* ashape;
-	const xmlChar* arcShapeTag;
-	const xmlChar* nodeName;
-	int nodeType;
-	int x1;
-	int x2;
-	int y1;
-	int y2;
-	int start;
-	int span;
+	ArcShape* ashape = NULL;
 
-	// Reading the current xml line
-	arcShapeTag = xmlTextReaderConstString(reader, (const xmlChar*)"arc");
+	int x1;
+	int y1;
+	int x2;
+	int y2;
+	int span;
+	int start;
+	int nodeType;
+
+	xmlChar* xml_x1_value;
+	xmlChar* xml_y1_value;
+	xmlChar* xml_x2_value;
+	xmlChar* xml_y2_value;
+	xmlChar* xml_span_value;
+	xmlChar* xml_start_value;
+
+	const xmlChar* xml_x1;
+	const xmlChar* xml_y1;
+	const xmlChar* xml_x2;
+	const xmlChar* xml_y2;
+	const xmlChar* xml_span;
+	const xmlChar* xml_start;
+	const xmlChar* xml_arc;
+	const xmlChar* nodeName;
+
+	string s_x1;
+	string s_y1;
+	string s_x2;
+	string s_y2;
+	string s_start;
+	string s_span;
+
+	// s'il y a declaration d'un name
+	xml_x1 = (const xmlChar*)"x1";
+	xml_y1 = (const xmlChar*)"y1";
+	xml_x2 = (const xmlChar*)"x2";
+	xml_y2 = (const xmlChar*)"y2";
+	xml_start = (const xmlChar*)"start";
+	xml_span = (const xmlChar*)"span";
+	xml_arc= (const xmlChar*)"arc";
+
+	// prendre la valeur de la declaration
+	xml_x1_value = xmlTextReaderGetAttribute(reader, xml_x1);
+	xml_y1_value = xmlTextReaderGetAttribute(reader, xml_y1);
+	xml_x2_value = xmlTextReaderGetAttribute(reader, xml_x2);
+	xml_y2_value = xmlTextReaderGetAttribute(reader, xml_y2);
+	xml_span_value = xmlTextReaderGetAttribute(reader, xml_span);
+	xml_start_value = xmlTextReaderGetAttribute(reader, xml_start);
 	nodeName = xmlTextReaderConstLocalName(reader);
+
+	// transformer cette valeur en string
+	s_x1 = xmlCharToString(xml_x1_value);
+	s_y1 = xmlCharToString(xml_y1_value);
+	s_x2 = xmlCharToString(xml_x2_value);
+	s_y2 = xmlCharToString(xml_y2_value);
+	s_start = xmlCharToString(xml_start_value);
+	s_span = xmlCharToString(xml_span_value);
 	nodeType = xmlTextReaderNodeType(reader);
 
-	// Checking the content
-	ashape = NULL;
-	if (nodeType == XML_READER_TYPE_ELEMENT and nodeName == arcShapeTag)
-	{
-		x1 = atoi(xmlCharToString(xmlTextReaderGetAttribute( reader, (const xmlChar*)
-								 "x1")).c_str());
-		x2 = atoi(xmlCharToString(xmlTextReaderGetAttribute( reader, (const xmlChar*)
-								 "x2")).c_str());
-		y1 = atoi(xmlCharToString(xmlTextReaderGetAttribute( reader, (const xmlChar*)
-								 "y1")).c_str());
-		y2 = atoi(xmlCharToString(xmlTextReaderGetAttribute( reader, (const xmlChar*)
-								 "y2")).c_str());
-		start = atoi(xmlCharToString(xmlTextReaderGetAttribute( reader,
-									(const xmlChar*)"start")).c_str());
-		span = atoi(xmlCharToString(xmlTextReaderGetAttribute( reader,
-								 (const xmlChar*)"span")).c_str());
-
-		ashape = new ArcShape(owner, x1, y1, x2, y2, start, span);
+	if (nodeType == XML_READER_TYPE_ELEMENT && nodeName == xml_arc){
+		if ( not (s_x1.empty() && s_x2.empty() && s_y1.empty()
+			  && s_y2.empty() && s_start.empty()
+			  && s_span.empty())){
+			x1 = atoi(s_x1.c_str());
+			x2 = atoi(s_x2.c_str());
+			y1 = atoi(s_y1.c_str());
+			y2 = atoi(s_y2.c_str());
+			start = atoi(s_start.c_str());
+			span = atoi(s_span.c_str());
+			ashape = new ArcShape(owner,x1,y1,x2,y2,start,span);
+		}
 	}
 	return ashape;
 }
-
 }
 

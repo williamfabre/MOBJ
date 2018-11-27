@@ -1,13 +1,13 @@
-#include "Shape/Shape.h"
-#include "Shape/definition/BoxShape.h"
 #include "Shape/definition/TermShape.h"
-#include "Shape/definition/LineShape.h"
+#include "Shape/definition/BoxShape.h"
 #include "Shape/definition/ArcShape.h"
 #include "Shape/definition/EllipseShape.h"
+#include "Shape/definition/LineShape.h"
+#include "Xml/XmlUtil.h"
+
 
 namespace Netlist
 {
-
 
 Shape::Shape(Symbol* owner) : owner_(owner)
 {
@@ -27,8 +27,8 @@ Shape* Shape::fromXml ( Symbol* owner, xmlTextReaderPtr reader )
 		= xmlTextReaderConstString( reader, (const xmlChar*)"box" );
 	const xmlChar* ellipseTag
 		= xmlTextReaderConstString( reader, (const xmlChar*)"ellipse" );
-	//const xmlChar* arcTag
-		//= xmlTextReaderConstString( reader, (const xmlChar*)"arc" );
+	const xmlChar* arcTag
+		= xmlTextReaderConstString( reader, (const xmlChar*)"arc" );
 	const xmlChar* lineTag
 		= xmlTextReaderConstString( reader, (const xmlChar*)"line" );
 	const xmlChar* termTag
@@ -37,16 +37,21 @@ Shape* Shape::fromXml ( Symbol* owner, xmlTextReaderPtr reader )
 		= xmlTextReaderConstLocalName( reader );
 
 	Shape* shape = NULL;
-	if (ellipseTag == nodeName)
-		shape = EllipseShape::fromXml( owner, reader );
-	//if (arcTag == nodeName)
-		//shape = ArcShape::fromXml( owner, reader );
-	//if (termTag == nodeName)
-		//shape = TermShape::fromXml(owner, reader);
-	if (lineTag == nodeName)
-		shape = LineShape::fromXml(owner, reader);
-	if (boxTag == nodeName)
+	if (boxTag == nodeName){
 		shape = BoxShape::fromXml(owner, reader);
+	}
+	if (ellipseTag == nodeName){
+		shape = EllipseShape::fromXml(owner, reader);
+	}
+	if (arcTag == nodeName){
+		shape = ArcShape::fromXml(owner, reader);
+	}
+	if (termTag == nodeName){
+		shape = TermShape::fromXml(owner, reader);
+	}
+	if (lineTag == nodeName){
+		shape = LineShape::fromXml(owner, reader);
+	}
 	if (shape == NULL)
 		cerr << "[ERROR] Unknown or misplaced tag <"
 			<< nodeName << "> (line:"

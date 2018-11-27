@@ -16,11 +16,11 @@ set (CMAKE_INSTALL_PREFIX       "../install" )
 include_directories( ${SCHEMATIC_SOURCE_DIR} ${LIBXML2_INCLUDE_DIR})
 
 set( includes
-	Indentation/Indentation.h
 	Term/Term.h
 	Net/Net.h
 	Instance/Instance.h
 	Point/Point.h
+	Indentation/Indentation.h
 	Node/Node.h
 	Cell/Cell.h
 	Xml/XmlUtil.h
@@ -28,11 +28,12 @@ set( includes
 	Line/Line.h
 
 	Shape/Shape.h
-	Shape/definition/ArcShape.h
-	Shape/definition/BoxShape.h
-	Shape/definition/EllipseShape.h
+
 	Shape/definition/LineShape.h
+	Shape/definition/EllipseShape.h
+	Shape/definition/ArcShape.h
 	Shape/definition/TermShape.h
+	Shape/definition/BoxShape.h
 
 	Symbol/Symbol.h
 	)
@@ -49,15 +50,16 @@ set( cpps
 	Xml/XmlUtil.cpp
 	Box/Box.cpp
 	Line/Line.cpp
+	Symbol/Symbol.cpp
 
 	Shape/Shape.cpp
+
+	Shape/implementation/LineShape.cpp
+	Shape/implementation/EllipseShape.cpp
 	Shape/implementation/ArcShape.cpp
 	Shape/implementation/BoxShape.cpp
-	Shape/implementation/EllipseShape.cpp
-	Shape/implementation/LineShape.cpp
 	Shape/implementation/TermShape.cpp
 
-	Symbol/Symbol.cpp
 	)
 
 add_executable ( tme7 ${cpps} )

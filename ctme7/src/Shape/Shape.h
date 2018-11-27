@@ -1,18 +1,16 @@
 #ifndef NETLIST_SHAPE_H
 #define NETLIST_SHAPE_H
 
-//#include "Symbol/Symbol.h"
-//#include "Box/Box.h"
+#include "Box/Box.h"
 #include "Cell/Cell.h"
 
 namespace Netlist
 {
-class Box;
-class Symbol;
-class BoxShape;
-class EllipseShape;
-class ArcShape;
-class LineShape;
+//class Symbol;
+//class BoxShape;
+//class EllipseShape;
+//class ArcShape;
+//class LineShape;
 
 class  Shape
 {

@@ -1,10 +1,12 @@
 #ifndef NETLIST_ARCSHAPE_H
 #define NETLIST_ARCSHAPE_H
 
+#include "Shape/Shape.h"
+#include "Xml/XmlUtil.h"
+#include "Box/Box.h"
 
 namespace Netlist {
 
-class Shape;
 class Symbol;
 
 class ArcShape : public Shape {

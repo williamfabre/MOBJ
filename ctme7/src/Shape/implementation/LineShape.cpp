@@ -1,7 +1,3 @@
-#include "Shape/Shape.h"
-#include "Box/Box.h"
-#include "Xml/XmlUtil.h"
-#include <libxml/xmlreader.h>
 #include "Shape/definition/LineShape.h"
 
 

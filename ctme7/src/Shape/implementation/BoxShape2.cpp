@@ -1,39 +1,43 @@
-#include "Shape/definition/EllipseShape.h"
+#include "Shape/definition/BoxShape2.h"
 
-namespace Netlist {
+namespace Netlist
+{
 
-EllipseShape::EllipseShape(Symbol* owner, const Box& box)
+BoxShape2::BoxShape2(Symbol* owner, const Box& box)
 	:Shape(owner), box_(box)
 {
 }
 
-EllipseShape::EllipseShape(Symbol* owner, int x1, int y1, int x2, int y2)
-	:Shape(owner), box_(x1, y1, x2, y2)
+BoxShape2::BoxShape2(Symbol* owner, int x1 , int y1, int x2, int y2)
+	:Shape(owner),box_(x1,y1,x2,y2)
+	 // CALL du constructeur de la class de base
 {
+
 }
 
-EllipseShape::~EllipseShape()
+BoxShape2::~BoxShape2()
 {
+	return;
 }
 
-Box EllipseShape::getBoundingBox () const
+Box BoxShape2::getBoundingBox() const
 {
 	return box_;
 }
 
-void EllipseShape::toXml(std::ostream& stream) const
+void BoxShape2::toXml(ostream& stream) const
 {
 	stream << indent
-		<< "<ellipse x1=\"" << box_.getX1() << "\" "
-		<< "y1=\"" << box_.getY1() << "\" "
-		<< "x2=\"" << box_.getX2() << "\" "
-		<< "y2=\"" << box_.getY2() << "\" "<< std::endl;
+	<< "<box x1=\"" << box_.getX1() << "\" "
+	<< "y1=\"" << box_.getY1() << "\" "
+	<< "x2=\"" << box_.getX2() << "\" "
+	<< "y2=\"" << box_.getY2()
+	<< "\" />" << endl;
 }
 
-// TODO
-EllipseShape* EllipseShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
+BoxShape2* BoxShape2::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 {
-	EllipseShape* eshape = NULL;
+	BoxShape2* bshape = NULL;
 
 	int x1;
 	int y1;
@@ -50,7 +54,7 @@ EllipseShape* EllipseShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	const xmlChar* xml_y1;
 	const xmlChar* xml_x2;
 	const xmlChar* xml_y2;
-	const xmlChar* xml_ellipse;
+	const xmlChar* xml_bst;
 	const xmlChar* nodeName;
 
 	string s_x1;
@@ -63,7 +67,7 @@ EllipseShape* EllipseShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	xml_y1 = (const xmlChar*)"y1";
 	xml_x2 = (const xmlChar*)"x2";
 	xml_y2 = (const xmlChar*)"y2";
-	xml_ellipse = (const xmlChar*)"ellipse";
+	xml_bst = (const xmlChar*)"box";
 
 	// prendre la valeur de la declaration
 	xml_x1_value = xmlTextReaderGetAttribute(reader, xml_x1);
@@ -79,18 +83,17 @@ EllipseShape* EllipseShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	s_y2 = xmlCharToString(xml_y2_value);
 	nodeType = xmlTextReaderNodeType(reader);
 
-	if (nodeType == XML_READER_TYPE_ELEMENT && nodeName == xml_ellipse){
+	if (nodeType == XML_READER_TYPE_ELEMENT && nodeName == xml_bst){
 		if ( not (s_x1.empty() && s_x2.empty() && s_y1.empty()
 			  && s_y2.empty())){
 			x1 = atoi(s_x1.c_str());
 			x2 = atoi(s_x2.c_str());
 			y1 = atoi(s_y1.c_str());
 			y2 = atoi(s_y2.c_str());
-			eshape = new EllipseShape(owner, x1, y1, x2, y2);
+			bshape = new BoxShape2(owner, x1, y1, x2, y2);
 		}
 	}
-	return eshape;
+	return bshape;
 }
 
 }
-
