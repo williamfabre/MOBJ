@@ -1,5 +1,5 @@
-#include "Shape/definition/TermShape.h"
 #include "Shape/definition/BoxShape.h"
+#include "Shape/definition/TermShape.h"
 #include "Shape/definition/ArcShape.h"
 #include "Shape/definition/EllipseShape.h"
 #include "Shape/definition/LineShape.h"
@@ -37,18 +37,18 @@ Shape* Shape::fromXml ( Symbol* owner, xmlTextReaderPtr reader )
 		= xmlTextReaderConstLocalName( reader );
 
 	Shape* shape = NULL;
-	if (boxTag == nodeName){
-		shape = BoxShape::fromXml(owner, reader);
-	}
+	//if (boxTag == nodeName){
+		//shape = BoxShape::fromXml(owner, reader);
+	//}
 	if (ellipseTag == nodeName){
 		shape = EllipseShape::fromXml(owner, reader);
 	}
 	if (arcTag == nodeName){
 		shape = ArcShape::fromXml(owner, reader);
 	}
-	if (termTag == nodeName){
-		shape = TermShape::fromXml(owner, reader);
-	}
+	//if (termTag == nodeName){
+		//shape = TermShape::fromXml(owner, reader);
+	//}
 	if (lineTag == nodeName){
 		shape = LineShape::fromXml(owner, reader);
 	}

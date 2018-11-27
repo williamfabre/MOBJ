@@ -148,7 +148,7 @@ void  Cell::remove(Instance* instance)
 }
 
 
-void  Cell::remove ( Term* term )
+void  Cell::remove(Term* term)
 {
 	for (vector<Term*>::iterator iterm=terms_.begin();
 	     iterm != terms_.end() ; ++iterm) {
@@ -157,7 +157,7 @@ void  Cell::remove ( Term* term )
 }
 
 
-void  Cell::remove ( Net* net )
+void  Cell::remove(Net* net)
 {
 	for (vector<Net*>::iterator inet=nets_.begin();
 	     inet != nets_.end() ; ++inet) {

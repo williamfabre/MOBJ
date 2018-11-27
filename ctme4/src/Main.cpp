@@ -94,5 +94,12 @@ int main ( int argc, char* argv[] )
 	fa_or2_1->connect( "q"    , fa_cout );
 	fulladder->toXml( cout );
 
+	delete fulladder;
+	delete halfadder;
+	delete xor2;
+	delete and2;
+	delete or2;
+
+
 	return 0;
 }
