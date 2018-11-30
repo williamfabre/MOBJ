@@ -109,9 +109,9 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	s_termname = xmlCharToString(xml_termname_value);
 	s_align = xmlCharToString(xml_align_value);
 	nodeType = xmlTextReaderNodeType(reader);
+	const xmlChar* nodeTag  = xmlTextReaderConstString(reader, (const xmlChar*)"term");
 
-	//if (nodeType == XML_READER_TYPE_ELEMENT
-	    //&& nodeName == xml_termnode){
+	if (nodeName == nodeTag){
 		if ( not (s_x1.empty() && s_y1.empty() && s_align.empty()
 			  && s_termname.empty())){
 			x1 = atoi(s_x1.c_str());
@@ -119,7 +119,8 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 			tshape = new TermShape(owner, s_termname, x1, y1);
 			tshape->setNameAlign(s2a(s_align));
 		}
-	//}
+		return tshape;
+	}
 	return tshape;
 
 }

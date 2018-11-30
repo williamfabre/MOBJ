@@ -33,6 +33,7 @@ void ArcShape::toXml ( std::ostream& stream ) const
 		<< "span=\"" << span_ << "\"/>" << std::endl;
 }
 
+
 ArcShape* ArcShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 {
 	ArcShape* ashape = NULL;
@@ -94,8 +95,9 @@ ArcShape* ArcShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	s_start = xmlCharToString(xml_start_value);
 	s_span = xmlCharToString(xml_span_value);
 	nodeType = xmlTextReaderNodeType(reader);
+	const xmlChar* nodeTag  = xmlTextReaderConstString(reader, (const xmlChar*)"arc");
 
-	//if (nodeType == XML_READER_TYPE_ELEMENT && nodeName == xml_arc){
+	if (nodeName == nodeTag){
 		if ( not (s_x1.empty() && s_x2.empty() && s_y1.empty()
 			  && s_y2.empty() && s_start.empty()
 			  && s_span.empty())){
@@ -107,7 +109,8 @@ ArcShape* ArcShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 			span = atoi(s_span.c_str());
 			ashape = new ArcShape(owner,x1,y1,x2,y2,start,span);
 		}
-	//}
+		return ashape;
+	}
 	return ashape;
 }
 }

@@ -84,7 +84,8 @@ void Symbol::toXml(ostream& stream) const
 
 	stream << indent++ << "<symbol>" << endl;
 	for ( ;ishape != shapes_.end(); ishape++)
-		(*ishape)->toXml(stream);
+		if (*ishape)
+			(*ishape)->toXml(stream);
 	stream << --indent << "</symbol>" << endl;
 }
 
@@ -92,15 +93,18 @@ void Symbol::toXml(ostream& stream) const
 Symbol* Symbol::fromXml(Cell* owner, xmlTextReaderPtr reader)
 {
 	string unexpected;
-	const xmlChar* nodetag;
-	const xmlChar* nodename;
+	const xmlChar* nodeTag;
+	Shape* shape = NULL;
+	const xmlChar* nodeName;
+	Symbol* symbol = owner->getSymbol();
 
 	///////////// begin parsing des nodes /////////////////
-	nodename = xmlTextReaderConstLocalName(reader);
-	nodetag=xmlTextReaderConstString(reader,(const xmlChar*)"symbol");
+	nodeName = xmlTextReaderConstLocalName(reader);
+	nodeTag=xmlTextReaderConstString(reader,(const xmlChar*)"symbol");
 	unexpected="[err] Symbol::fromxml(): unexpected of parser.";
 
-	while(nodetag == nodename || !isEnd(reader)){
+	while(!isEnd(reader)){
+
 		int status = xmlTextReaderRead(reader);
 		if (status != 1) {
 			if (status != 0) {
@@ -109,6 +113,8 @@ Symbol* Symbol::fromXml(Cell* owner, xmlTextReaderPtr reader)
 			}
 			break;
 		}
+		nodeName = xmlTextReaderConstLocalName(reader);
+		if(nodeTag == nodeName){break;}
 
 		// on elimine les commentaires, espaces et tabs
 		switch (xmlTextReaderNodeType(reader)) {
@@ -118,14 +124,42 @@ Symbol* Symbol::fromXml(Cell* owner, xmlTextReaderPtr reader)
 			continue;
 		}
 
-		//nodename = xmlTextReaderConstLocalName(reader);
-		Shape::fromXml(owner->getSymbol(), reader);
+		shape = Shape::fromXml(owner->getSymbol(), reader);
 
 	}
-	///////////// end parsing des nodes /////////////////
-	return owner->getSymbol();
+	return symbol;
+	/////////////// end parsing des nodes /////////////////
 }
 
+//Symbol* Symbol::fromXml(Cell* c, xmlTextReaderPtr reader){
+	//const xmlChar* nodeTag  = xmlTextReaderConstString        ( reader, (const xmlChar*)"symbol" );
+	//const xmlChar* nodeName = xmlTextReaderConstLocalName     ( reader );
+
+	//Symbol* symbol = c->getSymbol();
+	//Shape* shape = NULL;
+
+
+	//while(true){
+		////on fait avancer le pointeur
+		//xmlTextReaderRead(reader);
+		//nodeName = xmlTextReaderConstLocalName     ( reader );
+		//if(nodeTag == nodeName){break;}
+
+		//switch ( xmlTextReaderNodeType(reader) ) {
+		//case XML_READER_TYPE_COMMENT:
+		//case XML_READER_TYPE_WHITESPACE:
+		//case XML_READER_TYPE_SIGNIFICANT_WHITESPACE:
+			//continue;
+		//}
+
+		//shape->fromXml(symbol, reader);
+		//if(shape) symbol->add(shape);
+		////std::cout << "-----" << std::endl;
+		////symbol->toXml(std::cout);
+
+	//}
+	//return symbol;
+//}
 // Techniquement c'est pour ne pas dupliquer
 //Symbol& Symbol::operator=(const Symbol& sym) const
 //{

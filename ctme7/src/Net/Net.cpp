@@ -131,8 +131,6 @@ bool  Net::remove ( Line* line )
 }
 
 
-
-
 // TODO MODIFIER AVEC TME7
 void Net::toXml(ostream& o)
 {
@@ -142,14 +140,15 @@ void Net::toXml(ostream& o)
 	vector<Line*>::const_iterator itline = lines_.begin();
 	vector<Line*>::const_iterator endline = lines_.end();
 
-
 	o << indent++ << "<net name=\"" << name_ << "\"";
 	o << " type=\"" << Term::toString(type_) << "\">";
 	o << endl;
 	for (; itnode != endnode; itnode++)
-		(*itnode)->toXml(o);
+		if (*itnode)
+			(*itnode)->toXml(o);
 	for (; itline != endline; itline++)
-		(*itline)->toXml(o);
+		if (*itline)
+			(*itline)->toXml(o);
 	o << --indent << "</net>";
 	o << endl;
 }
@@ -194,8 +193,8 @@ Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 	///////////// BEGIN PARSING des NODES /////////////////
 
 	nodeName = xmlTextReaderConstLocalName(reader);
-	//nodTag1 = xmlTextReaderConstString(reader, (const xmlChar*)"node");
-	//nodeTag2 = xmlTextReaderConstString(reader, (const xmlChar*)"line");
+	nodeTag1 = xmlTextReaderConstString(reader, (const xmlChar*)"node");
+	nodeTag2 = xmlTextReaderConstString(reader, (const xmlChar*)"line");
 	unexpected = "[ERR] Net::fromXml(): Unexpected termination of parser.";
 
 	//while(nodeTag1 == nodeName || nodeTag2 == nodeName|| !isEnd(reader)){
@@ -221,13 +220,13 @@ Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 		const xmlChar* NodeTag
 			= xmlTextReaderConstString( reader, (const xmlChar*)"node");
 		const xmlChar* LineTag
-			= xmlTextReaderConstString( reader, (const xmlChar*)"line" );
-		//if (NodeTag == nodeName){
-			//if ((Node::fromXml(net ,reader))) continue;
-		//}
-		//if (LineTag == nodeName){
-			//if ((Line::fromXml(net ,reader))) continue;
-		//}
+			= xmlTextReaderConstString( reader, (const xmlChar*)"line");
+		if (NodeTag == nodeName){
+			if ((Node::fromXml(net ,reader))) continue;
+		}
+		if (LineTag == nodeName){
+			if ((Line::fromXml(net ,reader))) continue;
+		}
 	}
 	return net;
 }

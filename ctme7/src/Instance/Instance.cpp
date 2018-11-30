@@ -14,14 +14,14 @@ Instance::Instance(Cell* owner, Cell* model, const string& str) :
 	name_(str),
 	terms_(),
 	position_()
-{
-	for (vector<Term*>::const_iterator it = model->getTerms().begin();
-		it != model->getTerms().end(); it++){
-		terms_.push_back(new Term(this, *it));
-	}
+	{
+		for (vector<Term*>::const_iterator it = model->getTerms().begin();
+		     it != model->getTerms().end(); it++){
+			terms_.push_back(new Term(this, *it));
+		}
 
-	owner_->add(this);
-}
+		owner_->add(this);
+	}
 
 
 Instance::~Instance()
@@ -29,7 +29,7 @@ Instance::~Instance()
 	//Duplication
 	// FATAL ERROR 5H DE DEBUG
 	for (vector<Term*>::const_iterator it = terms_.begin();
-		it != terms_.end(); it++){
+	     it != terms_.end(); it++){
 		delete *it;
 	}
 
@@ -84,7 +84,7 @@ bool Instance::connect(const string& name, Net* net)
 	Term* t = NULL;
 
 	for (vector<Term*>::const_iterator it = terms_.begin();
-		it != terms_.end(); it++){
+	     it != terms_.end(); it++){
 
 		if ((*it)->getName() == name)
 			t = *it;
@@ -164,43 +164,49 @@ Instance* Instance::fromXml(Cell* cell, xmlTextReaderPtr reader)
 	const xmlChar* xml_x;
 	const xmlChar* xml_y;
 
-	// s'il y a declaration d'un name
-	xml_name = (const xmlChar*)"name";
-	xml_mastercell = (const xmlChar*)"mastercell";
-	xml_x = (const xmlChar*)"x";
-	xml_y = (const xmlChar*)"y";
+	const xmlChar* nodeTag  = xmlTextReaderConstString(reader, (const xmlChar*)"instance");
+	const xmlChar* nodeName = xmlTextReaderConstLocalName(reader);
 
-	// prendre la valeur de la declaration
-	xml_name_value = xmlTextReaderGetAttribute(reader, xml_name);
-	xml_mastercell_value = xmlTextReaderGetAttribute(reader,xml_mastercell);
-	xml_x_value = xmlTextReaderGetAttribute(reader, xml_x);
-	xml_y_value = xmlTextReaderGetAttribute(reader, xml_y);
+	Instance* instance = NULL;
 
-	// transformer cette valeur en string
-	s_name = xmlCharToString(xml_name_value);
-	s_mastercell = xmlCharToString(xml_mastercell_value);
-	s_x = xmlCharToString(xml_x_value);
-	s_y = xmlCharToString(xml_y_value);
+	//vérification du nom du node actuel par rapport au Tag demandé
+	if(nodeTag == nodeName){
+		// s'il y a declaration d'un name
+		xml_name = (const xmlChar*)"name";
+		xml_mastercell = (const xmlChar*)"mastercell";
+		xml_x = (const xmlChar*)"x";
+		xml_y = (const xmlChar*)"y";
 
-	// Si le nom n'est pas vide alors on demande
-	// la creation de la cellule
-	if (not (s_name.empty() && s_mastercell.empty() && s_x.empty()
-		 && s_y.empty())) {
+		// prendre la valeur de la declaration
+		xml_name_value = xmlTextReaderGetAttribute(reader, xml_name);
+		xml_mastercell_value = xmlTextReaderGetAttribute(reader,xml_mastercell);
+		xml_x_value = xmlTextReaderGetAttribute(reader, xml_x);
+		xml_y_value = xmlTextReaderGetAttribute(reader, xml_y);
 
-		Cell* mastercell;
-		if (!(mastercell= Cell::find(s_mastercell)))
-			return NULL;
+		// transformer cette valeur en string
+		s_name = xmlCharToString(xml_name_value);
+		s_mastercell = xmlCharToString(xml_mastercell_value);
+		s_x = xmlCharToString(xml_x_value);
+		s_y = xmlCharToString(xml_y_value);
 
-		int x = atoi(s_x.c_str());
-		int y = atoi(s_y.c_str());
+		// Si le nom n'est pas vide alors on demande
+		// la creation de la cellule
+		if (not (s_name.empty() && s_mastercell.empty() && s_x.empty()
+			 && s_y.empty())) {
 
-		Instance *instance;
-		instance = new Instance(cell, mastercell, s_name);
-		instance->setPosition(x, y);
+			Cell* mastercell;
+			if (!(mastercell= Cell::find(s_mastercell)))
+				return NULL;
 
-		return instance;
+			int x = atoi(s_x.c_str());
+			int y = atoi(s_y.c_str());
+
+			instance = new Instance(cell, mastercell, s_name);
+			instance->setPosition(x, y);
+			return instance;
+		}
 	}
-	return NULL;
+	return instance;
 }
 
 }

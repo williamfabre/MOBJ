@@ -80,10 +80,9 @@ LineShape* LineShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	s_x2 = xmlCharToString(xml_x2_value);
 	s_y2 = xmlCharToString(xml_y2_value);
 	nodeType = xmlTextReaderNodeType(reader);
+	const xmlChar* nodeTag  = xmlTextReaderConstString(reader, (const xmlChar*)"line");
 
-	//cerr << "WEIUFNIUGFENRIGUENRGIENGIUNGIUNGERGNIONEGRIUNERUGNERG";
-
-	//if (nodeType == XML_READER_TYPE_ELEMENT && nodeName == xml_line){
+	if (nodeName == nodeTag){
 		if ( not (s_x1.empty() && s_x2.empty() && s_y1.empty()
 			  && s_y2.empty())){
 			x1 = atoi(s_x1.c_str());
@@ -92,7 +91,8 @@ LineShape* LineShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 			y2 = atoi(s_y2.c_str());
 			lshape = new LineShape(owner, x1, y1, x2, y2);
 		}
-	//}
+		return lshape;
+	}
 	return lshape;
 
 }
