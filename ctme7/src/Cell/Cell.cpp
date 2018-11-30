@@ -1,5 +1,3 @@
-// -*- explicit-buffer-name: "Cell.cpp<M1-MOBJ/8-10>" -*-
-
 #include  <cstdlib>
 #include  <fstream>
 #include  "Xml/XmlUtil.h"
@@ -7,6 +5,7 @@
 #include  "Term/Term.h"
 #include  "Net/Net.h"
 #include  "Instance/Instance.h"
+
 
 
 namespace Netlist {
@@ -354,4 +353,7 @@ Cell* Cell::fromXml ( xmlTextReaderPtr reader )
 }
 
 
-}  // Netlist namespace.
+}  // Netlist namespace.k
+
+
+

@@ -1,9 +1,9 @@
-#ifndef NETLIST_BOXSHAPE_H
+#ifndef NETLIST_XSHAPE_H
 #define NETLIST_BOXSHAPE_H
 
-#include "Shape/Shape.h"
 #include "Box/Box.h"
 #include "Xml/XmlUtil.h"
+#include "Shape/Shape.h"
 
 namespace Netlist
 {

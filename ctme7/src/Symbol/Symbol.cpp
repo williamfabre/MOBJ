@@ -1,8 +1,8 @@
 #include  "Xml/XmlUtil.h"
-#include <ostream>
 #include "Symbol/Symbol.h"
 #include "Shape/Shape.h"
 #include "Shape/definition/TermShape.h"
+#include <ostream>
 
 namespace Netlist {
 
@@ -88,14 +88,50 @@ void Symbol::toXml(ostream& stream) const
 	stream << --indent << "</symbol>" << endl;
 }
 
-Symbol* Symbol::fromXml( Cell* owner, xmlTextReaderPtr reader)
+
+Symbol* Symbol::fromXml(Cell* owner, xmlTextReaderPtr reader)
 {
-	return NULL;
+	string unexpected;
+	const xmlChar* nodetag;
+	const xmlChar* nodename;
+
+	///////////// begin parsing des nodes /////////////////
+	nodename = xmlTextReaderConstLocalName(reader);
+	nodetag=xmlTextReaderConstString(reader,(const xmlChar*)"symbol");
+	unexpected="[err] Symbol::fromxml(): unexpected of parser.";
+
+	while(nodetag == nodename || !isEnd(reader)){
+		int status = xmlTextReaderRead(reader);
+		if (status != 1) {
+			if (status != 0) {
+				cerr << unexpected;
+				cerr << endl;
+			}
+			break;
+		}
+
+		// on elimine les commentaires, espaces et tabs
+		switch (xmlTextReaderNodeType(reader)) {
+		case XML_READER_TYPE_COMMENT:
+		case XML_READER_TYPE_WHITESPACE:
+		case XML_READER_TYPE_SIGNIFICANT_WHITESPACE:
+			continue;
+		}
+
+		//nodename = xmlTextReaderConstLocalName(reader);
+		Shape::fromXml(owner->getSymbol(), reader);
+
+	}
+	///////////// end parsing des nodes /////////////////
+	return owner->getSymbol();
 }
 
+// Techniquement c'est pour ne pas dupliquer
 //Symbol& Symbol::operator=(const Symbol& sym) const
 //{
+
 //}
+
 
 }
 

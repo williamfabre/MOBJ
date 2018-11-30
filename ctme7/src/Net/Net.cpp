@@ -6,6 +6,7 @@
 #include "Cell/Cell.h"
 #include "Node/Node.h"
 #include "Xml/XmlUtil.h"
+#include "Line/Line.h"
 
 namespace Netlist {
 
@@ -135,14 +136,20 @@ bool  Net::remove ( Line* line )
 // TODO MODIFIER AVEC TME7
 void Net::toXml(ostream& o)
 {
-	vector<Node*>::const_iterator it = nodes_.begin();
-	vector<Node*>::const_iterator end = nodes_.end();
+	vector<Node*>::const_iterator itnode = nodes_.begin();
+	vector<Node*>::const_iterator endnode = nodes_.end();
+
+	vector<Line*>::const_iterator itline = lines_.begin();
+	vector<Line*>::const_iterator endline = lines_.end();
+
 
 	o << indent++ << "<net name=\"" << name_ << "\"";
 	o << " type=\"" << Term::toString(type_) << "\">";
 	o << endl;
-	for (; it != end; it++)
-		(*it)->toXml(o);
+	for (; itnode != endnode; itnode++)
+		(*itnode)->toXml(o);
+	for (; itline != endline; itline++)
+		(*itline)->toXml(o);
 	o << --indent << "</net>";
 	o << endl;
 }
@@ -152,7 +159,8 @@ Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 {
 	Net* net = NULL;
 	string unexpected;
-	const xmlChar* nodeTag;
+	const xmlChar* nodeTag1;
+	const xmlChar* nodeTag2;
 	const xmlChar* nodeName;
 
 
@@ -186,13 +194,12 @@ Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 	///////////// BEGIN PARSING des NODES /////////////////
 
 	nodeName = xmlTextReaderConstLocalName(reader);
-	nodeTag = xmlTextReaderConstString(reader, (const xmlChar*)"node");
-	unexpected = "[ERR] Cell::fromXml(): Unexpected termination of parser.";
+	//nodTag1 = xmlTextReaderConstString(reader, (const xmlChar*)"node");
+	//nodeTag2 = xmlTextReaderConstString(reader, (const xmlChar*)"line");
+	unexpected = "[ERR] Net::fromXml(): Unexpected termination of parser.";
 
-	//if (nodeTag != nodeName || !isEnd(reader))
-	//return net;
-
-	while(nodeTag == nodeName || !isEnd(reader)){
+	//while(nodeTag1 == nodeName || nodeTag2 == nodeName|| !isEnd(reader)){
+	while(!isEnd(reader)){
 		int status = xmlTextReaderRead(reader);
 		if (status != 1) {
 			if (status != 0) {
@@ -210,15 +217,19 @@ Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 			continue;
 		}
 
-		//const xmlChar* tmpnodeName = xmlTextReaderConstLocalName     ( reader );
 		nodeName = xmlTextReaderConstLocalName(reader);
-		//if (nodeName == nodeTag){
-		if (!(Node::fromXml(net ,reader))) break;
+		const xmlChar* NodeTag
+			= xmlTextReaderConstString( reader, (const xmlChar*)"node");
+		const xmlChar* LineTag
+			= xmlTextReaderConstString( reader, (const xmlChar*)"line" );
+		//if (NodeTag == nodeName){
+			//if ((Node::fromXml(net ,reader))) continue;
+		//}
+		//if (LineTag == nodeName){
+			//if ((Line::fromXml(net ,reader))) continue;
 		//}
 	}
-	///////////// END PARSING des NODES /////////////////
-
 	return net;
 }
-
+///////////// END PARSING des NODES /////////////////
 }

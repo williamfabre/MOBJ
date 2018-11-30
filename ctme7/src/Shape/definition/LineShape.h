@@ -24,7 +24,7 @@ class LineShape : public Shape
 		inline int getX2() const {return x2_;}
 		inline int getY2() const {return y2_;}
 		static LineShape* fromXml(Symbol* owner, xmlTextReaderPtr reader);
-		void toXml(std::ostream&);
+		virtual void toXml(std::ostream& stream) const;
 	};
 }
 #endif

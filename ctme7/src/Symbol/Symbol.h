@@ -39,6 +39,7 @@ public:
 
 private:
 	Symbol (const Symbol&);
+	// ne pas la faie au final
 	//Symbol& operator=(const Symbol&) const;
 };
 }  // Netlist namespace.

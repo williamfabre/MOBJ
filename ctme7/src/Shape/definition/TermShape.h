@@ -1,5 +1,5 @@
-#ifndef NETLIST_BOXSHAPE_H
-#define NETLIST_BOXSHAPE_H
+#ifndef NETLIST_TERMSHAPE_H
+#define NETLIST_TERMSHAPE_H
 
 #include "Box/Box.h"
 #include "Xml/XmlUtil.h"
@@ -23,7 +23,9 @@ public:
 	static TermShape* fromXml(Symbol* owner, xmlTextReaderPtr reader);
 	static string a2s(NameAlign align);
 	static NameAlign s2a(string align);
+
 	TermShape(Symbol* owner, string  name , int x, int y);
+
 	virtual ~TermShape();
 	virtual Box getBoundingBox() const;
 
