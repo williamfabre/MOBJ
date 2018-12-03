@@ -59,6 +59,7 @@ NodePoint::NodePoint ( Net* net, size_t id, Point p )
 {
 	setPosition( p );
 	net_->add( this );
+	this->setId(id);
 }
 
 
@@ -101,7 +102,9 @@ void  NodeTerm::toXml ( ostream& stream ) const
 		stream << indent << "<node term=\"" << term_->getName()
 			<< "\" id=\""       << id_;
 	}
-	stream << "\" x=\"" << position_.getX() << "\" y=\"" << position_.getY() << "\"/>\n";
+	//stream << "\" x=\"" << position_.getX()
+	//<< "\" y=\"" << position_.getY() << "\"/>\n";
+	stream << "\"/>\n";
 }
 
 

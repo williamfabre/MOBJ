@@ -81,8 +81,13 @@ void Net::add(Node* node)
 		}
 		if (id < nodes_.size()){ // l'id est valide
 			if (nodes_[id] != NULL){ // erreur
-				cerr << "case pleine" << endl;
-				nodes_[id]->setId(Node::noid);
+				//cerr << "case pleine" << endl;
+				//cerr << nodes_[id]->getPosition() <<endl;
+				//nodes_[id]->setId(Node::noid);
+				//for (vector<Node*>::const_iterator it = nodes_.begin();
+				     //it < nodes_.end(); it++)
+					//cerr << (*it)->getId() << " " ;
+				//nodes_[id]->setId(getFreeNodeId());
 				// GESTION d'erreur
 				return;
 			}
@@ -143,12 +148,14 @@ void Net::toXml(ostream& o)
 	o << indent++ << "<net name=\"" << name_ << "\"";
 	o << " type=\"" << Term::toString(type_) << "\">";
 	o << endl;
-	for (; itnode != endnode; itnode++)
+	for (; itnode != endnode; itnode++){
 		if (*itnode)
 			(*itnode)->toXml(o);
-	for (; itline != endline; itline++)
+	}
+	for (; itline != endline; itline++){
 		if (*itline)
 			(*itline)->toXml(o);
+	}
 	o << --indent << "</net>";
 	o << endl;
 }
@@ -158,8 +165,6 @@ Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 {
 	Net* net = NULL;
 	string unexpected;
-	const xmlChar* nodeTag1;
-	const xmlChar* nodeTag2;
 	const xmlChar* nodeName;
 
 
@@ -191,13 +196,9 @@ Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 	}
 
 	///////////// BEGIN PARSING des NODES /////////////////
-
 	nodeName = xmlTextReaderConstLocalName(reader);
-	nodeTag1 = xmlTextReaderConstString(reader, (const xmlChar*)"node");
-	nodeTag2 = xmlTextReaderConstString(reader, (const xmlChar*)"line");
 	unexpected = "[ERR] Net::fromXml(): Unexpected termination of parser.";
 
-	//while(nodeTag1 == nodeName || nodeTag2 == nodeName|| !isEnd(reader)){
 	while(!isEnd(reader)){
 		int status = xmlTextReaderRead(reader);
 		if (status != 1) {
@@ -221,6 +222,7 @@ Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 			= xmlTextReaderConstString( reader, (const xmlChar*)"node");
 		const xmlChar* LineTag
 			= xmlTextReaderConstString( reader, (const xmlChar*)"line");
+
 		if (NodeTag == nodeName){
 			if ((Node::fromXml(net ,reader))) continue;
 		}
@@ -229,6 +231,6 @@ Net* Net::fromXml(Cell* cell, xmlTextReaderPtr reader)
 		}
 	}
 	return net;
-}
 ///////////// END PARSING des NODES /////////////////
+}
 }

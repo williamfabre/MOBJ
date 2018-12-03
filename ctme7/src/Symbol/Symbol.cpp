@@ -43,7 +43,7 @@ const TermShape* Symbol::getTermShape(Term* term) const
 {
 	const TermShape* ts;
 	vector<Shape*>::const_iterator ishape = shapes_.begin();
-	for ( ;ishape != shapes_.end(); ++ishape){
+	for ( ;ishape != shapes_.end(); ishape++){
 		// Check si c'est un term shape et si c'est le bon term shape
 		ts = dynamic_cast<TermShape*>(*ishape);
 		if (ts != NULL && ts->getTerm() == term)
@@ -58,11 +58,12 @@ Point Symbol::getTermPosition(Term* term) const
 	int x, y;
 	const TermShape* ts;
 	ts = getTermShape(term);
-	//if (!ts){
+	if (ts){
 		x = ts->getX();
 		y = ts->getY();
 		return Point(x,y);
-	//}
+	}
+	return Point(0,0);
 }
 
 void Symbol::add( Shape* shape)
@@ -94,7 +95,6 @@ Symbol* Symbol::fromXml(Cell* owner, xmlTextReaderPtr reader)
 {
 	string unexpected;
 	const xmlChar* nodeTag;
-	Shape* shape = NULL;
 	const xmlChar* nodeName;
 	Symbol* symbol = owner->getSymbol();
 
@@ -124,7 +124,7 @@ Symbol* Symbol::fromXml(Cell* owner, xmlTextReaderPtr reader)
 			continue;
 		}
 
-		shape = Shape::fromXml(owner->getSymbol(), reader);
+		Shape::fromXml(owner->getSymbol(), reader);
 
 	}
 	return symbol;

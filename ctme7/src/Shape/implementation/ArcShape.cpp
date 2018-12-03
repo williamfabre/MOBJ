@@ -44,7 +44,6 @@ ArcShape* ArcShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	int y2;
 	int span;
 	int start;
-	int nodeType;
 
 	xmlChar* xml_x1_value;
 	xmlChar* xml_y1_value;
@@ -59,7 +58,6 @@ ArcShape* ArcShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	const xmlChar* xml_y2;
 	const xmlChar* xml_span;
 	const xmlChar* xml_start;
-	const xmlChar* xml_arc;
 	const xmlChar* nodeName;
 
 	string s_x1;
@@ -76,7 +74,6 @@ ArcShape* ArcShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	xml_y2 = (const xmlChar*)"y2";
 	xml_start = (const xmlChar*)"start";
 	xml_span = (const xmlChar*)"span";
-	xml_arc= (const xmlChar*)"arc";
 
 	// prendre la valeur de la declaration
 	xml_x1_value = xmlTextReaderGetAttribute(reader, xml_x1);
@@ -94,7 +91,6 @@ ArcShape* ArcShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	s_y2 = xmlCharToString(xml_y2_value);
 	s_start = xmlCharToString(xml_start_value);
 	s_span = xmlCharToString(xml_span_value);
-	nodeType = xmlTextReaderNodeType(reader);
 	const xmlChar* nodeTag  = xmlTextReaderConstString(reader, (const xmlChar*)"arc");
 
 	if (nodeName == nodeTag){

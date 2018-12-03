@@ -5,6 +5,7 @@
 #include "Cell/Cell.h"
 #include "Term/Term.h"
 #include "Xml/XmlUtil.h"
+#include "Shape/definition/TermShape.h"
 
 namespace Netlist {
 
@@ -128,13 +129,46 @@ void Instance::remove(Term* term)
 
 void Instance::setPosition(const Point& pt)
 {
+	Cell* cell;
+	Symbol* symbol;
+	const TermShape* termshape;
+	vector<Term*>::const_iterator it = terms_.begin();
+	cell = getMasterCell();
+	symbol = cell->getSymbol();
+	Point point;
+
 	position_ = pt;
+
+	for (; it < terms_.end(); it++){
+		if (*it){
+			point = (*it)->getPosition();
+			(*it)->setPosition(pt);
+			point.translate(symbol->getTermPosition((*it)));
+		}
+	}
+
 }
 
 
 void Instance::setPosition(int x, int y)
 {
+	Cell* cell;
+	Symbol* symbol;
+	const TermShape* termshape;
+	vector<Term*>::const_iterator it = terms_.begin();
+	cell = getMasterCell();
+	symbol = cell->getSymbol();
+	Point point;
+
 	position_ = Point (x, y);
+
+	for (; it < terms_.end(); it++){
+		if (*it){
+			point = (*it)->getPosition();
+			(*it)->setPosition(x,y);
+			point.translate(symbol->getTermPosition((*it)));
+		}
+	}
 }
 
 

@@ -39,7 +39,6 @@ EllipseShape* EllipseShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	int y1;
 	int x2;
 	int y2;
-	int nodeType;
 
 	xmlChar* xml_x1_value;
 	xmlChar* xml_y1_value;
@@ -50,7 +49,6 @@ EllipseShape* EllipseShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	const xmlChar* xml_y1;
 	const xmlChar* xml_x2;
 	const xmlChar* xml_y2;
-	const xmlChar* xml_ellipse;
 	const xmlChar* nodeName;
 
 	string s_x1;
@@ -63,7 +61,6 @@ EllipseShape* EllipseShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	xml_y1 = (const xmlChar*)"y1";
 	xml_x2 = (const xmlChar*)"x2";
 	xml_y2 = (const xmlChar*)"y2";
-	xml_ellipse = (const xmlChar*)"ellipse";
 
 	// prendre la valeur de la declaration
 	xml_x1_value = xmlTextReaderGetAttribute(reader, xml_x1);
@@ -77,7 +74,6 @@ EllipseShape* EllipseShape::fromXml (Symbol* owner, xmlTextReaderPtr reader)
 	s_y1 = xmlCharToString(xml_y1_value);
 	s_x2 = xmlCharToString(xml_x2_value);
 	s_y2 = xmlCharToString(xml_y2_value);
-	nodeType = xmlTextReaderNodeType(reader);
 	const xmlChar* nodeTag  = xmlTextReaderConstString(reader, (const xmlChar*)"ellipse");
 
 	if (nodeName == nodeTag){

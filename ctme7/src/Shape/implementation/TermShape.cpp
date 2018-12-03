@@ -69,7 +69,6 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 
 	int x1;
 	int y1;
-	int nodeType;
 
 	xmlChar* xml_x1_value;
 	xmlChar* xml_y1_value;
@@ -81,7 +80,6 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	const xmlChar* xml_termname;
 	const xmlChar* xml_align;
 	const xmlChar* nodeName;
-	const xmlChar* xml_termnode;
 
 	string s_x1;
 	string s_y1;
@@ -93,14 +91,12 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	xml_y1 = (const xmlChar*)"y1";
 	xml_termname = (const xmlChar*)"name";
 	xml_align = (const xmlChar*)"align";
-	xml_termnode = (const xmlChar*)"term";
 
 	// prendre la valeur de la declaration
 	xml_x1_value = xmlTextReaderGetAttribute(reader, xml_x1);
 	xml_y1_value = xmlTextReaderGetAttribute(reader, xml_y1);
 	xml_termname_value = xmlTextReaderGetAttribute(reader, xml_termname);
 	xml_align_value = xmlTextReaderGetAttribute(reader, xml_align);
-	xml_termnode = xmlTextReaderConstString(reader, xml_termnode);
 	nodeName = xmlTextReaderConstLocalName(reader);
 
 	// transformer cette valeur en string
@@ -108,7 +104,6 @@ TermShape* TermShape::fromXml(Symbol* owner, xmlTextReaderPtr reader)
 	s_y1 = xmlCharToString(xml_y1_value);
 	s_termname = xmlCharToString(xml_termname_value);
 	s_align = xmlCharToString(xml_align_value);
-	nodeType = xmlTextReaderNodeType(reader);
 	const xmlChar* nodeTag  = xmlTextReaderConstString(reader, (const xmlChar*)"term");
 
 	if (nodeName == nodeTag){
