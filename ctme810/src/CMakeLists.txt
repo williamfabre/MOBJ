@@ -42,6 +42,10 @@ set( mocIncludes
 	SaveCellDialog/SaveCellDialog.h
 	CellWidget/CellWidget.h
 	CellViewer/CellViewer.h
+	InstancesModel/InstancesModel.h
+	InstancesWidget/InstancesWidget.h
+	CellsLib/CellsLib.h
+	CellsModel/CellsModel.h
 	)
 
 set( cpps
@@ -64,11 +68,16 @@ set( cpps
 	Shape/implementation/BoxShape.cpp
 	Shape/implementation/TermShape.cpp
 
-
 	CellWidget/CellWidget.cpp
 	CellViewer/CellViewer.cpp
 	SaveCellDialog/SaveCellDialog.cpp
 	OpenCellDialog/OpenCellDialog.cpp
+
+	InstancesModel/InstancesModel.cpp
+	InstancesWidget/InstancesWidget.cpp
+	CellsLib/CellsLib.cpp
+	CellsModel/CellsModel.cpp
+
 
 	Main/Main.cpp
 	)

@@ -1,76 +1,87 @@
 #include "CellViewer/CellViewer.h"
 #include "CellWidget/CellWidget.h"
-#include "OpenCellDialog/OpenCellDialog.h"
-#include "SaveCellDialog/SaveCellDialog.h"
 #include "Cell/Cell.h"
+
 #include <QAction>
 #include <QMenuBar>
 #include <QMenu>
 
 namespace Netlist {
 
-
-CellViewer::CellViewer(QWidget* parent)
-	: QMainWindow(parent), cellWidget_(NULL), saveCellDialog_(NULL),
-	openCellDialog_(NULL)
+CellViewer::CellViewer(QWidget * parent) :
+	QMainWindow(parent), cellWidget_(NULL), cellsLib_(NULL),
+	instancesWidget_(NULL), saveCellDialog_(NULL)
 {
+	// instanciation
 	cellWidget_ = new CellWidget();
 	saveCellDialog_ = new SaveCellDialog(this);
-	openCellDialog_ = new OpenCellDialog(this);
+	instancesWidget_ = new InstancesWidget();
+	cellsLib_ = new CellsLib();
 
-	setCentralWidget(cellWidget_);
+	// set this into instance and cells
+	instancesWidget_->setCellViewer(this);
+	cellsLib_->setCellViewer(this);
 
-	// FILE IN MENU
+	//set the widget
+	setCentralWidget (cellWidget_);
+
+	// File
 	QMenu* fileMenu = menuBar()->addMenu("&File");
 
-	// SAVE AS IN MENU
-	QAction* actionSave = new QAction("&Save As", this);
-	actionSave->setStatusTip("Save to disk (rename) the Cell");
-	actionSave->setShortcut(QKeySequence("CTRL+S"));
-	actionSave->setVisible(true);
-	fileMenu->addAction(actionSave);
-	connect(actionSave, SIGNAL(triggered()), this, SLOT(CellViewer::saveCell()));
+	// Save
+	QAction* action = new QAction("&Save As", this);
+	action->setStatusTip("Save to disk (rename)the Cell");
+	action->setShortcut(QKeySequence ("CTRL+S"));
+	action->setVisible(true);
+	fileMenu->addAction(action);
+	connect(action, SIGNAL(triggered()), this, SLOT(saveCell()));
 
-	// OPEN IN MENU
-	QAction* actionOpen = new QAction("&Open", this);
-	actionOpen->setStatusTip("Open from disk the Cell");
-	actionOpen->setShortcut(QKeySequence("CTRL+O"));
-	actionOpen->setVisible(true);
-	fileMenu->addAction(actionOpen);
-	connect(actionOpen, SIGNAL(triggered()), this, SLOT(CellViewer::openCell()));
+	// Open
+	action = new QAction("&Open", this);
+	action->setStatusTip("Open a cell");
+	action->setShortcut(QKeySequence ("CTRL+O"));
+	action->setVisible(true);
+	fileMenu->addAction(action);
+	connect(action, SIGNAL(triggered()), this, SLOT(openCell()));
 
+	// Cellslib
+	action = new QAction("&CellsLib", this);
+	action->setStatusTip("Open Cells Lib");
+	action->setShortcut(QKeySequence ("CTRL+C"));
+	action->setVisible(true);
+	fileMenu->addAction(action);
+	connect(action, SIGNAL(triggered()), this, SLOT(showCellsLib()));
 
-	// QUIT IN MENU
-	QAction* actionQuit = new QAction("&Quit", this);
-	actionQuit->setStatusTip("Exit the Netlist Viewer");
-	actionQuit->setShortcut(QKeySequence("CTRL+Q"));
-	actionQuit->setVisible(true);
-	fileMenu->addAction(actionQuit);
-	connect(actionQuit, SIGNAL(triggered()), this, SLOT(close()));
+	// InstanceWidget
+	action = new QAction("&InstancesWidget", this);
+	action->setStatusTip("Open Instances Widget");
+	action->setShortcut(QKeySequence ("CTRL+I"));
+	action->setVisible(true);
+	fileMenu->addAction(action);
+	connect(action, SIGNAL(triggered()), this, SLOT(showInstancesWidget()));
+
+	// Quit
+	action = new QAction("&Quit", this);
+	action->setStatusTip("Exit the Netlist Viewer");
+	action->setShortcut(QKeySequence ("CTRL+Q"));
+	action->setVisible(true);
+	fileMenu->addAction(action);
+	connect(action, SIGNAL(triggered()), this, SLOT(close()));
 }
 
-
-CellViewer::~CellViewer()
-{
-}
+CellViewer::~CellViewer(){}
 
 void CellViewer::saveCell()
 {
-	cerr << __func__ << "IT WORKS with Save" << endl;
-	// recuperer la cell
 	Cell* cell = getCell();
 
-	// si elle n'existe pas on detruit
-	if (cell == NULL) return;
+	if (cell == NULL)return ;
 
-	// on recupere le nom de la cell
 	QString cellName = cell->getName().c_str();
 
-	// on set le nom et on sauvegarde
-	if (saveCellDialog_->run(cellName)){ // si l'execution fonctionne
+	if (saveCellDialog_->run(cellName)){
 		cell->setName(cellName.toStdString());
 		cell->save(cellName.toStdString());
-		cerr << "test12341234";
 	}
 }
 
@@ -78,19 +89,28 @@ void CellViewer::openCell()
 {
 	QString name;
 
-	cerr << __func__ << "IT WORKS with Open" << endl;
-	// si on est en etat run
-	if (openCellDialog_->run(name)){
+	if (OpenCellDialog::run(this, name)){
 
 		Cell* cell = Cell::find(name.toStdString());
 		if (!cell){
-			// on load si elle n'existe pas
 			cell = Cell::load(name.toStdString());
 		} else {
-			// on set si elle existe
 			setCell(cell);
 		}
 	}
+}
+
+void CellViewer::showInstancesWidget()
+{
+	cerr << "instwidget" << endl;
+	instancesWidget_->setCell(CellViewer::getCell());
+	instancesWidget_->show();
+}
+
+void CellViewer::showCellsLib()
+{
+	cerr << "cellslib" << endl;
+	cellsLib_->show();
 }
 
 }

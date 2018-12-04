@@ -51,14 +51,16 @@ void OpenCellDialog::setCellName(const  QString& name)
 	return lineEdit_->setText(name);
 }
 
-bool OpenCellDialog::run(QString& name)
+bool OpenCellDialog::run(QWidget* parent, QString& name)
 {
-	// exec?
-	int dialogResult = exec();
-	// recuperer le nom
-	name = getCellName();
-	//verifie aue l'execution a fonctionnee
-	return(dialogResult  ==  Accepted);
-}
+	OpenCellDialog* openCellDialog;
+	bool dialogResult;
 
-}
+	openCellDialog = new OpenCellDialog(parent);
+	dialogResult = (openCellDialog->exec() == Accepted);
+	name = openCellDialog->getCellName();
+
+	delete openCellDialog;
+
+	return dialogResult;
+}}
