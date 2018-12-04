@@ -1,4 +1,5 @@
 #include "Instance/Instance.h"
+#include "Cell/Cell.h"
 #include "InstancesModel/InstancesModel.h"
 
 namespace Netlist {

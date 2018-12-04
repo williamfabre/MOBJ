@@ -1,6 +1,6 @@
-//#include"Cell.h"
-//#include"Point.h"
-#include"CellsMode/CellsModel.h"
+#include "CellsModel/CellsModel.h"
+#include "Cell/Cell.h"
+
 
 namespace Netlist {
 
@@ -12,10 +12,7 @@ CellsModel::CellsModel(QObject* parent):
 CellsModel::~CellsModel()
 {
 }
-void CellsModel::updateDatas()
-{
-	emit layoutChanged();
-}
+
 void CellsModel::setCell(Cell* cell)
 {
 	emit layoutAboutToBeChanged();
@@ -35,8 +32,8 @@ int CellsModel::columnCount(const QModelIndex& parent) const
 
 QVariant CellsModel::data(const QModelIndex& index, int role) const
 {
-	if(not index.isValid()) return QVariant();
-	if(role==Qt::DisplayRole){
+	if (not index.isValid()) return QVariant();
+	if (role==Qt::DisplayRole){
 		int row = index.row();
 		return Cell::getAllCells()[row]->getName().c_str();
 	}
@@ -46,17 +43,17 @@ QVariant CellsModel::data(const QModelIndex& index, int role) const
 QVariant CellsModel::headerData(int section,
 				Qt::Orientation orientation, int role) const
 {
-	if(orientation == Qt::Vertical) return QVariant();
-	if(role != Qt::DisplayRole) return QVariant();
+	if (orientation == Qt::Vertical) return QVariant();
+	if (role != Qt::DisplayRole) return QVariant();
 
-	if(section == 0) return QVariant("Cell");
+	if (section == 0) return QVariant("Cell");
 	return QVariant();
 }
 
 Cell* CellsModel::getModel(int row)
 {
-	if(not cell_) return NULL;
-	if(row >= (int)Cell::getAllCells().size()) return NULL;
+	if (not cell_) return NULL;
+	if (row >= (int)Cell::getAllCells().size()) return NULL;
 	return Cell::getAllCells()[row];
 }
 

@@ -8,7 +8,7 @@ namespace Netlist{
 CellsLib::CellsLib(QWidget* parent) :
 	QWidget(parent),
 	cellViewer_(NULL),
-	baseModel_(new CellModel(this)),
+	baseModel_(new CellsModel(this)),
 	view_(new QTableView(this)),
 	load_(new QPushButton(this))
 {

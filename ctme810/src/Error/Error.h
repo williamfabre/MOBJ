@@ -1,4 +1,4 @@
-#include  <exception >
+#include <exception>
 
 class Error : public std::exception
 {

@@ -1,6 +1,9 @@
 #include "CellViewer/CellViewer.h"
 #include "CellWidget/CellWidget.h"
 #include "Cell/Cell.h"
+#include "InstancesWidget/InstancesWidget.h"
+#include "CellsLib/CellsLib.h"
+
 
 #include <QAction>
 #include <QMenuBar>

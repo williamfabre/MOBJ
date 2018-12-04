@@ -4,8 +4,8 @@
 #include <QWidget>
 #include <QTableView>
 #include <QPushButton>
-#include "InstancesModel/InstancesModel.h"
 #include <QCloseEvent>
+#include "InstancesModel/InstancesModel.h"
 
 namespace Netlist {
 

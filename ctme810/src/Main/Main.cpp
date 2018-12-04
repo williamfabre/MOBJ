@@ -17,7 +17,10 @@ using namespace Netlist;
 
 int main (int argc , char* argv [])
 {
+	int rvalue = -1;
+
 	cout << "Chargement des modeles..." << endl;
+
 	Cell::load("vdd");
 	Cell::load("gnd");
 	Cell::load("TransistorN");
@@ -26,7 +29,13 @@ int main (int argc , char* argv [])
 	Cell::load("or2");
 	Cell::load("and2");
 	try {
-		Cell* cell = Cell::load("halfadder");
+		Cell* halfadder = Cell::load("halfadder");
+		QApplication* qa = new QApplication(argc ,argv);
+		CellViewer* viewer = new CellViewer();
+		viewer->setCell(halfadder);
+		viewer->show ();
+		rvalue = qa->exec();
+		delete qa;
 	}
 	catch (int& e) {
 		cerr  << __func__ << "[ERROR] code: " << e << endl;
@@ -40,14 +49,6 @@ int main (int argc , char* argv [])
 		cerr  << __func__ << "[ERROR] Dans quel etat j’erre." << endl;
 		exit (1);
 	}
-
-	QApplication* qa = new QApplication(argc ,argv);
-	CellViewer* viewer = new CellViewer();
-	viewer->setCell(halfadder);
-	viewer->show ();
-	int rvalue = qa->exec();
-
-	delete qa;
 
 	return rvalue;
 }
