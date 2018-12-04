@@ -16,6 +16,7 @@ using namespace Netlist;
 
 int main (int argc , char* argv [])
 {
+	cout << "Chargement des modeles..." << endl;
 	Cell::load( "vdd" );
 	Cell::load( "gnd" );
 	Cell::load( "TransistorN" );

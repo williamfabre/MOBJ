@@ -38,6 +38,7 @@ set( includes
 	)
 
 set( mocIncludes
+	OpenCellDialog/OpenCellDialog.h
 	SaveCellDialog/SaveCellDialog.h
 	CellWidget/CellWidget.h
 	CellViewer/CellViewer.h
@@ -64,9 +65,10 @@ set( cpps
 	Shape/implementation/TermShape.cpp
 
 
-	SaveCellDialog/SaveCellDialog.cpp
 	CellWidget/CellWidget.cpp
 	CellViewer/CellViewer.cpp
+	SaveCellDialog/SaveCellDialog.cpp
+	OpenCellDialog/OpenCellDialog.cpp
 
 	Main/Main.cpp
 	)
