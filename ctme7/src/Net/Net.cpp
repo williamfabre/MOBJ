@@ -92,6 +92,7 @@ void Net::add(Node* node)
 				return;
 			}
 			nodes_[id] = node; // positionne l'id
+			return;
 		} else {
 			// gestion du tableau trop petit
 			for (size_t i = nodes_.size(); i < id; ++i){

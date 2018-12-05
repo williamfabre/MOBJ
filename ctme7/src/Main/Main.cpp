@@ -20,20 +20,20 @@ int main ( int argc, char* argv[] )
 	Cell::load( "gnd" );
 	Cell::load( "TransistorN" );
 	Cell::load( "TransistorP" );
-	Cell::load( "xor2" );
+	//Cell::load( "xor2" );
 	//Cell::load( "or2" );
-	Cell::load( "and2" );
-	Cell::load( "inverter" );
+	//Cell::load( "and2" );
+	//Cell::load( "inverter" );
 	//Cell* halfadder = Cell::load( "halfadder" );
 	//Cell* fa = Cell::load( "fulladder" );
-	Cell* or2= Cell::load( "or2" );
+	Cell* and2 = Cell::load( "and2" );
 
 	//cout << "\nContenu du <halfadder>:" << endl;
 	//halfadder->toXml( cout );
 	//cout << "\nContenu du <fulladder>:" << endl;
 	//fa->toXml( cout );
-	cout << "\nContenu du <or2>:" << endl;
-	or2->toXml( cout );
+	//cout << "\nContenu du <and2>:" << endl;
+	and2->toXml( cout );
 
 
 

@@ -78,20 +78,26 @@ void Net::add(Node* node)
 		if (id == Node::noid){ // le noeud na pas d'id
 			id = getFreeNodeId(); // found case libre
 			node->setId(id); //positionne id valide
+			cerr << "case de mort" << endl;
 		}
 		if (id < nodes_.size()){ // l'id est valide
 			if (nodes_[id] != NULL){ // erreur
-				//cerr << "case pleine" << endl;
+				 cerr << "case pleine" << id << endl;
 				//cerr << nodes_[id]->getPosition() <<endl;
 				//nodes_[id]->setId(Node::noid);
+				//int i = 0;
 				//for (vector<Node*>::const_iterator it = nodes_.begin();
-				     //it < nodes_.end(); it++)
-					//cerr << (*it)->getId() << " " ;
+				     //it < nodes_.end(); it++){
+					//cerr <<  i << " = " << (*it)->getId() << "|||";
+					//i++;
+				//}
+				//cerr << endl;
 				//nodes_[id]->setId(getFreeNodeId());
 				// GESTION d'erreur
 				return;
 			}
 			nodes_[id] = node; // positionne l'id
+			return;
 		} else {
 			// gestion du tableau trop petit
 			for (size_t i = nodes_.size(); i < id; ++i){

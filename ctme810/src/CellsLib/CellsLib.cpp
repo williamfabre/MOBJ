@@ -50,7 +50,7 @@ CellsLib::CellsLib(QWidget* parent) :
 
 void CellsLib::setCellViewer(CellViewer* cellViewer)
 {
-	if(cellViewer_)
+	if (cellViewer_)
 		disconnect(this,0,cellViewer_,0);
 	cellViewer_ = cellViewer;
 }
@@ -59,14 +59,14 @@ int CellsLib::getSelectedRow() const
 {
 	QModelIndexList selecteds = view_->selectionModel()->
 		selection().indexes();
-	if(selecteds.empty()) return -1;
+	if (selecteds.empty()) return -1;
 	return selecteds.first().row();
 }
 
 void CellsLib::load()
 {
 	int selectedRow = getSelectedRow();
-	if(selectedRow < 0) return;
+	if (selectedRow < 0) return;
 	cellViewer_->setCell(baseModel_->getModel(selectedRow));
 }
 

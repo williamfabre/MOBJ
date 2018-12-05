@@ -27,6 +27,8 @@ public:
 		      int role = Qt::DisplayRole) const;
 	QVariant headerData(int section, Qt::Orientation orientation,
 			    int role = Qt::DisplayRole) const ;
+	public slots:
+		void updateDatas();
 };
 
 }

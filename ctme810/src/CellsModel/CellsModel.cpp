@@ -49,7 +49,6 @@ QVariant CellsModel::headerData(int section,
 	if (orientation == Qt::Vertical) return QVariant();
 	if (role != Qt::DisplayRole) return QVariant();
 
-	//if (section == 0) return QVariant("Cell");
 	if (section == 0) return "Cell";
 	return QVariant();
 }
@@ -61,6 +60,15 @@ Cell* CellsModel::getModel(int row)
 	if (row >= (int)Cell::getAllCells().size()) return NULL;
 
 	return Cell::getAllCells()[row];
+}
+
+void CellsModel::updateDatas()
+{
+	// il faut mettre a jour le layout et
+	emit layoutAboutToBeChanged();
+	cerr << "rechergement" << endl;
+	emit layoutChanged();
+	// utuliser le cell widget
 }
 
 }

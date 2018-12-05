@@ -18,6 +18,7 @@ public:
 	void setCellViewer(CellViewer*);
 	int getSelectedRow() const;
 	inline CellsModel* getBaseModel();
+	inline void setCell(Cell*);
 	virtual void closeEvent(QCloseEvent*);
 	public slots:
 		void load ();
@@ -30,6 +31,7 @@ private:
 };
 
 inline CellsModel* CellsLib::getBaseModel() {return baseModel_;}
+inline void CellsLib::setCell(Cell* cell){baseModel_->setCell(cell);}
 };
 
 #endif //  NETLIST_CELLS_LIB_H_

@@ -70,6 +70,12 @@ CellViewer::CellViewer(QWidget * parent) :
 	action->setVisible(true);
 	fileMenu->addAction(action);
 	connect(action, SIGNAL(triggered()), this, SLOT(close()));
+
+	// connect obj1, signal, obj2, slot
+	// on connecte le signal qui dit qu'on a load une cell a la fonction de
+	// mise a jour o/
+	// on doit recuperer l'objet du model de base
+	connect(this, SIGNAL(cellLoaded()), cellsLib_->getBaseModel(), SLOT(updateDatas()));
 }
 
 CellViewer::~CellViewer(){}
@@ -88,6 +94,7 @@ void CellViewer::saveCell()
 	}
 }
 
+
 void CellViewer::openCell()
 {
 	QString name;
@@ -97,6 +104,8 @@ void CellViewer::openCell()
 		Cell* cell = Cell::find(name.toStdString());
 		if (!cell){
 			cell = Cell::load(name.toStdString());
+			instancesWidget_->setCell(cell);
+			emit cellLoaded();
 		} else {
 			setCell(cell);
 		}
@@ -105,14 +114,13 @@ void CellViewer::openCell()
 
 void CellViewer::showInstancesWidget()
 {
-	cerr << "instwidget" << endl;
-	instancesWidget_->setCell(CellViewer::getCell());
+	cerr << __func__ << endl;
 	instancesWidget_->show();
 }
 
 void CellViewer::showCellsLib()
 {
-	cerr << "cellslib" << endl;
+	cerr << __func__ << endl;
 	cellsLib_->show();
 }
 
