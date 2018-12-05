@@ -34,23 +34,23 @@ InstancesWidget::InstancesWidget(QWidget* parent) :
 	verticalHeader->setVisible(false);
 
 	load_->setText("Load");
-	connect( load_, SIGNAL( clicked() ), this, SLOT( load() ) );
+	connect(load_, SIGNAL(clicked()), this, SLOT(load()));
 
 	QHBoxLayout* hLayout = new QHBoxLayout();
 	hLayout->addStretch();
-	hLayout->addWidget( load_ );
+	hLayout->addWidget(load_);
 	hLayout->addStretch();
 
 
 	QVBoxLayout* vLayout = new QVBoxLayout();
 	vLayout->addWidget(view_);
-	vLayout->addLayout( hLayout );
-	setLayout( vLayout );
+	vLayout->addLayout(hLayout);
+	setLayout(vLayout);
 }
 
 void InstancesWidget::setCellViewer(CellViewer* cellViewer)
 {
-	if(cellViewer_)
+	if (cellViewer_)
 		disconnect(this,0,cellViewer_,0);
 	cellViewer_ = cellViewer;
 }
@@ -59,14 +59,14 @@ int InstancesWidget::getSelectedRow() const
 {
 	QModelIndexList selecteds = view_->selectionModel()->
 		selection().indexes();
-	if(selecteds.empty()) return -1;
+	if (selecteds.empty()) return -1;
 	return selecteds.first().row();
 }
 
 void InstancesWidget::load()
 {
 	int selectedRow = getSelectedRow();
-	if(selectedRow < 0) return;
+	if (selectedRow < 0) return;
 	cellViewer_->setCell(baseModel_->getModel(selectedRow));
 }
 

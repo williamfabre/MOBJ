@@ -27,13 +27,16 @@ int CellsModel::rowCount(const QModelIndex& parent) const
 
 int CellsModel::columnCount(const QModelIndex& parent) const
 {
+	// il n'y a pas de mastercell
 	return 1;
 }
 
 QVariant CellsModel::data(const QModelIndex& index, int role) const
 {
 	if (not index.isValid()) return QVariant();
-	if (role==Qt::DisplayRole){
+
+	if (role == Qt::DisplayRole){
+
 		int row = index.row();
 		return Cell::getAllCells()[row]->getName().c_str();
 	}
@@ -46,14 +49,17 @@ QVariant CellsModel::headerData(int section,
 	if (orientation == Qt::Vertical) return QVariant();
 	if (role != Qt::DisplayRole) return QVariant();
 
-	if (section == 0) return QVariant("Cell");
+	//if (section == 0) return QVariant("Cell");
+	if (section == 0) return "Cell";
 	return QVariant();
 }
 
 Cell* CellsModel::getModel(int row)
 {
 	if (not cell_) return NULL;
+
 	if (row >= (int)Cell::getAllCells().size()) return NULL;
+
 	return Cell::getAllCells()[row];
 }
 
