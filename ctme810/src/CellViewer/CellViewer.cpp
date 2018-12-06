@@ -16,10 +16,10 @@ CellViewer::CellViewer(QWidget * parent) :
 	instancesWidget_(NULL), saveCellDialog_(NULL)
 {
 	// instanciation
-	cellWidget_ = new CellWidget();
+	cellWidget_ = new CellWidget(this);
 	saveCellDialog_ = new SaveCellDialog(this);
-	instancesWidget_ = new InstancesWidget();
-	cellsLib_ = new CellsLib();
+	instancesWidget_ = new InstancesWidget(this);
+	cellsLib_ = new CellsLib(this);
 
 	// set this into instance and cells
 	instancesWidget_->setCellViewer(this);
@@ -78,7 +78,14 @@ CellViewer::CellViewer(QWidget * parent) :
 	connect(this, SIGNAL(cellLoaded()), cellsLib_->getBaseModel(), SLOT(updateDatas()));
 }
 
-CellViewer::~CellViewer(){}
+CellViewer::~CellViewer()
+{
+	delete cellWidget_;
+	delete saveCellDialog_;
+	delete instancesWidget_;
+	delete cellsLib_;
+
+}
 
 void CellViewer::saveCell()
 {

@@ -23,8 +23,6 @@ CellsLib::CellsLib(QWidget* parent) :
 	view_->setSortingEnabled(true);
 	view_->setModel(baseModel_);
 
-	this->setMinimumSize(500,500);
-
 	QHeaderView* horizontalHeader = view_->horizontalHeader();
 	horizontalHeader->setDefaultAlignment(Qt::AlignHCenter);
 	horizontalHeader->setMinimumSectionSize(300);
@@ -35,25 +33,8 @@ CellsLib::CellsLib(QWidget* parent) :
 
 	load_->setText("Load");
 	connect( load_, SIGNAL( clicked() ), this, SLOT( load() ) );
-
-	QHBoxLayout* hLayout = new QHBoxLayout();
-	hLayout->addStretch();
-	hLayout->addWidget( load_ );
-	hLayout->addStretch();
-
-
-	QVBoxLayout* vLayout = new QVBoxLayout();
-	vLayout->addWidget(view_);
-	vLayout->addLayout( hLayout );
-	setLayout( vLayout );
 }
 
-void CellsLib::setCellViewer(CellViewer* cellViewer)
-{
-	if (cellViewer_)
-		disconnect(this,0,cellViewer_,0);
-	cellViewer_ = cellViewer;
-}
 
 int CellsLib::getSelectedRow() const
 {
@@ -69,11 +50,12 @@ void CellsLib::load()
 	if (selectedRow < 0) return;
 	cellViewer_->setCell(baseModel_->getModel(selectedRow));
 }
-
-void CellsLib::closeEvent(QCloseEvent* event)
+void CellsLib::setCellViewer(CellViewer* cellViewer)
 {
-	this->showMinimized();
-	event->ignore();
+	if (cellViewer_)
+		disconnect(this,0, 0 ,0);
+	cellViewer_ = cellViewer;
 }
+
 
 }
