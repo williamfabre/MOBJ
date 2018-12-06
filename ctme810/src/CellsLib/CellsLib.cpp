@@ -6,7 +6,8 @@
 namespace Netlist{
 
 CellsLib::CellsLib(QWidget* parent) :
-	QWidget(parent),
+	QWidget(parent, Qt::Window),
+	//QWidget(parent),
 	cellViewer_(NULL),
 	baseModel_(new CellsModel(this)),
 	view_(new QTableView(this)),
@@ -22,11 +23,28 @@ CellsLib::CellsLib(QWidget* parent) :
 	view_->setSelectionMode(QAbstractItemView::SingleSelection);
 	view_->setSortingEnabled(true);
 	view_->setModel(baseModel_);
+	view_->setMinimumWidth(400);
+	view_->setMinimumHeight(400);
+
 
 	QHeaderView* horizontalHeader = view_->horizontalHeader();
 	horizontalHeader->setDefaultAlignment(Qt::AlignHCenter);
 	horizontalHeader->setMinimumSectionSize(300);
 	horizontalHeader->setStretchLastSection(true);
+
+	QHBoxLayout* hLayout = new QHBoxLayout();
+	load_->setText("Load");
+	hLayout->addStretch();
+	hLayout->addWidget(load_);
+	hLayout->addStretch();
+
+	QVBoxLayout* vLayout = new QVBoxLayout();
+	vLayout->setSizeConstraint(QLayout::SetFixedSize);
+	vLayout->addWidget(view_);
+	vLayout->addLayout(hLayout);
+	setLayout(vLayout);
+
+
 
 	QHeaderView* verticalHeader = view_->verticalHeader();
 	verticalHeader->setVisible(false);
