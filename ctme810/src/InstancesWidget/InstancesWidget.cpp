@@ -47,7 +47,6 @@ InstancesWidget::InstancesWidget(QWidget* parent) :
 	vLayout->addLayout(hLayout);
 	setLayout(vLayout);
 
-
 	connect(load_, SIGNAL(clicked()), this, SLOT(load()));
 
 }

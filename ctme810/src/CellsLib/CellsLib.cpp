@@ -1,18 +1,22 @@
 #include "CellsLib/CellsLib.h"
 #include "Cell/Cell.h"
 #include "CellViewer/CellViewer.h"
+#include <QCloseEvent>
+#include <QMessageBox>
+#include <QTranslator>
 #include <QHeaderView>
 
 namespace Netlist{
 
 CellsLib::CellsLib(QWidget* parent) :
-	QWidget(parent, Qt::Window),
-	//QWidget(parent),
-	cellViewer_(NULL),
-	baseModel_(new CellsModel(this)),
-	view_(new QTableView(this)),
-	load_(new QPushButton(this))
+QWidget(parent, Qt::Window),
+//QWidget(parent),
+cellViewer_(NULL),
+baseModel_(new CellsModel(this)),
+view_(new QTableView(this)),
+load_(new QPushButton(this))
 {
+	// ne pas detruire la fenetre
 	setAttribute(Qt::WA_QuitOnClose, false);
 	setAttribute(Qt::WA_DeleteOnClose, false);
 	setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -51,6 +55,7 @@ CellsLib::CellsLib(QWidget* parent) :
 
 	load_->setText("Load");
 	connect( load_, SIGNAL( clicked() ), this, SLOT( load() ) );
+
 }
 
 
@@ -71,9 +76,22 @@ void CellsLib::load()
 void CellsLib::setCellViewer(CellViewer* cellViewer)
 {
 	if (cellViewer_)
-		disconnect(this,0, 0 ,0);
+		disconnect(this, 0, 0 ,0);
 	cellViewer_ = cellViewer;
 }
 
+void CellsLib::closeEvent (QCloseEvent *event)
+{
+	QMessageBox::StandardButton resBtn =
+		QMessageBox::question( this, tr("toto\n"),
+			tr("Are you sure?\n"),
+			QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
+			QMessageBox::Yes);
+	if (resBtn != QMessageBox::Yes) {
+		event->ignore();
+	} else {
+		event->accept();
+	}
+}
 
 }

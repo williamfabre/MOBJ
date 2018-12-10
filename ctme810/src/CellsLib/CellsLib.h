@@ -19,6 +19,7 @@ public:
 	int getSelectedRow() const;
 	inline CellsModel* getBaseModel();
 	inline void setCell(Cell*);
+	void closeEvent (QCloseEvent *event);
 	public slots:
 		void load ();
 
