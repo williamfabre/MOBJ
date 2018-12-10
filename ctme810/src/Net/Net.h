@@ -23,7 +23,7 @@ private:
 	// newNetId();
 	unsigned int id_;
 	Term::Type type_;
-	std::vector<Node*> nodes_;
+	vector<Node*> nodes_;
 	vector<Line*> lines_;
 
 public:

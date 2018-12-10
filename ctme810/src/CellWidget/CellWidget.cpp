@@ -43,9 +43,9 @@ ostream& operator<< (ostream& o, const QPoint& p)
 
 
 CellWidget::CellWidget(QWidget* parent):
-QWidget(parent),
-cell_(NULL),
-viewport_(Box (0 ,0 ,500 ,500))
+	QWidget(parent),
+	cell_(NULL),
+	viewport_(Box (0 ,0 ,500 ,500))
 {
 	setAttribute     (Qt:: WA_OpaquePaintEvent);
 	setAttribute     (Qt:: WA_NoSystemBackground);
@@ -129,161 +129,168 @@ void CellWidget::goDown()
 
 void CellWidget::paintEvent (QPaintEvent* event)
 {
+
 	QPainter painter(this);
 	painter.setBackground(QBrush(Qt::black));
 	painter.eraseRect(QRect(QPoint (0,0), size()));
-	painter.setPen(QPen(Qt::darkGreen , 1));
 	QRect rect = boxToScreenRect(viewport_); // anciennement appelait box
 	painter.drawRect(rect) ;
 
-	// instance
-	painter.setPen(QPen(Qt::red , 0));
-	//painter.setBrush(QBrush(Qt::red));
-	query(1, painter);
-	painter.drawRect(rect);
-
-	// other
-	painter.setPen(QPen(Qt::darkGreen, 3));
-	//painter.setBrush(QBrush(Qt::darkGreen));
-	query(2, painter);
-	painter.drawRect(rect);
-
+	// line
 	painter.setPen(QPen(Qt::cyan, 1));
-	//painter.setBrush(QBrush(Qt::darkGreen));
+	query(1, painter);
+
+	// ellipse
+	painter.setPen(QPen(Qt::cyan, 1));
+	query(2, painter);
+
+	// arc
+	painter.setPen(QPen(Qt::darkGreen, 3));
 	query(3, painter);
-	painter.drawRect(rect);
+
+	// instance
+	painter.setPen(QPen(Qt::yellow, 2));
+	query(4, painter);
+
+	// term
+	painter.setPen(QPen(Qt::red, 5));
+	query(5, painter);
+
+	// Nodeterm
+	painter.setPen(QPen(Qt::red, 5));
+	query(6, painter);
+
+	// NodePoint
+	painter.setPen(QPen(Qt::cyan, 5));
+	query(7, painter);
+
+
 
 }
 
 void CellWidget::query(unsigned  int flags , QPainter& painter)
 {
-	unsigned int InstanceShapes = 1;
-
-	unsigned int TermShapes = 2;
-	unsigned int LineShapes = 3;
-	unsigned int ArcShapes = 4;
-	unsigned int EllipseShapes= 5;
-
-	unsigned int Children = 6;
+	unsigned int LineShapes = 1;
+	unsigned int EllipseShapes= 2;
+	unsigned int ArcShapes = 3;
+	unsigned int InstanceShapes = 4;
+	unsigned int TermShapes = 5;
+	unsigned int NodeTerm = 6;
+	unsigned int NodePoint= 7;
 
 	BoxShape* boxShape = NULL;
 	TermShape* termShape = NULL;
 	LineShape* lineShape = NULL;
 	ArcShape* arcShape = NULL;
 	EllipseShape* ellipseShape = NULL;
+	Node* nodeTerm = NULL;
+	Node* nodePoint = NULL;
 
 	if ((not  cell_) or (not  flags))  return;
 
 	const vector <Instance*>& instances = cell_->getInstances();
-
-	for (size_t i = 0; i < instances.size() ; ++i) {
+	for (size_t i = 0; i < instances.size() ; i++) {
 		Point instPos = instances[i]->getPosition();
-		const Symbol* symbol = instances[i]->getMasterCell()->getSymbol ();
+		const Symbol* symbol = instances[i]->getMasterCell()->getSymbol();
 
 		if (not symbol) continue;
 
-		//if (flags & InstanceShapes) {
+		const vector<Shape*>& shapes = symbol->getShapes();
 
-			//const vector<Shape*>& shapes = symbol->getShapes();
+		for (size_t j=0 ; j < shapes.size() ; j++) {
 
-			//symbol->toXml(cerr);
-			//cerr << endl;
-			//for (size_t j=0 ; j < shapes.size() ; j++) {
+			if (shapes[j]){
+				boxShape = dynamic_cast<BoxShape*>(shapes[j]);
+				lineShape = dynamic_cast<LineShape*>(shapes[j]);
+				ellipseShape = dynamic_cast<EllipseShape*>(shapes[j]);
+				arcShape = dynamic_cast<ArcShape*>(shapes[j]);
+				termShape = dynamic_cast<TermShape*>(shapes[j]);
+				cerr << j << " : ";
+				shapes[j]->toXml(cerr);
+				cerr << endl;
+			}
 
-				//if (shapes[j]){
-					//boxShape = dynamic_cast<BoxShape*>(shapes[j]);
-					//cerr << j << " : ";
-					//shapes[j]->toXml(cerr);
-					//cerr << endl;
-				//}
+			if (lineShape && (flags==1)) {
+				const QPoint a = pointToScreenPoint(
+								    Point(lineShape->getX1(), lineShape->getY1()).translate(instPos));
+				const QPoint b = pointToScreenPoint(
+								    Point(lineShape->getX2(), lineShape->getY2()).translate(instPos));
+				QLine ql = QLine(a, b);
+				painter.drawLine(ql);
+			}
 
-				//if (boxShape) {
-					//cerr << "test1234" << endl;
-					//Box box = boxShape->getBoundingBox();
-					//QRect rect = boxToScreenRect(box.translate(instPos));
-					//painter.drawRect(rect);
-				//}
-			//}
-		//}
-		//if (flags & TermShapes) {
+			if (ellipseShape && (flags==2)) {
+				Box box = ellipseShape->getBoundingBox();
+				//QRect rect = boxToScreenRect(box.translate(instPos));
+				QPoint a = pointToScreenPoint(Point(box.getX1(), box.getY1()).translate(instPos));
+				QPoint b = pointToScreenPoint(Point(box.getX2(), box.getY2()).translate(instPos));
+				QRect rect = QRect(a,b);
+				painter.drawEllipse(rect);
+			}
 
-			//const vector<Shape*>& shapes = symbol->getShapes();
+			if (arcShape && (flags==3)) {
+				Box box = arcShape->getBoundingBox();
+				//QRect rect = boxToScreenRect(box.translate(instPos));
+				QPoint a = pointToScreenPoint(Point(box.getX1(), box.getY1()).translate(instPos));
+				QPoint b = pointToScreenPoint(Point(box.getX2(), box.getY2()).translate(instPos));
+				QRect rect = QRect(a,b);
+				painter.drawArc(rect, arcShape->getStart(), arcShape->getSpan());
+			}
 
-			//symbol->toXml(cerr);
-			//cerr << endl;
-			//for (size_t j=0 ; j < shapes.size() ; j++) {
+			if (boxShape && (flags==4)) {
+				Box box = boxShape->getBoundingBox();
+				QPoint a = pointToScreenPoint(Point(box.getX1(), box.getY1()).translate(instPos));
+				QPoint b = pointToScreenPoint(Point(box.getX2(), box.getY2()).translate(instPos));
+				QRect rect = QRect(a,b);
+				painter.drawRect(rect);
+			}
 
-				//if (shapes[j]){
-					//termShape = dynamic_cast<TermShape*>(shapes[j]);
-					//cerr << j << " : ";
-					//shapes[j]->toXml(cerr);
-					//cerr << endl;
-				//}
-
-				//if (termShape) {
-					//cerr << "test1234" << endl;
-					//Box box = termShape->getBoundingBox();
-					//QRect rect = boxToScreenRect(box.translate(instPos));
-					//painter.drawRect(rect);
-				//}
-			//}
-		//}
-		if (flags) {
-			const vector<Shape*>& shapes = symbol->getShapes();
-
-			symbol->toXml(cerr);
-			cerr << endl;
-			for (size_t j=0 ; j < shapes.size() ; j++) {
-
-				if (shapes[j]){
-					boxShape = dynamic_cast<BoxShape*>(shapes[j]);
-					lineShape = dynamic_cast<LineShape*>(shapes[j]);
-					ellipseShape = dynamic_cast<EllipseShape*>(shapes[j]);
-					arcShape = dynamic_cast<ArcShape*>(shapes[j]);
-					termShape = dynamic_cast<TermShape*>(shapes[j]);
-					cerr << j << " : ";
-					shapes[j]->toXml(cerr);
-					cerr << endl;
-				}
-
-				if (lineShape) {
-					const QPoint a = pointToScreenPoint(
-						Point(lineShape->getX1(), lineShape->getY1()));
-					const QPoint b = pointToScreenPoint(
-						Point(lineShape->getX2(), lineShape->getY2()));
-					QLine ql = QLine(a, b);
-					painter.drawLine(ql);
-				}
-
-				if (ellipseShape) {
-					Box box = ellipseShape->getBoundingBox();
-					QRect rect = boxToScreenRect(box.translate(instPos));
-					//QRect rect = boxToScreenRect(box);
-					painter.drawEllipse(rect);
-				}
-
-				if (arcShape) {
-					Box box = arcShape->getBoundingBox();
-					QRect rect = boxToScreenRect(box.translate(instPos));
-					//QRect rect = boxToScreenRect(box);
-					painter.drawArc(rect, arcShape->getStart(), arcShape->getSpan());
-;
-				}
-				if (boxShape) {
-					Box box = boxShape->getBoundingBox();
-					QRect rect = boxToScreenRect(box.translate(instPos));
-					painter.drawRect(rect);
-				}
-				if (termShape) {
-					Box box = termShape->getBoundingBox();
-					//QRect rect = boxToScreenRect(box.translate(instPos));
-					QRect rect = boxToScreenRect(box);
-					painter.drawRect(rect);
-				}
-
+			if (termShape && (flags==5)) {
+				const QPoint a = pointToScreenPoint(
+								    Point(termShape->getX(),
+									  termShape->getY()).translate(instPos));
+				painter.drawPoint(a);
 			}
 		}
 
+		const vector<Term*>& terms = cell_->getTerms();
+		for (size_t i = 0; i < terms.size() ; i++) {
+
+		}
+
+		const vector<Net*>& nets = cell_->getNets();
+		for (size_t i = 0; i < nets.size() ; i++) {
+
+			const vector<Line*>& lines = nets[i]->getLines();
+			for (size_t j=0 ; j < lines.size() ; j++) {
+				if (lines[j]){
+				}
+			}
+
+			const vector<Node*>& nodes = nets[i]->getNodes();
+			for (size_t j=0 ; j < nodes.size() ; j++) {
+
+				if (nodes[j]){
+					nodeTerm = dynamic_cast<NodeTerm*>(nodes[j]);
+					nodePoint = dynamic_cast<NodePoint*>(nodes[j]);
+				}
+
+				if (nodeTerm && (flags==6)) {
+					const QPoint a = pointToScreenPoint(
+						nodeTerm.getPosition().translate(instPos));
+					painter.drawPoint(a);
+				}
+
+				if (nodePoint && (flags==7)) {
+					const QPoint a = pointToScreenPoint(
+						nodePoint.getPosition().translate(instPos));
+					painter.drawPoint(a);
+				}
+
+
+			}
+
+		}
 	}
 }
 
