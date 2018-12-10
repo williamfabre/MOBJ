@@ -78,20 +78,22 @@ void CellsLib::setCellViewer(CellViewer* cellViewer)
 	if (cellViewer_)
 		disconnect(this, 0, 0 ,0);
 	cellViewer_ = cellViewer;
+	//showMaximized();
 }
 
 void CellsLib::closeEvent (QCloseEvent *event)
 {
-	QMessageBox::StandardButton resBtn =
-		QMessageBox::question( this, tr("toto\n"),
-			tr("Are you sure?\n"),
-			QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
-			QMessageBox::Yes);
-	if (resBtn != QMessageBox::Yes) {
-		event->ignore();
-	} else {
-		event->accept();
-	}
+	//QMessageBox::StandardButton resBtn =
+		//QMessageBox::question( this, tr("toto\n"),
+			//tr("Are you sure?\n"),
+			//QMessageBox::No | QMessageBox::Yes,
+			//QMessageBox::Yes);
+	//if (resBtn != QMessageBox::Yes) {
+		//event->ignore();
+	//} else {
+		//event->ignore();
+		//showMinimized();
+	//}
 }
 
 }
