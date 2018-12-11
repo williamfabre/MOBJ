@@ -63,4 +63,7 @@ bool OpenCellDialog::run(QWidget* parent, QString& name)
 	delete openCellDialog;
 
 	return dialogResult;
-}}
+}
+
+
+}

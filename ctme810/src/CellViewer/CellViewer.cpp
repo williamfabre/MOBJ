@@ -12,8 +12,11 @@
 namespace Netlist {
 
 CellViewer::CellViewer(QWidget * parent) :
-	QMainWindow(parent), cellWidget_(NULL), cellsLib_(NULL),
-	instancesWidget_(NULL), saveCellDialog_(NULL)
+	QMainWindow(parent),
+	cellWidget_(NULL),
+	saveCellDialog_(NULL),
+	cellsLib_(NULL),
+	instancesWidget_(NULL)
 {
 	// instanciation
 	cellWidget_ = new CellWidget(this);
@@ -111,7 +114,11 @@ void CellViewer::openCell()
 		Cell* cell = Cell::find(name.toStdString());
 		if (!cell){
 			cell = Cell::load(name.toStdString());
+			// mise a jour instances
 			instancesWidget_->setCell(cell);
+			// mise a jour widget
+			cellWidget_->setCell(cell);
+
 			emit cellLoaded();
 		} else {
 			setCell(cell);

@@ -30,7 +30,6 @@ load_(new QPushButton(this))
 	view_->setMinimumWidth(400);
 	view_->setMinimumHeight(400);
 
-
 	QHeaderView* horizontalHeader = view_->horizontalHeader();
 	horizontalHeader->setDefaultAlignment(Qt::AlignHCenter);
 	horizontalHeader->setMinimumSectionSize(300);
@@ -47,8 +46,6 @@ load_(new QPushButton(this))
 	vLayout->addWidget(view_);
 	vLayout->addLayout(hLayout);
 	setLayout(vLayout);
-
-
 
 	QHeaderView* verticalHeader = view_->verticalHeader();
 	verticalHeader->setVisible(false);
@@ -81,6 +78,7 @@ void CellsLib::setCellViewer(CellViewer* cellViewer)
 	//showMaximized();
 }
 
+// ne pas fermer la fenetre
 void CellsLib::closeEvent (QCloseEvent *event)
 {
 	//QMessageBox::StandardButton resBtn =
@@ -94,6 +92,8 @@ void CellsLib::closeEvent (QCloseEvent *event)
 		//event->ignore();
 		//showMinimized();
 	//}
+	showMinimized();
+	event->ignore();
 }
 
 }

@@ -18,6 +18,7 @@ public:
 	void setCellViewer(CellViewer*);
 	int getSelectedRow() const;
 	inline void setCell(Cell*);
+	void closeEvent (QCloseEvent *event);
 
 	public slots:
 		void load();

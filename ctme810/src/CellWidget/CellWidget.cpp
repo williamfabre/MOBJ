@@ -43,15 +43,15 @@ ostream& operator<< (ostream& o, const QPoint& p)
 
 
 CellWidget::CellWidget(QWidget* parent):
-	cell_(NULL),
+	QWidget(parent),
 	viewport_(Box(0 ,0 ,500 ,500)),
-	QWidget(parent)
+	cell_(NULL)
 {
-	setAttribute     (Qt:: WA_OpaquePaintEvent);
-	setAttribute     (Qt:: WA_NoSystemBackground);
-	setSizePolicy    (QSizePolicy::Expanding // X direction.
+	setAttribute(Qt:: WA_OpaquePaintEvent);
+	setAttribute(Qt:: WA_NoSystemBackground);
+	setSizePolicy(QSizePolicy::Expanding // X direction.
 			  ,QSizePolicy::Expanding);// Y direction.
-	setFocusPolicy   (Qt:: StrongFocus);
+	setFocusPolicy(Qt:: StrongFocus);
 	setMouseTracking(true);
 }
 
@@ -173,10 +173,6 @@ void CellWidget::paintEvent (QPaintEvent* event)
 
 	painter.setPen(QPen(Qt::cyan, 1));
 	query(10, painter);
-
-
-
-
 }
 
 void CellWidget::query(unsigned  int flags , QPainter& painter)

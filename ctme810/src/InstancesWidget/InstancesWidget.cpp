@@ -73,4 +73,22 @@ void InstancesWidget::load()
 	cellViewer_->setCell(baseModel_->getModel(selectedRow));
 }
 
+void InstancesWidget::closeEvent (QCloseEvent *event)
+{
+	//QMessageBox::StandardButton resBtn =
+		//QMessageBox::question( this, tr("toto\n"),
+			//tr("Are you sure?\n"),
+			//QMessageBox::No | QMessageBox::Yes,
+			//QMessageBox::Yes);
+	//if (resBtn != QMessageBox::Yes) {
+		//event->ignore();
+	//} else {
+		//event->ignore();
+		//showMinimized();
+	//}
+	showMinimized();
+	event->ignore();
+}
+
+
 }
