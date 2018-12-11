@@ -43,9 +43,9 @@ ostream& operator<< (ostream& o, const QPoint& p)
 
 
 CellWidget::CellWidget(QWidget* parent):
-	QWidget(parent),
 	cell_(NULL),
-	viewport_(Box (0 ,0 ,500 ,500))
+	viewport_(Box(0 ,0 ,500 ,500)),
+	QWidget(parent)
 {
 	setAttribute     (Qt:: WA_OpaquePaintEvent);
 	setAttribute     (Qt:: WA_NoSystemBackground);
@@ -181,16 +181,6 @@ void CellWidget::paintEvent (QPaintEvent* event)
 
 void CellWidget::query(unsigned  int flags , QPainter& painter)
 {
-	unsigned int LineShapes = 1;
-	unsigned int EllipseShapes= 2;
-	unsigned int ArcShapes = 3;
-	unsigned int InstanceShapes = 4;
-	unsigned int TermShapes = 5;
-	unsigned int NodeTerms = 6;
-	unsigned int NodePoints = 7;
-	unsigned int Terms = 9;
-	unsigned int Lines = 10;
-
 	BoxShape* boxShape = NULL;
 	TermShape* termShape = NULL;
 	LineShape* lineShape = NULL;
@@ -206,7 +196,7 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 	for (size_t i = 0; i < instances.size() ; i++) {
 		Point instPos = instances[i]->getPosition();
 		// NAME
-		const QPoint name = pointToScreenPoint(instPos.translate(0,-20));
+		const QPoint name = pointToScreenPoint(instPos.translate(0,0));
 		painter.drawText(name , QString::fromStdString(instances[i]->getName()));
 
 
@@ -302,6 +292,7 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 				}
 			}
 		}
+
 		//******************** nodeterm *********************
 		const vector<Node*>& nodes = nets[i]->getNodes();
 		for (size_t j=0 ; j < nodes.size() ; j++) {

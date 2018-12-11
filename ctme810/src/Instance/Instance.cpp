@@ -142,6 +142,7 @@ void Instance::setPosition(const Point& pt)
 		if (*it){
 			Point point = (symbol->getTermPosition((*it)));
 			point.translate(getPosition());
+			//point.translate(getPosition().getX(), getPosition().getY() - 20);
 			(*it)->setPosition(point);
 		}
 	}
@@ -164,6 +165,7 @@ void Instance::setPosition(int x, int y)
 		if (*it){
 			Point point = (symbol->getTermPosition((*it)));
 			point.translate(getPosition());
+			//point.translate(getPosition().getX(), getPosition().getY() - 20);
 			(*it)->setPosition(point);
 		}
 	}
