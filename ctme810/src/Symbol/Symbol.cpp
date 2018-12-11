@@ -2,6 +2,7 @@
 #include "Symbol/Symbol.h"
 #include "Shape/Shape.h"
 #include "Shape/definition/TermShape.h"
+#include "Term/Term.h"
 #include <ostream>
 
 namespace Netlist {
@@ -46,7 +47,7 @@ const TermShape* Symbol::getTermShape(Term* term) const
 	for ( ;ishape != shapes_.end(); ishape++){
 		// Check si c'est un term shape et si c'est le bon term shape
 		ts = dynamic_cast<TermShape*>(*ishape);
-		if (ts != NULL && ts->getTerm() == term)
+		if (ts != NULL && ts->getTerm()->getName() == term->getName())
 			return ts;
 	}
 	return NULL;
@@ -58,11 +59,14 @@ Point Symbol::getTermPosition(Term* term) const
 	int x, y;
 	const TermShape* ts;
 	ts = getTermShape(term);
-	if (ts){
+	if (ts) {
 		x = ts->getX();
 		y = ts->getY();
+		cerr << __func__ << " SUCCESS x= " << x << " y = "
+		<< y << endl;
 		return Point(x,y);
 	}
+	cerr << __func__ << " FAILURE " << endl;
 	return Point(0,0);
 }
 

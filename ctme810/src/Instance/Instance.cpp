@@ -131,18 +131,18 @@ void Instance::setPosition(const Point& pt)
 {
 	Cell* cell;
 	Symbol* symbol;
-	vector<Term*>::const_iterator it = terms_.begin();
 	cell = getMasterCell();
+	vector<Term*>::const_iterator it = terms_.begin();
+	//vector<Term*>::const_iterator it = cell->getTerms().begin();
 	symbol = cell->getSymbol();
-	Point point;
 
 	position_ = pt;
 
 	for (; it < terms_.end(); it++){
 		if (*it){
-			point = (*it)->getPosition();
-			(*it)->setPosition(pt);
-			point.translate(symbol->getTermPosition((*it)));
+			Point point = (symbol->getTermPosition((*it)));
+			point.translate(getPosition());
+			(*it)->setPosition(point);
 		}
 	}
 
@@ -155,16 +155,16 @@ void Instance::setPosition(int x, int y)
 	Symbol* symbol;
 	vector<Term*>::const_iterator it = terms_.begin();
 	cell = getMasterCell();
+	//vector<Term*>::const_iterator it = cell->getTerms().begin();
 	symbol = cell->getSymbol();
-	Point point;
 
 	position_ = Point (x, y);
 
 	for (; it < terms_.end(); it++){
 		if (*it){
-			point = (*it)->getPosition();
-			(*it)->setPosition(x,y);
-			point.translate(symbol->getTermPosition((*it)));
+			Point point = (symbol->getTermPosition((*it)));
+			point.translate(getPosition());
+			(*it)->setPosition(point);
 		}
 	}
 }

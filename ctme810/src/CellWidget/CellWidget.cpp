@@ -16,9 +16,9 @@
 #include "Shape/definition/LineShape.h"
 #include "Shape/definition/ArcShape.h"
 #include "Shape/definition/EllipseShape.h"
+#include "Node/Node.h"
 #include "Cell/Cell.h"
 #include "Line/Line.h"
-#include "Node/Node.h"
 #include "Net/Net.h"
 
 
@@ -142,10 +142,12 @@ void CellWidget::paintEvent (QPaintEvent* event)
 
 	// ellipse
 	painter.setPen(QPen(Qt::cyan, 1));
+	//painter.setBrush(QBrush(Qt::cyan));
 	query(2, painter);
 
 	// arc
 	painter.setPen(QPen(Qt::darkGreen, 3));
+	//painter.setBrush(QBrush(Qt::darkGreen));
 	query(3, painter);
 
 	// instance
@@ -164,6 +166,15 @@ void CellWidget::paintEvent (QPaintEvent* event)
 	painter.setPen(QPen(Qt::cyan, 5));
 	query(7, painter);
 
+	// Line
+	// term modele
+	painter.setPen(QPen(Qt::red, 10));
+	query(9, painter);
+
+	painter.setPen(QPen(Qt::cyan, 1));
+	query(10, painter);
+
+
 
 
 }
@@ -175,22 +186,30 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 	unsigned int ArcShapes = 3;
 	unsigned int InstanceShapes = 4;
 	unsigned int TermShapes = 5;
-	unsigned int NodeTerm = 6;
-	unsigned int NodePoint= 7;
+	unsigned int NodeTerms = 6;
+	unsigned int NodePoints = 7;
+	unsigned int Terms = 9;
+	unsigned int Lines = 10;
 
 	BoxShape* boxShape = NULL;
 	TermShape* termShape = NULL;
 	LineShape* lineShape = NULL;
 	ArcShape* arcShape = NULL;
 	EllipseShape* ellipseShape = NULL;
-	Node* nodeTerm = NULL;
-	Node* nodePoint = NULL;
+	NodeTerm* nodeTerm = NULL;
+	NodePoint* nodePoint = NULL;
+	Line* line = NULL;
 
 	if ((not  cell_) or (not  flags))  return;
 
 	const vector <Instance*>& instances = cell_->getInstances();
 	for (size_t i = 0; i < instances.size() ; i++) {
 		Point instPos = instances[i]->getPosition();
+		// NAME
+		const QPoint name = pointToScreenPoint(instPos.translate(0,-20));
+		painter.drawText(name , QString::fromStdString(instances[i]->getName()));
+
+
 		const Symbol* symbol = instances[i]->getMasterCell()->getSymbol();
 
 		if (not symbol) continue;
@@ -205,23 +224,17 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 				ellipseShape = dynamic_cast<EllipseShape*>(shapes[j]);
 				arcShape = dynamic_cast<ArcShape*>(shapes[j]);
 				termShape = dynamic_cast<TermShape*>(shapes[j]);
-				cerr << j << " : ";
-				shapes[j]->toXml(cerr);
-				cerr << endl;
 			}
 
 			if (lineShape && (flags==1)) {
-				const QPoint a = pointToScreenPoint(
-								    Point(lineShape->getX1(), lineShape->getY1()).translate(instPos));
-				const QPoint b = pointToScreenPoint(
-								    Point(lineShape->getX2(), lineShape->getY2()).translate(instPos));
+				const QPoint a = pointToScreenPoint(Point(lineShape->getX1(), lineShape->getY1()).translate(instPos));
+				const QPoint b = pointToScreenPoint(Point(lineShape->getX2(), lineShape->getY2()).translate(instPos));
 				QLine ql = QLine(a, b);
 				painter.drawLine(ql);
 			}
 
 			if (ellipseShape && (flags==2)) {
 				Box box = ellipseShape->getBoundingBox();
-				//QRect rect = boxToScreenRect(box.translate(instPos));
 				QPoint a = pointToScreenPoint(Point(box.getX1(), box.getY1()).translate(instPos));
 				QPoint b = pointToScreenPoint(Point(box.getX2(), box.getY2()).translate(instPos));
 				QRect rect = QRect(a,b);
@@ -230,11 +243,17 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 
 			if (arcShape && (flags==3)) {
 				Box box = arcShape->getBoundingBox();
-				//QRect rect = boxToScreenRect(box.translate(instPos));
 				QPoint a = pointToScreenPoint(Point(box.getX1(), box.getY1()).translate(instPos));
 				QPoint b = pointToScreenPoint(Point(box.getX2(), box.getY2()).translate(instPos));
+
 				QRect rect = QRect(a,b);
-				painter.drawArc(rect, arcShape->getStart(), arcShape->getSpan());
+				// Draws the arc defined by the given rectangle, startAngle and spanAngle.
+				// The startAngle and spanAngle must be specified in 1/16th of a degree, i.e. a
+				// full circle equals 5760 (16 * 360). Positive values for the angles mean
+				// counter-clockwise while negative values mean the clockwise direction.
+				// Zero degrees is at the 3 o'clock position.
+				painter.drawArc(rect, arcShape->getStart()*16, arcShape->getSpan()*16);
+				//painter.drawArc(rect, arcShape->getStart(), arcShape->getSpan());
 			}
 
 			if (boxShape && (flags==4)) {
@@ -246,50 +265,64 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 			}
 
 			if (termShape && (flags==5)) {
-				const QPoint a = pointToScreenPoint(
-								    Point(termShape->getX(),
-									  termShape->getY()).translate(instPos));
+				const QPoint a = pointToScreenPoint(Point(termShape->getX(), termShape->getY()).translate(instPos));
 				painter.drawPoint(a);
 			}
 		}
+	}
 
-		const vector<Term*>& terms = cell_->getTerms();
-		for (size_t i = 0; i < terms.size() ; i++) {
 
+	/********************* terms **********************/
+	const vector<Term*>& terms = cell_->getTerms();
+	for (size_t i = 0; i < terms.size() ; i++) {
+		if (terms[i] && (flags==9)) {
+			const QPoint a = pointToScreenPoint(terms[i]->getPosition());
+			//const QPoint a = QPoint(terms[i]->getPosition().getX(), terms[i]->getPosition().getY());
+			painter.drawPoint(a);
+
+			//name
+			const QPoint name = pointToScreenPoint(terms[i]->getPosition().translate(0,10));
+			painter.drawText(name , QString::fromStdString(terms[i]->getName()));
 		}
+	}
 
-		const vector<Net*>& nets = cell_->getNets();
-		for (size_t i = 0; i < nets.size() ; i++) {
+	const vector<Net*>& nets = cell_->getNets();
+	for (size_t i = 0; i < nets.size() ; i++) {
 
-			const vector<Line*>& lines = nets[i]->getLines();
-			for (size_t j=0 ; j < lines.size() ; j++) {
-				if (lines[j]){
+		//******************** lines ********************
+		const vector<Line*>& lines = nets[i]->getLines();
+		for (size_t j=0 ; j < lines.size() ; j++) {
+			if (lines[j]) {
+				line = lines[j];
+				if (line && (flags==10)) {
+					const QPoint a = pointToScreenPoint(line->getSourcePosition());
+					const QPoint b = pointToScreenPoint(line->getTargetPosition());
+					QLine ql = QLine(a, b);
+					painter.drawLine(ql);
 				}
 			}
+		}
+		//******************** nodeterm *********************
+		const vector<Node*>& nodes = nets[i]->getNodes();
+		for (size_t j=0 ; j < nodes.size() ; j++) {
 
-			const vector<Node*>& nodes = nets[i]->getNodes();
-			for (size_t j=0 ; j < nodes.size() ; j++) {
+			if (nodes[j]){
+				nodeTerm = dynamic_cast<NodeTerm*>(nodes[j]);
+				nodePoint = dynamic_cast<NodePoint*>(nodes[j]);
+			}
 
-				if (nodes[j]){
-					nodeTerm = dynamic_cast<NodeTerm*>(nodes[j]);
-					nodePoint = dynamic_cast<NodePoint*>(nodes[j]);
-				}
-
-				if (nodeTerm && (flags==6)) {
-					const QPoint a = pointToScreenPoint(
-						nodeTerm.getPosition().translate(instPos));
-					painter.drawPoint(a);
-				}
-
-				if (nodePoint && (flags==7)) {
-					const QPoint a = pointToScreenPoint(
-						nodePoint.getPosition().translate(instPos));
-					painter.drawPoint(a);
-				}
-
+			if (nodeTerm && (flags==6)) {
+				const QPoint a = pointToScreenPoint(nodeTerm->getPosition());
+				painter.drawPoint(a);
+				const QPoint name = pointToScreenPoint(nodeTerm->getPosition().translate(0,10));
+				painter.drawText(name , QString::fromStdString(nodeTerm->getTerm()->getName()));
 
 			}
 
+			if (nodePoint && (flags==7)) {
+				const QPoint a = pointToScreenPoint(nodePoint->getPosition());
+				painter.drawPoint(a);
+			}
 		}
 	}
 }
