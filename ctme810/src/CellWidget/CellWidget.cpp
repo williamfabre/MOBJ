@@ -5,6 +5,7 @@
 #include <QPen>
 #include <QBrush>
 #include <QFont>
+#include <QPolygon>
 #include <QApplication>
 #include "CellWidget/CellWidget.h"
 #include "Term/Term.h"
@@ -50,7 +51,7 @@ CellWidget::CellWidget(QWidget* parent):
 	setAttribute(Qt:: WA_OpaquePaintEvent);
 	setAttribute(Qt:: WA_NoSystemBackground);
 	setSizePolicy(QSizePolicy::Expanding // X direction.
-			  ,QSizePolicy::Expanding);// Y direction.
+		      ,QSizePolicy::Expanding);// Y direction.
 	setFocusPolicy(Qt:: StrongFocus);
 	setMouseTracking(true);
 }
@@ -159,7 +160,7 @@ void CellWidget::paintEvent (QPaintEvent* event)
 	query(5, painter);
 
 	// Nodeterm
-	painter.setPen(QPen(Qt::red, 5));
+	painter.setPen(QPen(Qt::red, 1));
 	query(6, painter);
 
 	// NodePoint
@@ -167,10 +168,10 @@ void CellWidget::paintEvent (QPaintEvent* event)
 	query(7, painter);
 
 	// Line
-	// term modele
 	painter.setPen(QPen(Qt::red, 10));
 	query(9, painter);
 
+	// term modele
 	painter.setPen(QPen(Qt::cyan, 1));
 	query(10, painter);
 }
@@ -191,9 +192,6 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 	const vector <Instance*>& instances = cell_->getInstances();
 	for (size_t i = 0; i < instances.size() ; i++) {
 		Point instPos = instances[i]->getPosition();
-		// NAME
-		const QPoint name = pointToScreenPoint(instPos.translate(0,0));
-		painter.drawText(name , QString::fromStdString(instances[i]->getName()));
 
 
 		const Symbol* symbol = instances[i]->getMasterCell()->getSymbol();
@@ -255,6 +253,10 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 				painter.drawPoint(a);
 			}
 		}
+		// NAME
+		const QPoint name = pointToScreenPoint(instPos.translate(0,- 20));
+		painter.drawText(name , QString::fromStdString(instances[i]->getName()));
+
 	}
 
 
@@ -275,19 +277,7 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 	const vector<Net*>& nets = cell_->getNets();
 	for (size_t i = 0; i < nets.size() ; i++) {
 
-		//******************** lines ********************
-		const vector<Line*>& lines = nets[i]->getLines();
-		for (size_t j=0 ; j < lines.size() ; j++) {
-			if (lines[j]) {
-				line = lines[j];
-				if (line && (flags==10)) {
-					const QPoint a = pointToScreenPoint(line->getSourcePosition());
-					const QPoint b = pointToScreenPoint(line->getTargetPosition());
-					QLine ql = QLine(a, b);
-					painter.drawLine(ql);
-				}
-			}
-		}
+
 
 		//******************** nodeterm *********************
 		const vector<Node*>& nodes = nets[i]->getNodes();
@@ -299,8 +289,44 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 			}
 
 			if (nodeTerm && (flags==6)) {
-				const QPoint a = pointToScreenPoint(nodeTerm->getPosition());
-				painter.drawPoint(a);
+				QPolygon poly;
+				QPainterPath path;
+				QBrush fillbrush;
+				fillbrush.setColor(Qt::red);
+				fillbrush.setStyle(Qt::SolidPattern);
+
+				QPoint a;
+				//QPoint b;
+				QPoint c;
+				QPoint d;
+
+				if (nodeTerm->getTerm()->getDirection() == Term::In
+				    && cell_->getTerm(nodeTerm->getTerm()->getName())){
+					a = pointToScreenPoint(nodeTerm->getPosition().translate(5,-10));
+					c = pointToScreenPoint(nodeTerm->getPosition().translate(5,10));
+					d = pointToScreenPoint(nodeTerm->getPosition().translate(20,0));
+
+
+				} else {
+					if (nodeTerm->getTerm()->getDirection() == Term::Out
+					    && cell_->getTerm(nodeTerm->getTerm()->getName() )){
+						//b = pointToScreenPoint(nodeTerm->getPosition());
+						a = pointToScreenPoint(nodeTerm->getPosition().translate(-5,-10));
+						c = pointToScreenPoint(nodeTerm->getPosition().translate(-5,10));
+						d = pointToScreenPoint(nodeTerm->getPosition().translate(-20,0));
+					} else {
+						a = pointToScreenPoint(nodeTerm->getPosition());
+						//b = pointToScreenPoint(nodeTerm->getPosition());
+						c = pointToScreenPoint(nodeTerm->getPosition());
+						d = pointToScreenPoint(nodeTerm->getPosition());
+					}
+				}
+
+				//poly << a << b << c << d;
+				poly << a << c << d;
+				path.addPolygon(poly);
+				painter.fillPath(path, fillbrush);
+				painter.drawPolygon(poly);
 				const QPoint name = pointToScreenPoint(nodeTerm->getPosition().translate(0,10));
 				painter.drawText(name , QString::fromStdString(nodeTerm->getTerm()->getName()));
 
@@ -308,7 +334,21 @@ void CellWidget::query(unsigned  int flags , QPainter& painter)
 
 			if (nodePoint && (flags==7)) {
 				const QPoint a = pointToScreenPoint(nodePoint->getPosition());
-				painter.drawPoint(a);
+				// dessiner des ronds quand c'est des points
+				painter.drawEllipse(a, 1, 1);
+			}
+		}
+		//******************** lines ********************
+		const vector<Line*>& lines = nets[i]->getLines();
+		for (size_t j=0 ; j < lines.size() ; j++) {
+			if (lines[j]) {
+				line = lines[j];
+				if (line && (flags==10)) {
+					const QPoint a = pointToScreenPoint(line->getSourcePosition());
+					const QPoint b = pointToScreenPoint(line->getTargetPosition());
+					QLine ql = QLine(a, b);
+					painter.drawLine(ql);
+				}
 			}
 		}
 	}
